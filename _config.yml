@@ -6,13 +6,13 @@
 # https://learn-the-web.algonquindesign.ca/topics/markdown-yaml-cheat-sheet/#yaml
 # https://learnxinyminutes.com/docs/yaml/
 
-title: Edit _config.yml to set your title!
-description: This is where the description of your site will go. You should change it by editing the _config.yml file. It can be as long as you like! Happy blogging... ❤
-github_username: jph00
+title: Dories: Stories with Data
+description: This is the space where I publish side projects and interesting stories told through data and statistical analysis
+github_username: Damjanv1
 
 # Email and twitter are optional:
-email:
-twitter_username:
+email: damjanv83@gmail.com
+twitter_username: damjanvlastelic
 
 # Set this to true to get LaTeX math equation support
 use_math:
