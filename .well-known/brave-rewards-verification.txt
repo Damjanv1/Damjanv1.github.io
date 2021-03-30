@@ -1,0 +1,4 @@
+This is a Brave Rewards publisher verification file.
+
+Domain: dartastudio.com
+Token: a52b3b28734b9c9c6d8d362b6f91df0cab59297b7532b9a9f20a6e2b7b22030a
