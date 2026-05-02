@@ -1,0 +1,1272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Trillion-Dollar Wager — AI Industrial Complex 2026</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --red:#E3120B;--dark:#1a1a1a;--navy:#1a2744;--medium:#555;--light:#888;
+  --bg:#f8f6f1;--white:#fff;--border:#d4cec6;--hi:#fff9ed;
+  --green:#2a9d8f;--amber:#e9c46a;--amberdk:#c07a10;
+}
+html{scroll-behavior:smooth}
+body{font-family:Georgia,"Times New Roman",serif;background:var(--bg);color:var(--dark);font-size:17px;line-height:1.72}
+
+/* ── progress ── */
+#prog{position:fixed;top:0;left:0;height:3px;background:var(--red);width:0;z-index:999;transition:width .1s}
+
+/* ── masthead ── */
+.mast{background:var(--red);padding:10px 36px;display:flex;justify-content:space-between;align-items:center}
+.mast-t{font:700 12px/1 "Helvetica Neue",Arial,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#fff}
+.mast-d{font:12px "Helvetica Neue",Arial,sans-serif;color:rgba(255,255,255,.75)}
+.art-hdr{background:var(--dark);padding:36px 36px 28px}
+.art-cat{font:700 11px/1 "Helvetica Neue",Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--red);margin-bottom:14px}
+h1.art-title{font-size:clamp(28px,4vw,46px);color:#fff;line-height:1.12;margin-bottom:14px}
+.art-sub{font-size:18px;color:rgba(255,255,255,.72);line-height:1.45;margin-bottom:18px}
+.art-meta{font:13px "Helvetica Neue",Arial,sans-serif;color:rgba(255,255,255,.45)}
+
+/* ── layout ── */
+.layout{display:grid;grid-template-columns:240px 1fr;max-width:1180px;margin:0 auto}
+
+/* ── toc ── */
+.toc-wrap{padding:28px 16px 40px 28px;border-right:1px solid var(--border)}
+.toc-inner{position:sticky;top:20px;max-height:calc(100vh - 40px);overflow-y:auto}
+.toc-lbl{font:700 10px/1 "Helvetica Neue",Arial,sans-serif;letter-spacing:.15em;text-transform:uppercase;color:var(--light);margin-bottom:10px}
+.toc-list{list-style:none}
+.toc-list li{margin-bottom:2px}
+.toc-list a{font:12px/1.4 "Helvetica Neue",Arial,sans-serif;color:var(--medium);text-decoration:none;display:block;padding:4px 8px;border-left:2px solid transparent;transition:all .18s}
+.toc-list a:hover,.toc-list a.active{color:var(--red);border-left-color:var(--red);background:rgba(227,18,11,.04)}
+.toc-part{font-weight:700;font-size:11px;margin-top:10px}
+.toc-sub{padding-left:14px!important;font-size:11px}
+
+/* ── article body ── */
+.art-body{padding:36px 44px 60px;max-width:740px}
+
+.lead{font-size:19px;line-height:1.65;border-left:4px solid var(--red);padding-left:18px;margin-bottom:26px;color:var(--dark)}
+
+.part-top{margin:48px 0 6px;border-top:3px solid var(--dark);padding-top:14px}
+.part-lbl{font:700 11px/1 "Helvetica Neue",Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--red);margin-bottom:4px}
+h2{font-size:26px;line-height:1.18;margin-bottom:18px}
+h3{font-size:19px;margin:30px 0 10px;border-bottom:1px solid var(--border);padding-bottom:5px}
+h4{font:700 13px/1 "Helvetica Neue",Arial,sans-serif;text-transform:uppercase;letter-spacing:.06em;margin:22px 0 7px;color:var(--dark)}
+p{margin-bottom:18px}
+strong{font-weight:700}
+em{font-style:italic}
+sup{color:var(--red);font-size:11px}
+
+/* ── pull quote ── */
+blockquote.pq{border-left:4px solid var(--red);padding:14px 20px;margin:24px 0;background:var(--hi);font-size:17px;line-height:1.5;color:var(--navy)}
+blockquote.pq cite{display:block;font-size:12px;color:var(--light);font-style:italic;margin-top:7px}
+
+/* ── stat grid ── */
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:14px;margin:24px 0}
+.stat-box{background:var(--white);border:1px solid var(--border);border-top:3px solid var(--red);padding:14px;text-align:center}
+.stat-n{font:700 30px/1 "Helvetica Neue",Arial,sans-serif;color:var(--red);display:block}
+.stat-l{font:11px "Helvetica Neue",Arial,sans-serif;text-transform:uppercase;letter-spacing:.05em;color:var(--medium);margin-top:5px;display:block}
+.stat-s{font:10px "Helvetica Neue",Arial,sans-serif;color:var(--light);margin-top:3px;display:block}
+
+/* ── table+chart pair ── */
+.tcp{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;margin:20px 0}
+.tcp-full{display:block;margin:20px 0}
+
+/* ── tables ── */
+.tw{overflow-x:auto;margin:20px 0}
+table{width:100%;border-collapse:collapse;font:13px "Helvetica Neue",Arial,sans-serif}
+thead th{background:var(--dark);color:#fff;padding:9px 11px;text-align:left;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.04em}
+thead th.r{text-align:right}
+tbody td{padding:8px 11px;border-bottom:1px solid var(--border);vertical-align:top}
+tbody tr:nth-child(even){background:rgba(0,0,0,.025)}
+tbody tr:hover{background:var(--hi)}
+td.r{text-align:right;font-family:"Courier New",monospace;font-size:12px}
+td.pos{color:var(--green);font-weight:700}
+td.neg{color:var(--red);font-weight:700}
+td.neu{color:var(--amberdk);font-weight:700}
+.tfoot-note{font:11px "Helvetica Neue",Arial,sans-serif;color:var(--light);margin-top:4px;font-style:italic}
+
+/* ── chart containers ── */
+.cc{background:var(--white);border:1px solid var(--border);padding:18px;margin:0}
+.cc-full{background:var(--white);border:1px solid var(--border);padding:18px;margin:20px 0}
+.cc-title{font:700 12px/1 "Helvetica Neue",Arial,sans-serif;text-transform:uppercase;letter-spacing:.06em;color:var(--dark);margin-bottom:3px}
+.cc-sub{font:11px "Helvetica Neue",Arial,sans-serif;color:var(--light);margin-bottom:12px}
+.cc-src{font:10px "Helvetica Neue",Arial,sans-serif;color:var(--light);margin-top:10px;border-top:1px solid var(--border);padding-top:6px}
+.ch-wrap{position:relative;height:260px}
+
+/* ── scenario tabs ── */
+.sc-wrap{margin:24px 0}
+.sc-tabs{display:flex;gap:0}
+.sc-tab{padding:9px 18px;font:700 12px/1 "Helvetica Neue",Arial,sans-serif;cursor:pointer;background:var(--bg);border:1px solid var(--border);border-bottom:none;color:var(--medium);transition:all .18s;text-transform:uppercase;letter-spacing:.06em}
+.sc-tab.active-bull{background:var(--green);color:#fff;border-color:var(--green)}
+.sc-tab.active-base{background:var(--navy);color:#fff;border-color:var(--navy)}
+.sc-tab.active-bear{background:var(--red);color:#fff;border-color:var(--red)}
+.sc-body{border:1px solid var(--border);background:var(--white);padding:18px}
+.sc-panel{display:none}
+.sc-panel.active{display:block}
+
+/* ── scenario cards ── */
+.sc-card{padding:16px;margin:16px 0;border-left:4px solid}
+.sc-card.bull{border-color:var(--green);background:rgba(42,157,143,.05)}
+.sc-card.base{border-color:var(--navy);background:rgba(26,39,68,.05)}
+.sc-card.bear{border-color:var(--red);background:rgba(227,18,11,.05)}
+.sc-card h4{text-transform:none;letter-spacing:0;font-size:15px;margin-top:0}
+.sc-card.bull h4{color:var(--green)}
+.sc-card.base h4{color:var(--navy)}
+.sc-card.bear h4{color:var(--red)}
+
+/* ── calculator ── */
+.calc{background:var(--navy);color:#fff;padding:22px;margin:22px 0}
+.calc h4{color:#fff;font:700 13px/1 "Helvetica Neue",Arial,sans-serif;text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid rgba(255,255,255,.15);padding-bottom:8px;margin-bottom:14px}
+.calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}
+.calc label{display:block;font:11px "Helvetica Neue",Arial,sans-serif;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.calc select{width:100%;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;padding:6px 8px;font-size:13px;margin-bottom:12px}
+.calc input[type=range]{width:100%;accent-color:var(--red);margin-bottom:10px}
+.rv{font:13px "Courier New",monospace;color:rgba(255,255,255,.9)}
+.calc-out{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);padding:16px}
+.calc-big{font:700 42px/1 "Helvetica Neue",Arial,sans-serif;color:#fff}
+.calc-unit{font:13px "Helvetica Neue",Arial,sans-serif;color:rgba(255,255,255,.55);margin-bottom:12px}
+.mbar{height:8px;background:rgba(255,255,255,.1);border-radius:4px;overflow:hidden;margin:6px 0}
+.mbar-fill{height:100%;border-radius:4px;transition:width .4s,background .4s}
+.calc-rows{margin-top:10px}
+.calc-row{display:flex;justify-content:space-between;font:12px "Helvetica Neue",Arial,sans-serif;color:rgba(255,255,255,.7);padding:3px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+.calc-row span:last-child{color:#fff;font-family:"Courier New",monospace}
+.calc-chart-wrap{position:relative;height:160px;margin-top:10px}
+
+/* ── risk grid ── */
+.risk-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0}
+.risk-card{background:var(--white);border:1px solid var(--border);padding:14px}
+.risk-lvl{display:inline-block;padding:2px 7px;font:700 10px/1 "Helvetica Neue",Arial,sans-serif;text-transform:uppercase;letter-spacing:.06em;border-radius:2px;margin-bottom:7px}
+.risk-h{background:var(--red);color:#fff}
+.risk-m{background:var(--amberdk);color:#fff}
+.risk-l{background:var(--green);color:#fff}
+.risk-card h4{text-transform:none;letter-spacing:0;font-size:13px;margin:0 0 5px}
+.risk-card p{font:12px/1.5 "Helvetica Neue",Arial,sans-serif;color:var(--medium);margin:0}
+
+/* ── verdict ── */
+.verdict{background:var(--navy);color:#fff;padding:24px;margin:28px 0}
+.verdict h4{font:700 11px/1 "Helvetica Neue",Arial,sans-serif;text-transform:uppercase;letter-spacing:.1em;color:var(--red);margin-bottom:8px}
+.verdict p{font-size:15px;color:rgba(255,255,255,.85);line-height:1.65;margin-bottom:12px}
+.verdict p:last-child{margin-bottom:0}
+
+/* ── paper cards ── */
+.paper{background:var(--white);border:1px solid var(--border);border-left:4px solid var(--navy);padding:14px;margin:10px 0}
+.paper-t{font-weight:700;font-size:14px;color:var(--navy);margin-bottom:3px}
+.paper-m{font:11px "Helvetica Neue",Arial,sans-serif;color:var(--light);margin-bottom:5px}
+.paper-d{font:13px/1.5 "Helvetica Neue",Arial,sans-serif;color:var(--medium);margin:0}
+
+/* ── highlight box ── */
+.hi-box{background:var(--hi);border:1px solid #f0d58c;padding:12px 16px;margin:18px 0;font:14px/1.6 "Helvetica Neue",Arial,sans-serif}
+
+/* ── references ── */
+.refs{border-top:3px solid var(--dark);padding-top:20px;margin-top:44px}
+.refs h3{border:none;font-size:16px}
+.refs ol{padding-left:18px}
+.refs li{font:12px/1.6 "Helvetica Neue",Arial,sans-serif;color:var(--medium);margin-bottom:5px}
+.refs a{color:var(--red)}
+
+/* ── footer ── */
+footer{background:var(--dark);color:rgba(255,255,255,.45);padding:20px 36px;font:11px/1.7 "Helvetica Neue",Arial,sans-serif}
+
+/* ── responsive ── */
+@media(max-width:900px){
+  .layout{grid-template-columns:1fr}
+  .toc-wrap{display:none}
+  .art-body{padding:24px 20px}
+  .tcp{grid-template-columns:1fr}
+  .calc-grid{grid-template-columns:1fr}
+  .risk-grid{grid-template-columns:1fr}
+}
+@media(max-width:600px){.stat-grid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+
+<div id="prog"></div>
+
+<header>
+  <div class="mast">
+    <span class="mast-t">Technology &amp; Capital Markets — Special Report</span>
+    <span class="mast-d">April 2026</span>
+  </div>
+  <div class="art-hdr">
+    <div class="art-cat">The AI Industrial Complex</div>
+    <h1 class="art-title">The Trillion-Dollar Wager</h1>
+    <p class="art-sub">A financially-minded CTO's anatomy of the AI infrastructure buildout — where the money comes from, where it goes, and whether it ever comes back</p>
+    <p class="art-meta">April 2026 &nbsp;·&nbsp; ~9,800 words &nbsp;·&nbsp; 9 Parts &nbsp;·&nbsp; 8 Interactive Charts &nbsp;·&nbsp; 2 Live Calculators</p>
+  </div>
+</header>
+
+<div class="layout">
+
+<!-- ═══════════════ TOC ═══════════════ -->
+<aside class="toc-wrap">
+<div class="toc-inner">
+  <p class="toc-lbl">Contents</p>
+  <ul class="toc-list">
+    <li><a href="#preface" class="toc-part">Preface</a></li>
+    <li><a href="#part1" class="toc-part">I · The Scale of the Wager</a></li>
+    <li><a href="#p1-1" class="toc-sub">A Number Larger Than Most Economies</a></li>
+    <li><a href="#p1-2" class="toc-sub">NVIDIA: Industry Barometer</a></li>
+    <li><a href="#p1-3" class="toc-sub">The Situational Awareness Scenario</a></li>
+    <li><a href="#p1-4" class="toc-sub">Power: The Binding Constraint</a></li>
+    <li><a href="#part2" class="toc-part">II · The Revenue Reality</a></li>
+    <li><a href="#p2-1" class="toc-sub">What Is Actually Being Earned</a></li>
+    <li><a href="#p2-2" class="toc-sub">Goldman's Verdict</a></li>
+    <li><a href="#part3" class="toc-part">III · Company-by-Company</a></li>
+    <li><a href="#p3-1" class="toc-sub">Microsoft: The Per-Seat Play</a></li>
+    <li><a href="#p3-2" class="toc-sub">Google: The Integrated Stack</a></li>
+    <li><a href="#p3-3" class="toc-sub">Meta: The Ad Flywheel</a></li>
+    <li><a href="#p3-4" class="toc-sub">Amazon: The Dual-Mode Bet</a></li>
+    <li><a href="#part4" class="toc-part">IV · Unit Economics</a></li>
+    <li><a href="#p4-1" class="toc-sub">GPU Acquisition &amp; Depreciation</a></li>
+    <li><a href="#p4-2" class="toc-sub">The Cost-of-Intelligence Curve</a></li>
+    <li><a href="#p4-3" class="toc-sub">Per-Token Break-Even Model</a></li>
+    <li><a href="#part5" class="toc-part">V · Financial Modelling</a></li>
+    <li><a href="#p5-1" class="toc-sub">DCF Analysis — Three Scenarios</a></li>
+    <li><a href="#p5-2" class="toc-sub">Industry Break-Even</a></li>
+    <li><a href="#part6" class="toc-part">VI · Structural Risks</a></li>
+    <li><a href="#part7" class="toc-part">VII · Pricing to Break Even</a></li>
+    <li><a href="#p7-1" class="toc-sub">Token Pricing Calculator</a></li>
+    <li><a href="#p7-2" class="toc-sub">Per-Seat Calculator</a></li>
+    <li><a href="#part8" class="toc-part">VIII · The Papers</a></li>
+    <li><a href="#part9" class="toc-part">IX · Synthesis &amp; Verdict</a></li>
+    <li><a href="#refs" class="toc-sub">References</a></li>
+  </ul>
+</div>
+</aside>
+
+<!-- ═══════════════ ARTICLE ═══════════════ -->
+<main class="art-body">
+
+<!-- PREFACE -->
+<section id="preface">
+<p class="lead">This analysis attempts something genuinely difficult: applying rigorous financial discipline to an industry that has, for the better part of three years, operated largely outside conventional capital allocation frameworks.</p>
+
+<blockquote class="pq">"We may be building one of the most transformative and potentially dangerous technologies in human history, yet appear to believe that the correct response is to go faster."<cite>— Dario Amodei, Anthropic</cite></blockquote>
+
+<p>The numbers involved — hundreds of billions in annual capital expenditure, trillion-dollar GPU clusters on the horizon, and revenue gaps that would make a dot-com era CFO blush — demand scrutiny that is frequently absent from breathless press releases and analyst notes written for audiences already drunk on the AI narrative.</p>
+<p>What follows is neither a bull note nor a bear manifesto. It is an attempt to model the landscape with the tools available to any industrially-minded financial analyst: discounted cash flow analysis, unit economics, scenario modelling, break-even arithmetic, and a careful reading of the primary sources. The central question is straightforward, if uncomfortable: <strong>at current rates of capital deployment, can the AI industry generate returns commensurate with its investment — and if so, when, at what price per token or per seat, and under what conditions?</strong></p>
+<p>The answer is: probably yes, but not yet, not cheaply, and with a distribution of outcomes far wider than consensus currently implies.</p>
+</section>
+
+<!-- PART I -->
+<section id="part1">
+<div class="part-top"><div class="part-lbl">Part I</div>
+<h2>The Scale of the Wager</h2></div>
+
+<section id="p1-1">
+<h3>A Number Larger Than Most Economies</h3>
+<p>The combined capital expenditure of the four largest American technology companies — Alphabet, Amazon, Microsoft, and Meta — reached approximately <strong>$730 billion in 2026</strong>, nearly all of it directed toward AI infrastructure: data centres, networking, custom silicon, and power. To calibrate this figure: it exceeds the GDP of Switzerland, comfortably surpasses that of Saudi Arabia by a meaningful fraction, and represents more capital deployed in a single year than the entire United States defence budget.</p>
+
+<div class="stat-grid">
+  <div class="stat-box"><span class="stat-n" data-target="730" data-suffix="B">$0B</span><span class="stat-l">Combined 2026 Capex</span><span class="stat-s">Amazon+MS+Google+Meta</span></div>
+  <div class="stat-box"><span class="stat-n" data-target="1.25" data-prefix="$" data-suffix="T">$0T</span><span class="stat-l">3-Year Capex Total</span><span class="stat-s">2024–2026 combined</span></div>
+  <div class="stat-box"><span class="stat-n" data-target="216" data-suffix="B">$0B</span><span class="stat-l">NVIDIA FY2026 Revenue</span><span class="stat-s">65% YoY growth</span></div>
+  <div class="stat-box"><span class="stat-n" data-target="75" data-suffix="%">0%</span><span class="stat-l">NVIDIA Gross Margin</span><span class="stat-s">FY2026 GAAP</span></div>
+</div>
+
+<!-- TABLE 1 + CHART 1 SIDE BY SIDE -->
+<div class="tcp">
+  <div>
+    <div class="tw">
+      <table>
+        <caption style="font:700 12px 'Helvetica Neue',Arial,sans-serif;text-align:left;padding:0 0 6px;text-transform:uppercase;letter-spacing:.06em;color:var(--dark)">Table 1 — Hyperscaler Capex 2024–2026 ($B)</caption>
+        <thead><tr><th>Company</th><th class="r">2024</th><th class="r">2025</th><th class="r">2026E</th><th class="r">3-Yr Total</th></tr></thead>
+        <tbody>
+          <tr><td>Amazon</td><td class="r">$77</td><td class="r">$105</td><td class="r pos">$200</td><td class="r">$382</td></tr>
+          <tr><td>Microsoft</td><td class="r">$56</td><td class="r">$80</td><td class="r pos">$190</td><td class="r">$326</td></tr>
+          <tr><td>Alphabet</td><td class="r">$52</td><td class="r">$75</td><td class="r pos">$185</td><td class="r">$312</td></tr>
+          <tr><td>Meta</td><td class="r">$39</td><td class="r">$72</td><td class="r pos">$135</td><td class="r">$246</td></tr>
+          <tr style="font-weight:700;background:rgba(227,18,11,.06)"><td>Combined</td><td class="r">$224</td><td class="r">$332</td><td class="r neg">$710</td><td class="r">$1,266</td></tr>
+        </tbody>
+      </table>
+      <p class="tfoot-note">Sources: Company earnings reports; Fortune 29 Apr 2026; CNBC Feb 2026</p>
+    </div>
+  </div>
+  <div class="cc">
+    <div class="cc-title">Capex Surge by Company</div>
+    <div class="cc-sub">USD billions, stacked by company</div>
+    <div class="ch-wrap"><canvas id="chartCapex"></canvas></div>
+    <div class="cc-src">Source: Company filings 2024–2026E</div>
+  </div>
+</div>
+
+<p>The acceleration is itself the story. From 2024 to 2026, combined annual capex more than trebled. Meta alone increased its capital expenditure guidance for 2026 to <strong>$125–145 billion</strong>, up from $39 billion in 2024 — a 3.5× increase in two years. Amazon signalled a <strong>$200 billion</strong> commitment for 2026, "mostly tied to AI infrastructure," against free cash flow that fell from $38 billion to $11 billion in a single year.<sup>11</sup></p>
+</section>
+
+<section id="p1-2">
+<h3>NVIDIA: The Industry Barometer</h3>
+<p>If one wishes to understand the AI capital cycle with a single financial instrument, the income statement of NVIDIA Corporation is the most honest available. In fiscal year 2026 (ending January 2026), NVIDIA reported total revenue of <strong>$215.9 billion</strong> (+65% YoY) with data centre revenue of <strong>$193.7 billion</strong> (+68% YoY) at a gross margin of <strong>75.0%</strong> — one of the highest-margin businesses in the history of industrial capitalism.<sup>20</sup></p>
+<p>NVIDIA's manufacturing cost for an H100 GPU is estimated at approximately $3,320; the market price ranged from $27,000 to $40,000. The B200 costs ~$6,400 to manufacture and sells for $30,000–$50,000. For the buyers — the hyperscalers — this means that the $730 billion in capex substantially enriches a supplier operating at near-monopolistic margins.</p>
+
+<!-- TABLE NVIDIA + CHART NVIDIA SIDE BY SIDE -->
+<div class="tcp">
+  <div>
+    <div class="tw">
+      <table>
+        <caption style="font:700 12px 'Helvetica Neue',Arial,sans-serif;text-align:left;padding:0 0 6px;text-transform:uppercase;letter-spacing:.06em;color:var(--dark)">NVIDIA Data Centre Revenue ($B)</caption>
+        <thead><tr><th>Quarter</th><th class="r">Revenue</th><th class="r">QoQ</th></tr></thead>
+        <tbody>
+          <tr><td>Q1 FY25</td><td class="r">$22.6</td><td class="r">—</td></tr>
+          <tr><td>Q2 FY25</td><td class="r">$26.3</td><td class="r pos">+16%</td></tr>
+          <tr><td>Q3 FY25</td><td class="r">$30.8</td><td class="r pos">+17%</td></tr>
+          <tr><td>Q4 FY25</td><td class="r">$35.3</td><td class="r pos">+15%</td></tr>
+          <tr><td>Q1 FY26</td><td class="r">$39.0</td><td class="r pos">+10%</td></tr>
+          <tr><td>Q2 FY26</td><td class="r">$40.8</td><td class="r pos">+5%</td></tr>
+          <tr><td>Q3 FY26</td><td class="r">$51.2</td><td class="r pos">+25%</td></tr>
+          <tr><td>Q4 FY26</td><td class="r">$62.3</td><td class="r pos">+22%</td></tr>
+        </tbody>
+      </table>
+      <p class="tfoot-note">Source: NVIDIA investor relations, FY2026 results</p>
+    </div>
+  </div>
+  <div class="cc">
+    <div class="cc-title">NVIDIA Data Centre Revenue</div>
+    <div class="cc-sub">Quarterly, USD billions (FY25–FY26)</div>
+    <div class="ch-wrap"><canvas id="chartNvidia"></canvas></div>
+    <div class="cc-src">Source: NVIDIA Q4 FY2026 earnings release²⁰</div>
+  </div>
+</div>
+</section>
+
+<section id="p1-3">
+<h3>The Situational Awareness Scenario</h3>
+<p>The most intellectually serious attempt to project where this spending leads appears in Leopold Aschenbrenner's <em>Racing to the Trillion-Dollar Cluster</em> (situational-awareness.ai, 2024), which projects training clusters reaching $1 trillion in cost and 100 GW of power consumption by 2030.<sup>19</sup></p>
+
+<div class="tw">
+  <table>
+    <caption style="font:700 12px 'Helvetica Neue',Arial,sans-serif;text-align:left;padding:0 0 6px;text-transform:uppercase;letter-spacing:.06em;color:var(--dark)">Table 2 — Projected Training Cluster Scale (Aschenbrenner, 2024)</caption>
+    <thead><tr><th>Year</th><th class="r">H100-Equivalents</th><th class="r">Estimated Cost</th><th class="r">Power</th></tr></thead>
+    <tbody>
+      <tr><td>2022 (GPT-4 era)</td><td class="r">~10,000</td><td class="r">~$500M</td><td class="r">~10 MW</td></tr>
+      <tr><td>2026</td><td class="r">~1,000,000</td><td class="r">$10s of billions</td><td class="r">~1 GW</td></tr>
+      <tr><td>2028</td><td class="r">~10,000,000</td><td class="r">$100s of billions</td><td class="r">~10 GW</td></tr>
+      <tr><td>2030</td><td class="r neu">~100,000,000</td><td class="r neg">~$1 Trillion</td><td class="r neg">~100 GW</td></tr>
+    </tbody>
+  </table>
+  <p class="tfoot-note">Source: situational-awareness.ai, "Racing to the Trillion-Dollar Cluster"¹⁹</p>
+</div>
+
+<p>The 2026 figure has already been empirically validated — the current run-rate of approximately $730 billion in hyperscaler capex alone suggests Aschenbrenner's $500 billion estimate was conservative. The $8 trillion figure for 2030 requires that AI investment equal roughly 25% of projected US GDP — a figure that strains credulity even accounting for international participation.</p>
+</section>
+
+<section id="p1-4">
+<h3>Power: The Binding Constraint</h3>
+<p>A single H100 GPU draws <strong>700 watts</strong> under full load; a B200 draws <strong>1,000 watts</strong>. Scale to 100,000 GPUs — a modest cluster by 2026 standards — and compute alone demands 87.5 MW before cooling adds 30–50% on top. By early 2026, US data centres consumed approximately <strong>4% of total national electricity</strong>, up from ~2% in 2020, with AI workloads as the primary driver.<sup>3</sup></p>
+<div class="hi-box"><strong>Power cost at scale:</strong> At $0.07/kWh for data centre power — a 1 GW cluster costs <strong>$612M/year</strong> to run; a 10 GW cluster costs <strong>$6.1B/year</strong>; and the Aschenbrenner 100 GW scenario implies <strong>$61.2B/year</strong> in electricity alone before any compute amortisation.</div>
+</section>
+</section>
+
+<!-- PART II -->
+<section id="part2">
+<div class="part-top"><div class="part-lbl">Part II</div>
+<h2>The Revenue Reality</h2></div>
+
+<section id="p2-1">
+<h3>What Is Actually Being Earned</h3>
+<p>Against the backdrop of $730 billion in annual capital deployment, the current state of AI revenue is sobering. The combined identifiable AI revenue across major players is approximately <strong>$145–165 billion</strong> in annualised terms — impressive by any prior technology standard (AWS itself generated only $58 million in its first three years) but less than one quarter of the annual capital being deployed in 2026.</p>
+
+<!-- TABLE 3 + REVENUE GAP CHART SIDE BY SIDE -->
+<div class="tcp">
+  <div>
+    <div class="tw">
+      <table>
+        <caption style="font:700 12px 'Helvetica Neue',Arial,sans-serif;text-align:left;padding:0 0 6px;text-transform:uppercase;letter-spacing:.06em;color:var(--dark)">Table 3 — AI Revenue ARR, April 2026</caption>
+        <thead><tr><th>Provider / Segment</th><th class="r">ARR</th><th class="r">YoY Growth</th></tr></thead>
+        <tbody>
+          <tr><td>OpenAI</td><td class="r pos">~$24B</td><td class="r pos">~300%</td></tr>
+          <tr><td>Microsoft AI (Azure + Copilot)</td><td class="r pos">~$37B</td><td class="r pos">~123%</td></tr>
+          <tr><td>AWS AI (Bedrock + Trainium)</td><td class="r pos">~$15B</td><td class="r pos">~200%+</td></tr>
+          <tr><td>Google Cloud (AI-driven)</td><td class="r pos">~$30–35B</td><td class="r pos">~63% (Cloud)</td></tr>
+          <tr><td>Anthropic</td><td class="r pos">~$19–20B</td><td class="r pos">~400%+</td></tr>
+          <tr><td>Meta (AI-attributable ad uplift)</td><td class="r neu">~$20–30B</td><td class="r neu">Indirect</td></tr>
+          <tr style="font-weight:700;background:rgba(227,18,11,.06)"><td>Total (est.)</td><td class="r neg">~$145–165B</td><td class="r">—</td></tr>
+        </tbody>
+      </table>
+      <p class="tfoot-note">Sources: Company earnings Q1 2026; Saastr Apr 2026; Reuters Apr 2026¹¹</p>
+    </div>
+  </div>
+  <div class="cc">
+    <div class="cc-title">Revenue vs CapEx vs Infrastructure Cost</div>
+    <div class="cc-sub">USD billions, 2022–2030E (base case)</div>
+    <div class="ch-wrap"><canvas id="chartGap"></canvas></div>
+    <div class="cc-src">Source: Company filings; author's estimates</div>
+  </div>
+</div>
+
+<blockquote class="pq">The Sequoia Capital analysis by David Cahn quantified the gap with methodological clarity: taking NVIDIA's projected revenues, multiplying by 2× for total data centre costs, then by 2× again to account for hyperscaler gross margins, he arrived at a <strong>$600 billion annual revenue shortfall</strong>. With NVIDIA's FY2026 revenues at $216 billion and total AI capex at $730 billion, an updated version of this calculation suggests the gap has widened rather than narrowed.<cite>— Sequoia Capital, "AI's $600 Billion Question"⁵</cite></blockquote>
+</section>
+
+<section id="p2-2">
+<h3>Goldman's Verdict</h3>
+<p>The macroeconomic perspective is equally bracing. Goldman Sachs chief economist Jan Hatzius stated in early 2026 that <strong>$700 billion in AI investment contributed "basically zero" to US GDP growth in 2025</strong>. The explanation is structural: most AI equipment is manufactured abroad (primarily by TSMC in Taiwan), so investment spending does not generate the domestic multiplier effect that construction spending would. Separately, Goldman's research found that <strong>over 80% of companies report no measurable productivity gains from AI</strong> despite substantial investment.<sup>6</sup></p>
+<div class="stat-grid">
+  <div class="stat-box"><span class="stat-n" data-target="80" data-suffix="%">0%</span><span class="stat-l">Companies w/ No AI Productivity Gains</span><span class="stat-s">Goldman Sachs survey 2025</span></div>
+  <div class="stat-box"><span class="stat-n" data-target="33" data-suffix="%">0%</span><span class="stat-l">Actual vs Theoretical Task Coverage</span><span class="stat-s">Anthropic Economic Index⁷</span></div>
+  <div class="stat-box"><span class="stat-n" data-target="1.5" data-suffix="pp">0pp</span><span class="stat-l">Projected 10-yr Productivity Boost</span><span class="stat-s">Goldman Sachs forecast</span></div>
+  <div class="stat-box"><span class="stat-n" data-target="2027">0</span><span class="stat-l">Year GDP Impact Begins</span><span class="stat-s">Goldman Sachs projection</span></div>
+</div>
+<p>This is not a verdict on AI's ultimate potential. It is, rather, a verdict on timing. The Goldman analysis explicitly projected AI beginning to have a measurable impact on US GDP and labour productivity in <strong>2027</strong> — two years after the beginning of the spending surge.</p>
+</section>
+</section>
+
+<!-- PART III -->
+<section id="part3">
+<div class="part-top"><div class="part-lbl">Part III</div>
+<h2>Company-by-Company Anatomy</h2></div>
+
+<section id="p3-1">
+<h3>Microsoft: The Per-Seat Play</h3>
+<p>Microsoft has constructed the most legible AI monetisation model of the hyperscalers. The per-seat model — charging enterprise customers <strong>$30 per user per month</strong> ($360/year) for Microsoft 365 Copilot — creates predictable, recurring revenue that maps cleanly onto existing enterprise software purchasing patterns.</p>
+
+<div class="tw">
+  <table>
+    <caption style="font:700 12px 'Helvetica Neue',Arial,sans-serif;text-align:left;padding:0 0 6px;text-transform:uppercase;letter-spacing:.06em;color:var(--dark)">Table 4 — Copilot Penetration Scenarios (400M M365 Seats, $30/mo)</caption>
+    <thead><tr><th>Scenario</th><th class="r">Penetration</th><th class="r">Seats (M)</th><th class="r">ARR</th><th class="r">Gross Profit (75%)</th><th class="r">Capex Recovery</th></tr></thead>
+    <tbody>
+      <tr><td>Current (Q1 2026)</td><td class="r">3.75%</td><td class="r">15M</td><td class="r">$5.4B</td><td class="r">$4.1B</td><td class="r neg">2.8%</td></tr>
+      <tr><td>Conservative (2027E)</td><td class="r">10%</td><td class="r">40M</td><td class="r">$14.4B</td><td class="r">$10.8B</td><td class="r neg">7.6%</td></tr>
+      <tr><td>Base Case (2028E)</td><td class="r">25%</td><td class="r">100M</td><td class="r">$36.0B</td><td class="r">$27.0B</td><td class="r neu">19%</td></tr>
+      <tr><td>Bull Case (2029E)</td><td class="r">40%</td><td class="r">160M</td><td class="r">$57.6B</td><td class="r">$43.2B</td><td class="r pos">30%</td></tr>
+      <tr><td>Full Penetration</td><td class="r">60%</td><td class="r">240M</td><td class="r pos">$86.4B</td><td class="r pos">$64.8B</td><td class="r pos">45%</td></tr>
+    </tbody>
+  </table>
+  <p class="tfoot-note">Capex Recovery = Copilot ARR ÷ $190B FY2026 capex. Note: Copilot alone cannot recover full capex; Azure AI consumption carries the remainder.</p>
+</div>
+<p>The stated Microsoft AI ARR of <strong>$37 billion</strong> — growing at 123% year-over-year — encompasses Azure AI services, M365 Copilot, and GitHub Copilot. Azure API consumption (the consumption model) likely dominates near-term revenue; per-seat Copilot represents perhaps $5–6 billion today.</p>
+</section>
+
+<section id="p3-2">
+<h3>Google/Alphabet: The Integrated Stack</h3>
+<p>Google's Q1 2026 earnings represented a genuine inflection. Google Cloud revenue reached <strong>$20 billion in a single quarter</strong> (+63% YoY), with a backlog that nearly doubled quarter-over-quarter to <strong>$462 billion</strong> — roughly half of which management expects to convert to revenue within 24 months.<sup>9</sup> Revenue from products built on Google's GenAI models reportedly grew <strong>nearly 800% year-over-year</strong> in Q1 2026.</p>
+<p>Google's competitive advantage is vertical integration. Unlike Microsoft (dependent on OpenAI) or Amazon (dependent on Anthropic), Google controls the full stack: TPU v6 Trillium silicon, the Gemini frontier model family, and Google Cloud Platform. This integration means Google captures margin at every layer — silicon, training, and inference — while competitors must share rents with their model partners.</p>
+</section>
+
+<section id="p3-3">
+<h3>Meta: The Advertising Flywheel</h3>
+<p>Meta presents the most intellectually interesting case study in AI monetisation because it is already generating returns — just not in a way that appears on a conventional AI revenue line. Meta does not report AI revenue separately. <strong>Every dollar of AI value shows up as advertising revenue.</strong></p>
+<p>The mechanism: better machine learning models predict with higher precision which advertisements a user will engage with, increasing effective CPM without any corresponding increase in ad volume. Meta's <em>Andromeda</em> retrieval system reportedly "nearly tripled compute efficiency" across its hardware fleet. The Advantage+ AI suite now handles over <strong>$60 billion</strong> in annualised advertiser spend. Meta's total Family of Apps revenue reached <strong>$198.7 billion in FY2025</strong> (+22% YoY), even as capex surged from $28B (FY23) to $72B (FY25).<sup>10</sup></p>
+</section>
+
+<section id="p3-4">
+<h3>Amazon/AWS: The Dual-Mode Bet</h3>
+<p>Amazon occupies a unique position: simultaneously a cloud infrastructure provider (monetising AI through AWS), a consumer AI integrant, and the largest external backer of Anthropic ($33 billion committed as of April 2026). AWS AI revenue reached a <strong>$15 billion annualised run rate</strong> in Q1 2026, up from less than $5 billion entering 2025 — a 3× increase in a single year.<sup>11</sup> Amazon's custom silicon business (Graviton, Trainium, Inferentia) reached a <strong>$20+ billion run rate</strong>.</p>
+<p>The $200 billion capex commitment for 2026 is the single largest in corporate history for a one-year period. Amazon justifies it through the historical AWS comparison: three years after AWS launched commercially, it had a $58 million run rate; three years into the AI wave, AWS AI revenue exceeds $15 billion — "nearly 260 times larger at the equivalent stage."</p>
+</section>
+</section>
+
+<!-- PART IV -->
+<section id="part4">
+<div class="part-top"><div class="part-lbl">Part IV</div>
+<h2>Unit Economics — The Machinery of Margin</h2></div>
+
+<section id="p4-1">
+<h3>GPU Acquisition and Depreciation</h3>
+<p>The fundamental unit of AI infrastructure is the GPU. A critical and frequently understated consideration is <strong>effective depreciation</strong>. NVIDIA's Blackwell (B200) generation offers approximately 2.5× the performance of Hopper (H100) for 25% higher cost — meaning H100s purchased in 2023 are economically obsolete well before their physical lifespan expires. This compresses the effective payback window to 2–3 years for assets that could physically operate 5–7 years.</p>
+
+<!-- TABLE GPU + CHART TOKEN COST SIDE BY SIDE -->
+<div class="tcp">
+  <div>
+    <div class="tw">
+      <table>
+        <caption style="font:700 12px 'Helvetica Neue',Arial,sans-serif;text-align:left;padding:0 0 6px;text-transform:uppercase;letter-spacing:.06em;color:var(--dark)">GPU Cost Structure (2026 Market)</caption>
+        <thead><tr><th>GPU</th><th class="r">Purchase</th><th class="r">Cloud/hr</th><th class="r">Mfg Cost</th><th class="r">NV Margin</th></tr></thead>
+        <tbody>
+          <tr><td>H100 (80GB)</td><td class="r">$27–40K</td><td class="r">$2.85–3.93</td><td class="r">~$3,320</td><td class="r pos">~87%</td></tr>
+          <tr><td>H200 (141GB)</td><td class="r">$31–32K</td><td class="r">$3.50–10.60</td><td class="r">~$4,000</td><td class="r pos">~85%</td></tr>
+          <tr><td>B200 (192GB)</td><td class="r">$30–50K</td><td class="r">$4.40–6.00</td><td class="r">~$6,400</td><td class="r pos">~82%</td></tr>
+          <tr><td>B300 (288GB)</td><td class="r">$37.5–43.75K</td><td class="r">$4.95–18.00</td><td class="r">~$8,000</td><td class="r pos">~80%</td></tr>
+        </tbody>
+      </table>
+      <p class="tfoot-note">Sources: IntuitionLabs GPU Pricing Guide 2026²; Introl Inference Economics¹³</p>
+    </div>
+    <div class="tw" style="margin-top:14px">
+      <table>
+        <caption style="font:700 12px 'Helvetica Neue',Arial,sans-serif;text-align:left;padding:0 0 6px;text-transform:uppercase;letter-spacing:.06em;color:var(--dark)">Annual Cost per H100 GPU (Self-Hosted)</caption>
+        <thead><tr><th>Cost Component</th><th class="r">$/Year</th></tr></thead>
+        <tbody>
+          <tr><td>Capital depreciation (3-yr, $33K avg)</td><td class="r">$11,000</td></tr>
+          <tr><td>Power (700W × 8,760hr × $0.07/kWh)</td><td class="r">$429</td></tr>
+          <tr><td>Data centre overhead (20% of capital)</td><td class="r">$2,200</td></tr>
+          <tr><td>Network/storage allocation</td><td class="r">$500</td></tr>
+          <tr style="font-weight:700"><td>Total (at 60% utilisation)</td><td class="r neg">$23,548/yr</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="cc">
+    <div class="cc-title">The Cost-of-Intelligence Curve</div>
+    <div class="cc-sub">Cost per million output tokens — frontier model equivalent (log scale)</div>
+    <div class="ch-wrap"><canvas id="chartToken"></canvas></div>
+    <div class="cc-src">Sources: IntuitionLabs¹³; Wing VC¹⁴; Introl Dec 2025</div>
+  </div>
+</div>
+</section>
+
+<section id="p4-2">
+<h3>The Cost-of-Intelligence Curve</h3>
+<p>Perhaps the most remarkable phenomenon in the AI industry is the speed at which inference costs are falling. Wing Venture Capital quantified the historical decline as <strong>240× in 18 months</strong> — from $180 per million tokens to under $1 per million in November 2024.<sup>14</sup> This trajectory — significantly faster than Moore's Law's approximately 2× improvement every 18–24 months — is driven by hardware improvements, model architecture efficiency gains, software optimisations, and competitive pricing pressure.</p>
+
+<div class="tw">
+  <table>
+    <caption style="font:700 12px 'Helvetica Neue',Arial,sans-serif;text-align:left;padding:0 0 6px;text-transform:uppercase;letter-spacing:.06em;color:var(--dark)">Table 5 — Frontier Token Cost Per Million (Output, Historical)</caption>
+    <thead><tr><th>Period</th><th>Benchmark Model</th><th class="r">Cost/M Tokens</th><th class="r">Annual Decline</th></tr></thead>
+    <tbody>
+      <tr><td>Nov 2022</td><td>GPT-3.5 equivalent</td><td class="r">~$20</td><td class="r">—</td></tr>
+      <tr><td>Mar 2023</td><td>GPT-4 launch</td><td class="r">~$60</td><td class="r neu">+200% (new frontier)</td></tr>
+      <tr><td>Aug 2023</td><td>GPT-4 Turbo</td><td class="r">~$30</td><td class="r pos">−50%</td></tr>
+      <tr><td>Jan 2024</td><td>GPT-4 Turbo (updated)</td><td class="r">~$10</td><td class="r pos">−67%</td></tr>
+      <tr><td>Jun 2024</td><td>GPT-4o</td><td class="r">~$3</td><td class="r pos">−70%</td></tr>
+      <tr><td>Nov 2024</td><td>GPT-4 equivalent</td><td class="r">~$1</td><td class="r pos">−67%</td></tr>
+      <tr><td>Apr 2025</td><td>GPT-4 equivalent</td><td class="r">~$0.40</td><td class="r pos">−60%</td></tr>
+      <tr><td>Dec 2025</td><td>Efficient frontier</td><td class="r">~$0.15</td><td class="r pos">−63%</td></tr>
+      <tr><td>Apr 2026</td><td>Mini frontier</td><td class="r pos">~$0.06</td><td class="r pos">−60%</td></tr>
+    </tbody>
+  </table>
+  <p class="tfoot-note">Sources: IntuitionLabs LLM Pricing¹³; Wing VC¹⁴; Introl Dec 2025</p>
+</div>
+</section>
+
+<section id="p4-3">
+<h3>Per-Token Break-Even Model</h3>
+<p>Using an 8×H100 inference server as the base unit for a frontier model deployment, the annual cost structure and break-even pricing are as follows:</p>
+
+<div class="tw">
+  <table>
+    <caption style="font:700 12px 'Helvetica Neue',Arial,sans-serif;text-align:left;padding:0 0 6px;text-transform:uppercase;letter-spacing:.06em;color:var(--dark)">Break-Even Cost/M Output Tokens vs Utilisation — 8×H100 Server</caption>
+    <thead><tr><th>Utilisation</th><th class="r">Tokens/sec</th><th class="r">Annual Tokens</th><th class="r">Cost/M Tokens</th><th class="r">Market Price</th><th class="r">Gross Margin</th></tr></thead>
+    <tbody>
+      <tr><td>40%</td><td class="r">2,000</td><td class="r">25.2B</td><td class="r neg">$4.53</td><td class="r">$15.00</td><td class="r pos">70%</td></tr>
+      <tr><td>60%</td><td class="r">3,000</td><td class="r">37.8B</td><td class="r neg">$3.02</td><td class="r">$15.00</td><td class="r pos">80%</td></tr>
+      <tr><td>80%</td><td class="r">4,000</td><td class="r">50.5B</td><td class="r neu">$2.26</td><td class="r">$15.00</td><td class="r pos">85%</td></tr>
+      <tr><td>95%</td><td class="r">4,750</td><td class="r">59.9B</td><td class="r pos">$1.90</td><td class="r">$15.00</td><td class="r pos">87%</td></tr>
+    </tbody>
+  </table>
+  <p class="tfoot-note">Annual server cost = $114,032 (capital $88K + power $3.4K + overhead $17.6K + network $5K). Market price = frontier output tier (GPT-4o class, Apr 2026). Adding R&amp;D amortisation (~$0.50/M) raises the fully-loaded floor by ~$0.50.</p>
+</div>
+</section>
+</section>
+
+<!-- PART V -->
+<section id="part5">
+<div class="part-top"><div class="part-lbl">Part V</div>
+<h2>Financial Modelling</h2></div>
+
+<section id="p5-1">
+<h3>DCF Analysis — Three Scenarios</h3>
+<p>The following analysis models the AI-attributable revenue streams of Microsoft and Google under three scenarios. Inputs are grounded in reported and guided figures through Q1 2026, with extrapolations informed by cloud infrastructure historical growth patterns and enterprise software adoption curves.</p>
+
+<div class="sc-wrap">
+  <div class="sc-tabs" id="dcfTabs">
+    <button class="sc-tab active-bull" data-panel="bull" onclick="switchTab(this,'dcfTabs','dcfPanels')">🟢 Bull Case</button>
+    <button class="sc-tab" data-panel="base" onclick="switchTab(this,'dcfTabs','dcfPanels')">🔵 Base Case</button>
+    <button class="sc-tab" data-panel="bear" onclick="switchTab(this,'dcfTabs','dcfPanels')">🔴 Bear Case</button>
+  </div>
+  <div class="sc-body" id="dcfPanels">
+    <!-- BULL -->
+    <div class="sc-panel active" data-panel="bull">
+      <p style="margin-bottom:12px;font:13px 'Helvetica Neue',Arial,sans-serif;color:var(--medium)"><strong>Assumptions:</strong> WACC 9% · Terminal growth 5% · AI capability step-change by 2027–28 · 60%+ enterprise adoption by 2029</p>
+      <div class="tw"><table>
+        <thead><tr><th>Company</th><th class="r">2027E</th><th class="r">2028E</th><th class="r">2029E</th><th class="r">2030E</th><th class="r">5-yr FCF PV</th><th class="r">Terminal PV</th><th class="r">Total NPV</th></tr></thead>
+        <tbody>
+          <tr><td>Microsoft AI</td><td class="r">$59B</td><td class="r">$89B</td><td class="r">$125B</td><td class="r">$163B</td><td class="r">$152B</td><td class="r">$1,143B</td><td class="r pos"><strong>$1,295B</strong></td></tr>
+          <tr><td>Google Cloud AI</td><td class="r">$128B</td><td class="r">$192B</td><td class="r">$269B</td><td class="r">$350B</td><td class="r">$232B</td><td class="r">$2,156B</td><td class="r pos"><strong>$2,388B</strong></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+    <!-- BASE -->
+    <div class="sc-panel" data-panel="base">
+      <p style="margin-bottom:12px;font:13px 'Helvetica Neue',Arial,sans-serif;color:var(--medium)"><strong>Assumptions:</strong> WACC 10% · Terminal growth 4% · Measured enterprise adoption 25–40% by 2028 · Inference commoditisation ongoing</p>
+      <div class="tw"><table>
+        <thead><tr><th>Company</th><th class="r">2027E</th><th class="r">2028E</th><th class="r">2029E</th><th class="r">2030E</th><th class="r">5-yr FCF PV</th><th class="r">Terminal PV</th><th class="r">Total NPV</th></tr></thead>
+        <tbody>
+          <tr><td>Microsoft AI</td><td class="r">$52B</td><td class="r">$72B</td><td class="r">$96B</td><td class="r">$120B</td><td class="r">$107B</td><td class="r">$714B</td><td class="r neu"><strong>$821B</strong></td></tr>
+          <tr><td>Google Cloud AI</td><td class="r">$116B</td><td class="r">$162B</td><td class="r">$210B</td><td class="r">$252B</td><td class="r">$155B</td><td class="r">$1,283B</td><td class="r neu"><strong>$1,438B</strong></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+    <!-- BEAR -->
+    <div class="sc-panel" data-panel="bear">
+      <p style="margin-bottom:12px;font:13px 'Helvetica Neue',Arial,sans-serif;color:var(--medium)"><strong>Assumptions:</strong> WACC 12% · Terminal growth 2% · LLM capability ceiling, enterprise ROI disappointments, regulatory friction</p>
+      <div class="tw"><table>
+        <thead><tr><th>Company</th><th class="r">2027E</th><th class="r">2028E</th><th class="r">2029E</th><th class="r">2030E</th><th class="r">5-yr FCF PV</th><th class="r">Terminal PV</th><th class="r">Total NPV</th></tr></thead>
+        <tbody>
+          <tr><td>Microsoft AI</td><td class="r">$48B</td><td class="r">$58B</td><td class="r">$66B</td><td class="r">$73B</td><td class="r">$46B</td><td class="r">$127B</td><td class="r neg"><strong>$173B</strong></td></tr>
+          <tr><td>Google Cloud AI</td><td class="r">$104B</td><td class="r">$130B</td><td class="r">$156B</td><td class="r">$179B</td><td class="r">$72B</td><td class="r">$316B</td><td class="r neg"><strong>$388B</strong></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </div>
+</div>
+
+<!-- DCF CHART + CAPEX REFERENCE -->
+<div class="cc-full">
+  <div class="cc-title">DCF NPV by Scenario — Microsoft AI &amp; Google Cloud AI</div>
+  <div class="cc-sub">USD billions · Bear case vs 3-year capex commitment shown as reference</div>
+  <div class="ch-wrap" style="height:300px"><canvas id="chartDcf"></canvas></div>
+  <div class="cc-src">Source: Author's DCF model; company filings 2024–2026</div>
+</div>
+</section>
+
+<section id="p5-2">
+<h3>Industry-Level Break-Even Analysis</h3>
+<p>The aggregate question — when does the industry as a whole break even on its AI infrastructure investment? — requires a model that accounts for the cumulative installed base, annual depreciation, and the revenue trajectory.</p>
+
+<div class="tcp">
+  <div>
+    <div class="tw">
+      <table>
+        <caption style="font:700 12px 'Helvetica Neue',Arial,sans-serif;text-align:left;padding:0 0 6px;text-transform:uppercase;letter-spacing:.06em;color:var(--dark)">Annual Infra Cost vs Revenue Needed (2027E)</caption>
+        <thead><tr><th>Target Gross Margin</th><th class="r">Revenue Required</th><th class="r">2026E Revenue</th><th class="r">Gap</th><th class="r">Close at 50% CAGR</th></tr></thead>
+        <tbody>
+          <tr><td>70%</td><td class="r">$786B</td><td class="r neg">~$210B</td><td class="r neg">$576B</td><td class="r">2028–29</td></tr>
+          <tr><td>60%</td><td class="r">$917B</td><td class="r neg">~$210B</td><td class="r neg">$707B</td><td class="r">2029</td></tr>
+          <tr><td>50%</td><td class="r">$1,100B</td><td class="r neg">~$210B</td><td class="r neg">$890B</td><td class="r">2030</td></tr>
+          <tr><td>40%</td><td class="r">$1,375B</td><td class="r neg">~$210B</td><td class="r neg">$1,165B</td><td class="r">2031+</td></tr>
+        </tbody>
+      </table>
+      <p class="tfoot-note">Annual infrastructure cost 2027E: ~$550B (depreciation ~$430B + power $55B + opex $45B + R&amp;D $20B)</p>
+    </div>
+  </div>
+  <div class="cc">
+    <div class="cc-title">Break-Even Trajectory by Scenario</div>
+    <div class="cc-sub">AI Revenue vs Annual Infrastructure Cost, $B</div>
+    <div class="ch-wrap"><canvas id="chartBreakeven"></canvas></div>
+    <div class="cc-src">Source: Author's model; base case at 50% AI revenue CAGR</div>
+  </div>
+</div>
+<div class="hi-box"><strong>The central insight:</strong> at 50% annual AI revenue growth (currently exceeded by most players), the industry approaches aggregate break-even at approximately <strong>2029–2030</strong> at the 60% gross margin threshold. This is consistent with Goldman Sachs' projection that AI begins contributing meaningfully to productivity in 2027, with a two-year lag to financial reflection.</div>
+</section>
+</section>
+
+<!-- PART VI -->
+<section id="part6">
+<div class="part-top"><div class="part-lbl">Part VI</div>
+<h2>Structural Risks and Wildcards</h2></div>
+
+<div class="risk-grid">
+  <div class="risk-card"><span class="risk-lvl risk-h">High</span><h4>Compute Efficiency Paradox</h4><p>Every improvement in AI efficiency cuts both ways. When NVIDIA releases a chip 2.5× more capable, the cost per token falls — but so does the barrier to entry. DeepSeek R1's ~$6M training cost vs OpenAI's estimated $100M+ for GPT-4 proved training costs are compressible by 10–20×.</p></div>
+  <div class="risk-card"><span class="risk-lvl risk-h">High</span><h4>Power / Infrastructure Constraints</h4><p>The Aschenbrenner 100 GW scenario by 2030 would require ~20% of current US electricity generation. New power generation costs $2–3M per MW — implying $200–300B in power infrastructure investment not included in hyperscaler capex figures.</p></div>
+  <div class="risk-card"><span class="risk-lvl risk-m">Medium</span><h4>Open-Source Commoditisation</h4><p>Meta's Llama 4 (open weights) brings performance within 5–15% of frontier for most tasks. The break-even for self-hosting vs API access is ~8,000 conversations/day — reachable by mid-market enterprises. This erodes the marginal revenue of inference providers.</p></div>
+  <div class="risk-card"><span class="risk-lvl risk-h">High</span><h4>NVIDIA Concentration Risk</h4><p>$193.7B data centre revenue at 75% gross margins has no parallel in the history of enterprise technology supply chains. Custom silicon efforts (Trainium, TPU v6, MTIA) are 1–3 years from meaningful scale. Switching costs are substantial.</p></div>
+</div>
+
+<h3>The Scenario Spectrum</h3>
+<div class="sc-card bull"><h4>🟢 Scenario A: The Electrification Parallel (Bull · 25% probability)</h4><p>AI follows electrification in the 1920s: a decade of infrastructure investment yields two decades of productivity growth. AGI-adjacent capabilities emerge by 2027–28, triggering step-change enterprise adoption. Compute efficiency improves 5× by 2028. Industry aggregate gross profit exceeds total infrastructure cost by 2028. Return on 2024–2026 capex: 3–5× over 10 years.</p></div>
+<div class="sc-card base"><h4>🔵 Scenario B: The Railways Parallel (Base · 50% probability)</h4><p>AI infrastructure follows the historical pattern of transformative infrastructure investments — railways, telephony, the internet — where over-capacity in the investment phase is later monetised by a second generation of businesses at deflated cost. Industry aggregate break-even: 2029–2030. Return on 2024–2026 capex: 1.5–2.5× over 10 years.</p></div>
+<div class="sc-card bear"><h4>🔴 Scenario C: The Dotcom Parallel (Bear · 25% probability)</h4><p>The infrastructure is real and durable (just as fibre-optic cable was real) but the revenue to justify current capex levels does not materialise. LLM capability improvement slows materially post-2026. Inference commoditisation collapses provider margins before scale is achieved. Meta writes down $50–80B of AI infrastructure. Return on 2024–2026 capex: 0.5–1.0×; material impairment for late-cycle investors.</p></div>
+</section>
+
+<!-- PART VII -->
+<section id="part7">
+<div class="part-top"><div class="part-lbl">Part VII</div>
+<h2>Pricing to Break Even</h2></div>
+
+<section id="p7-1">
+<h3>What Must Token Pricing Be?</h3>
+
+<div class="tw">
+  <table>
+    <caption style="font:700 12px 'Helvetica Neue',Arial,sans-serif;text-align:left;padding:0 0 6px;text-transform:uppercase;letter-spacing:.06em;color:var(--dark)">Table 6 — Break-Even Output Token Price by Hardware &amp; Utilisation</caption>
+    <thead><tr><th>Workload / Scale</th><th>Hardware</th><th class="r">Utilisation</th><th class="r">Break-Even $/M</th><th class="r">Market Price $/M</th><th class="r">Implied Margin</th></tr></thead>
+    <tbody>
+      <tr><td>Frontier model, large cluster</td><td>H100</td><td class="r">60%</td><td class="r neg">$3.02</td><td class="r">$15.00</td><td class="r pos">80%</td></tr>
+      <tr><td>Frontier model, large cluster</td><td>H100</td><td class="r">80%</td><td class="r neg">$2.26</td><td class="r">$15.00</td><td class="r pos">85%</td></tr>
+      <tr><td>Frontier model, large cluster</td><td>B200</td><td class="r">60%</td><td class="r neu">$0.97</td><td class="r">$10.00</td><td class="r pos">90%</td></tr>
+      <tr><td>Efficient model (70B params)</td><td>H100</td><td class="r">60%</td><td class="r pos">$0.80</td><td class="r">$3.00</td><td class="r pos">73%</td></tr>
+      <tr><td>Efficient model (70B params)</td><td>B200</td><td class="r">60%</td><td class="r pos">$0.32</td><td class="r">$3.00</td><td class="r pos">89%</td></tr>
+      <tr><td>Mini/distilled (7B params)</td><td>H100</td><td class="r">60%</td><td class="r pos">$0.09</td><td class="r">$0.25</td><td class="r pos">64%</td></tr>
+      <tr><td>Mini/distilled (7B params)</td><td>B200</td><td class="r">60%</td><td class="r pos">$0.04</td><td class="r">$0.25</td><td class="r pos">84%</td></tr>
+    </tbody>
+  </table>
+  <p class="tfoot-note">Excludes R&amp;D amortisation (~$0.25–0.50/M additional for frontier). Sources: Author's model; IntuitionLabs²</p>
+</div>
+
+<!-- ═══ INTERACTIVE BREAK-EVEN CALCULATOR ═══ -->
+<div class="calc" id="p7-calc">
+  <h4>⚡ Interactive Token Break-Even Calculator</h4>
+  <div class="calc-grid">
+    <div class="calc-inputs">
+      <label>GPU Generation</label>
+      <select id="calcGpu" onchange="updateCalc()">
+        <option value="h100">H100 (8-GPU server, Hopper)</option>
+        <option value="b200">B200 (8-GPU server, Blackwell)</option>
+      </select>
+      <label>GPU Utilisation: <span class="rv" id="calcUtilVal">60%</span></label>
+      <input type="range" id="calcUtil" min="20" max="95" value="60" step="5" oninput="updateCalc()">
+      <label>Workload Type</label>
+      <select id="calcWorkload" onchange="updateCalc()">
+        <option value="frontier">Frontier Model (8-GPU per server)</option>
+        <option value="efficient">Efficient 70B Model</option>
+        <option value="mini">Mini/Distilled 7B Model</option>
+      </select>
+    </div>
+    <div>
+      <div class="calc-out">
+        <div class="calc-big" id="calcCost">$3.02</div>
+        <div class="calc-unit">cost per million output tokens</div>
+        <div class="mbar"><div class="mbar-fill" id="calcMarginBar" style="width:80%;background:var(--green)"></div></div>
+        <div class="calc-rows">
+          <div class="calc-row"><span>Market Price (frontier tier)</span><span id="calcMarketPx">$15.00/M</span></div>
+          <div class="calc-row"><span>Gross Margin</span><span id="calcMargin">80.0%</span></div>
+          <div class="calc-row"><span>Annual Server Cost</span><span id="calcServCost">$114,032</span></div>
+          <div class="calc-row"><span>Annual Tokens Served</span><span id="calcTokens">37.8B</span></div>
+        </div>
+      </div>
+      <div class="cc" style="margin-top:10px">
+        <div class="cc-title">Cost vs Market Price</div>
+        <div class="calc-chart-wrap"><canvas id="chartCalc"></canvas></div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<section id="p7-2">
+<h3>Per-Seat Imperative</h3>
+<p>For enterprise SaaS-style AI pricing (Copilot, Gemini Workspace), the per-seat model must generate sufficient contribution margin to justify both the operating infrastructure and a pro-rata share of the capital investment. At $30/seat/month, the average enterprise Copilot user generates a gross margin of approximately <strong>75–85%</strong> for Microsoft — comparable to traditional enterprise software margins.</p>
+
+<div class="tw">
+  <table>
+    <caption style="font:700 12px 'Helvetica Neue',Arial,sans-serif;text-align:left;padding:0 0 6px;text-transform:uppercase;letter-spacing:.06em;color:var(--dark)">Per-Seat Economics at $30/Month</caption>
+    <thead><tr><th>User Type</th><th class="r">Inference Cost/Month</th><th class="r">Overhead</th><th class="r">Min Break-Even</th><th class="r">Market Price</th><th class="r">Gross Margin</th></tr></thead>
+    <tbody>
+      <tr><td>Heavy (10K tokens/day)</td><td class="r">$9–18</td><td class="r">$3–5</td><td class="r neg">$12–23</td><td class="r">$30</td><td class="r pos">~50–65%</td></tr>
+      <tr><td>Average (3K tokens/day)</td><td class="r">$3–6</td><td class="r">$2–3</td><td class="r neu">$5–9</td><td class="r">$30</td><td class="r pos">~75–85%</td></tr>
+      <tr><td>Light (500 tokens/day)</td><td class="r">$0.50–1</td><td class="r">$1–2</td><td class="r pos">$1.50–3</td><td class="r">$30</td><td class="r pos">~93–96%</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ═══ INTERACTIVE SEAT CALCULATOR ═══ -->
+<div class="calc">
+  <h4>💺 Interactive Per-Seat Revenue Calculator</h4>
+  <div class="calc-grid">
+    <div class="calc-inputs">
+      <label>M365 Copilot Penetration: <span class="rv" id="seatPctVal">10%</span></label>
+      <input type="range" id="seatPct" min="1" max="60" value="10" step="1" oninput="updateSeat()">
+      <label style="margin-top:8px">Monthly Price per Seat</label>
+      <select id="seatPrice" onchange="updateSeat()">
+        <option value="30">$30/month (current M365 Copilot)</option>
+        <option value="25">$25/month (competitive pressure)</option>
+        <option value="40">$40/month (premium tier)</option>
+      </select>
+      <label style="margin-top:8px">Gross Margin Assumption</label>
+      <select id="seatMargin" onchange="updateSeat()">
+        <option value="0.75">75% (average user mix)</option>
+        <option value="0.65">65% (heavy user mix)</option>
+        <option value="0.85">85% (light user mix)</option>
+      </select>
+      <div style="margin-top:14px;background:rgba(255,255,255,.07);padding:12px;font:12px 'Helvetica Neue',Arial,sans-serif">
+        <div class="calc-row"><span>Addressable M365 Seats</span><span>400M</span></div>
+        <div class="calc-row"><span>Seats at Selected %</span><span id="seatCount">40M</span></div>
+        <div class="calc-row"><span>Annual Revenue</span><span id="seatArr" style="color:#fff">$14.4B</span></div>
+        <div class="calc-row"><span>Gross Profit</span><span id="seatGp" style="color:var(--green)">$10.8B</span></div>
+        <div class="calc-row"><span>% of FY26 Capex Recovered</span><span id="seatRecovery" style="color:var(--amber)">7.6%</span></div>
+      </div>
+    </div>
+    <div>
+      <div class="cc" style="height:100%">
+        <div class="cc-title">Copilot ARR vs Benchmarks</div>
+        <div class="cc-sub">USD billions</div>
+        <div style="position:relative;height:240px"><canvas id="chartSeat"></canvas></div>
+        <div class="cc-src">Reference lines: MS AI ARR ($37B) and annual capex depreciation ($63.3B)</div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+</section>
+
+<!-- PART VIII -->
+<section id="part8">
+<div class="part-top"><div class="part-lbl">Part VIII</div>
+<h2>The Papers Behind the Decisions</h2></div>
+<p>Any serious financial analysis of AI infrastructure must engage with the academic literature that informs the investment decisions. These papers are not merely academic footnotes — they are the intellectual architecture of the capital allocation decisions driving $730 billion of annual spending.</p>
+
+<div class="paper">
+  <div class="paper-t">Scaling Laws for Neural Language Models</div>
+  <div class="paper-m">Kaplan et al., OpenAI, 2020 · arXiv:2001.08361</div>
+  <p class="paper-d">Established the foundational empirical result: language model performance scales as a power law with model size, dataset size, and training compute — spanning more than seven orders of magnitude. This paper is the intellectual justification for every incremental GPU purchase: if performance is a predictable function of compute, then buying more compute reliably buys better performance.</p>
+</div>
+<div class="paper">
+  <div class="paper-t">Training Compute-Optimal Large Language Models ("Chinchilla")</div>
+  <div class="paper-m">Hoffmann et al., DeepMind, 2022 · arXiv:2203.15556</div>
+  <p class="paper-d">Refined and partially overturned the Kaplan scaling laws, demonstrating that prior models were substantially undertrained relative to their parameter count. The optimal scaling law requires equal scaling of model parameters and training tokens. The practical implication: better models can be trained with fewer parameters if trained on more data — reducing the cost of frontier model training dramatically and validating DeepSeek-style efficiency claims.</p>
+</div>
+<div class="paper">
+  <div class="paper-t">GPT-4 Technical Report</div>
+  <div class="paper-m">OpenAI, March 2023 · arXiv:2303.08774</div>
+  <p class="paper-d">Documents the first large-scale multimodal model demonstrating "human-level performance on various professional and academic benchmarks." Most significant for capital allocation: OpenAI developed "infrastructure and optimization methods that behave predictably across a wide range of scales," enabling accurate performance prediction from models trained with 1/1,000th the compute. This predictability is what makes large-scale capital commitment rational.</p>
+</div>
+<div class="paper">
+  <div class="paper-t">Emergent Abilities of Large Language Models</div>
+  <div class="paper-m">Wei et al., 2022 · arXiv:2206.07682</div>
+  <p class="paper-d">Documents the phenomenon with profound financial implications: AI capabilities can appear discontinuously at scale, with "emergent abilities" not present in smaller models but present in larger ones. This creates an option value argument for large-scale investment — not just linear returns from scaling laws, but the potential for step-change capability improvements that cannot be predicted from smaller experiments.</p>
+</div>
+<div class="paper">
+  <div class="paper-t">Anthropic Economic Index</div>
+  <div class="paper-m">Anthropic, January 2026 · anthropic.com/research</div>
+  <p class="paper-d">The most rigorous empirical analysis of actual AI usage in the economy. Key finding: despite Claude theoretically covering 94% of tasks in the Computer &amp; Mathematics occupational category, actual observed coverage is only 33% of tasks. This "adoption discount" quantifies the friction between capability and deployment, and explains why the revenue gap reflects genuine enterprise inertia — not insufficient AI capability.</p>
+</div>
+</section>
+
+<!-- PART IX -->
+<section id="part9">
+<div class="part-top"><div class="part-lbl">Part IX</div>
+<h2>Synthesis — A Verdict</h2></div>
+
+<p>This analysis has traversed a large amount of territory. The verdict can be stated in four propositions:</p>
+
+<div class="verdict">
+  <h4>Proposition I — The Scale Is Unprecedented But Not Irrational</h4>
+  <p>The companies deploying $730 billion in annual capex are not making speculative bets; they are responding to demonstrated, rapid revenue growth (Microsoft AI at $37B ARR and 123% growth; AWS AI at $15B ARR; Google Cloud at $80B annualised) and to the genuine competitive risk of being underinvested in a general-purpose technology. The historical comparisons — electrification, the internet, railroads — are not pure marketing; they describe a plausible trajectory.</p>
+  <h4>Proposition II — The Revenue Gap Is Real</h4>
+  <p>The approximately $550–875 billion gap between what the industry needs to earn (at normal gross margins) and what it currently earns is the defining financial fact of the moment. At 50% annual revenue growth, the gap closes by 2029–2030. Goldman's finding of near-zero GDP impact in 2025 is not an anomaly — it is the expected early-stage result of a major infrastructure investment cycle.</p>
+  <h4>Proposition III — The Unit Economics Work At Scale</h4>
+  <p>Per-token pricing above approximately $3/M output tokens (frontier) or $0.30–0.80/M (efficient) is commercially viable. Per-seat enterprise pricing at $30/month generates gross margins of 75–85% for average users. The challenge is not the unit economics of AI delivery; it is the pace of adoption — the Anthropic Economic Index's 33% actual vs 94% theoretical task coverage ratio is the key metric to watch.</p>
+  <h4>Proposition IV — Returns Are Highly Skewed</h4>
+  <p>The companies positioned to generate returns commensurate with their investment are those with (a) vertically integrated stacks (Google, Amazon), (b) massive existing enterprise customer bases with established AI monetisation channels (Microsoft), or (c) AI-driven revenue multipliers in adjacent businesses (Meta's advertising flywheel). Pure infrastructure plays — GPU cloud providers, non-vertically-integrated data centre operators — face the worst risk-reward.</p>
+</div>
+
+<h3>Key Metrics to Monitor</h3>
+<div class="tw">
+  <table>
+    <thead><tr><th>Metric</th><th>Bull Signal</th><th>Bear Signal</th></tr></thead>
+    <tbody>
+      <tr><td>Microsoft Copilot paid seat growth (quarterly)</td><td class="pos">&gt;30% QoQ</td><td class="neg">&lt;10% QoQ</td></tr>
+      <tr><td>Google Cloud backlog conversion rate</td><td class="pos">&gt;55% in 24 months</td><td class="neg">&lt;40% in 24 months</td></tr>
+      <tr><td>AWS AI annual revenue growth</td><td class="pos">&gt;150%</td><td class="neg">&lt;80%</td></tr>
+      <tr><td>NVIDIA Data Centre revenue (quarterly)</td><td class="pos">Sustains $60–70B/quarter</td><td class="neg">Falls below $40B/quarter</td></tr>
+      <tr><td>Inference cost decline rate</td><td class="pos">&gt;70% per year</td><td class="neg">&lt;40% per year</td></tr>
+      <tr><td>Enterprise AI productivity surveys</td><td class="pos">&gt;30% report gains</td><td class="neg">&lt;15% report gains</td></tr>
+      <tr><td>Goldman GDP impact estimate (updated)</td><td class="pos">≥0.5pp by 2027</td><td class="neg">&lt;0.2pp by 2027</td></tr>
+      <tr><td>Open-source performance gap vs frontier</td><td class="neg">&lt;5% gap (bad for providers)</td><td class="pos">&gt;20% gap (moat holds)</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<blockquote class="pq">The trillion-dollar wager is not a bubble. The infrastructure being built is real, the use cases are real, and the revenue is growing. But it is a wager whose payoff period is measured in years, not quarters — and whose distribution of returns will punish the undifferentiated and reward the vertically integrated, the early-adopted, and those with the patience to hold through the inevitable recalibration that lies between here and the electrification parallel the bulls have in mind.</blockquote>
+</section>
+
+<!-- REFERENCES -->
+<section id="refs" class="refs">
+<h3>References &amp; Primary Sources</h3>
+<ol class="ref-list">
+  <li>Kaplan, J. et al. (2020). <em>Scaling Laws for Neural Language Models</em>. OpenAI. <a href="https://arxiv.org/abs/2001.08361" target="_blank">arXiv:2001.08361</a></li>
+  <li>IntuitionLabs. (2026). <em>NVIDIA AI GPU Prices: H100, H200, B200 Cost Guide</em>. <a href="https://intuitionlabs.ai/articles/nvidia-ai-gpu-pricing-guide" target="_blank">intuitionlabs.ai</a></li>
+  <li>GPUnex Blog. (2026). <em>AI Data Center Energy Crisis</em>. <a href="https://www.gpunex.com/blog/ai-data-center-energy-crisis/" target="_blank">gpunex.com</a></li>
+  <li>Green Fuel Journal. (2026). <em>AI Data Center Energy Demand</em>. <a href="https://www.greenfueljournal.com/post/ai-data-center-energy-demand" target="_blank">greenfueljournal.com</a></li>
+  <li>Cahn, D. (2024). <em>AI's $600 Billion Question</em>. Sequoia Capital. <a href="https://www.sequoiacap.com/article/ais-600b-question/" target="_blank">sequoiacap.com</a></li>
+  <li>Goldman Sachs / Tom's Hardware. (2026). <em>AI Boosted US Economy by 'Basically Zero' in 2025</em>. <a href="https://www.tomshardware.com/tech-industry/artificial-intelligence/ai-boosted-us-economy-by-basically-zero-in-2025" target="_blank">tomshardware.com</a></li>
+  <li>Anthropic. (2026). <em>Anthropic Economic Index: Economic Primitives</em>. <a href="https://www.anthropic.com/research/anthropic-economic-index-january-2026-report" target="_blank">anthropic.com</a></li>
+  <li>StackMatrix. (2026). <em>Microsoft Copilot Enterprise Adoption in 2026</em>. <a href="https://www.stackmatix.com/blog/microsoft-copilot-enterprise-adoption-2026" target="_blank">stackmatix.com</a></li>
+  <li>Fortune. (2026, Apr 29). <em>Microsoft, Meta, and Google Announce Billions More in AI Spending</em>. <a href="https://fortune.com/2026/04/29/microsoft-meta-google-ai-capex-spending-billions/" target="_blank">fortune.com</a></li>
+  <li>Marvin Labs. (2026). <em>Meta AI Business Model: Pricing and Revenue</em>. <a href="https://www.marvin-labs.com/blog/meta-ai-strategy-infrastructure-investment-analysis/" target="_blank">marvin-labs.com</a></li>
+  <li>NextBigFuture. (2026, Apr). <em>Amazon Investing $200B into AI Capex in 2026</em>. <a href="https://www.nextbigfuture.com/2026/04/amazon-investing-200-billion-into-ai-capex-in-2026-and-making-15-billion-in-ai-revenue.html" target="_blank">nextbigfuture.com</a></li>
+  <li>Amazon Shareholder Letter. (2026, Apr). CEO Andy Jassy, Annual Letter to Shareholders.</li>
+  <li>Introl. (2025, Dec). <em>Inference Unit Economics: The True Cost Per Million Tokens</em>. <a href="https://introl.com/blog/inference-unit-economics-true-cost-per-million-tokens-guide" target="_blank">introl.com</a></li>
+  <li>Wing Venture Capital. (2024). <em>The Plummeting Cost of Intelligence</em>. <a href="https://www.wing.vc/content/plummeting-cost-ai-intelligence" target="_blank">wing.vc</a></li>
+  <li>Hoffmann, J. et al. (2022). <em>Training Compute-Optimal Large Language Models ("Chinchilla")</em>. DeepMind. arXiv:2203.15556.</li>
+  <li>Wei, J. et al. (2022). <em>Emergent Abilities of Large Language Models</em>. <a href="https://arxiv.org/abs/2206.07682" target="_blank">arXiv:2206.07682</a></li>
+  <li>OpenAI. (2023). <em>GPT-4 Technical Report</em>. <a href="https://arxiv.org/abs/2303.08774" target="_blank">arXiv:2303.08774</a></li>
+  <li>OpenAI. (2025). <em>AI in America: OpenAI's Economic Blueprint</em>. <a href="https://openai.com/global-affairs/openais-economic-blueprint/" target="_blank">openai.com</a></li>
+  <li>Aschenbrenner, L. (2024). <em>Racing to the Trillion-Dollar Cluster</em>. <a href="https://situational-awareness.ai/racing-to-the-trillion-dollar-cluster/" target="_blank">situational-awareness.ai</a></li>
+  <li>NVIDIA. (2026, Feb). <em>Financial Results for Q4 and Fiscal Year 2026</em>. <a href="https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-fourth-quarter-and-fiscal-2026" target="_blank">nvidianews.nvidia.com</a></li>
+  <li>SoftwareSeni. (2025). <em>Comparing Meta, Microsoft, Amazon and Google AI Investment Strategies</em>. <a href="https://www.softwareseni.com/comparing-meta-microsoft-amazon-and-google-artificial-intelligence-investment-strategies" target="_blank">softwareseni.com</a></li>
+  <li>Goldman Sachs. (2025, Dec). <em>Why AI Companies May Invest More than $500 Billion in 2026</em>. <a href="https://www.goldmansachs.com/insights/articles/why-ai-companies-may-invest-more-than-500-billion-in-2026" target="_blank">goldmansachs.com</a></li>
+  <li>CNBC. (2026, Feb). <em>Tech AI Spending May Approach $700 Billion This Year</em>. <a href="https://www.cnbc.com/2026/02/06/google-microsoft-meta-amazon-ai-cash.html" target="_blank">cnbc.com</a></li>
+  <li>Anthropic. (2026). <em>Labor Market Impacts of AI</em>. <a href="https://www.anthropic.com/research/labor-market-impacts" target="_blank">anthropic.com</a></li>
+</ol>
+</section>
+
+</main>
+</div><!-- end layout -->
+
+<footer>
+  <p>This document was prepared in April 2026. All figures are in USD unless otherwise stated. Forward-looking projections represent modelled scenarios, not forecasts. Past infrastructure investment cycles are referenced for illustrative purposes only. This analysis does not constitute investment advice. &nbsp;·&nbsp; <strong>AI_Industrial_Complex_2026</strong></p>
+</footer>
+
+<script>
+// ─────────────────────────────────────────────
+// PROGRESS BAR
+// ─────────────────────────────────────────────
+window.addEventListener('scroll', () => {
+  const tot = document.body.scrollHeight - window.innerHeight;
+  document.getElementById('prog').style.width = (window.scrollY / tot * 100) + '%';
+});
+
+// ─────────────────────────────────────────────
+// TOC ACTIVE STATE
+// ─────────────────────────────────────────────
+const tocLinks = document.querySelectorAll('.toc-list a');
+const secObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    const id = e.target.id;
+    const lnk = document.querySelector(`.toc-list a[href="#${id}"]`);
+    if (lnk && e.isIntersecting) {
+      tocLinks.forEach(a => a.classList.remove('active'));
+      lnk.classList.add('active');
+    }
+  });
+}, { rootMargin: '-10% 0px -80% 0px' });
+document.querySelectorAll('section[id]').forEach(s => secObs.observe(s));
+
+// ─────────────────────────────────────────────
+// ANIMATED STAT COUNTERS
+// ─────────────────────────────────────────────
+function animCount(el) {
+  const tgt = parseFloat(el.dataset.target);
+  const pfx = el.dataset.prefix || '';
+  const sfx = el.dataset.suffix || '';
+  const dur = 1400;
+  const start = performance.now();
+  const isInt = Number.isInteger(tgt);
+  (function tick(now) {
+    const p = Math.min((now - start) / dur, 1);
+    const e = 1 - Math.pow(1 - p, 3);
+    const v = tgt * e;
+    el.textContent = pfx + (isInt ? Math.round(v) : v.toFixed(1)) + sfx;
+    if (p < 1) requestAnimationFrame(tick);
+  })(performance.now());
+}
+const cntObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting && !e.target.dataset.done) {
+      e.target.dataset.done = '1';
+      animCount(e.target);
+    }
+  });
+}, { threshold: 0.6 });
+document.querySelectorAll('.stat-n[data-target]').forEach(el => cntObs.observe(el));
+
+// ─────────────────────────────────────────────
+// SCENARIO TABS
+// ─────────────────────────────────────────────
+function switchTab(btn, tabsId, panelsId) {
+  const panel = btn.dataset.panel;
+  document.querySelectorAll(`#${tabsId} .sc-tab`).forEach(t => {
+    t.className = 'sc-tab';
+  });
+  btn.classList.add('active-' + panel);
+  document.querySelectorAll(`#${panelsId} .sc-panel`).forEach(p => p.classList.remove('active'));
+  document.querySelector(`#${panelsId} [data-panel="${panel}"]`).classList.add('active');
+}
+
+// ─────────────────────────────────────────────
+// CHART DEFAULTS
+// ─────────────────────────────────────────────
+Chart.defaults.font.family = "'Helvetica Neue', Arial, sans-serif";
+Chart.defaults.font.size = 11;
+Chart.defaults.color = '#666';
+
+const RED = '#E3120B', NAVY = '#1a2744', GREEN = '#2a9d8f',
+      AMBER = '#e9c46a', AMBERDK = '#c07a10',
+      AMAZON = '#FF9900', MSFT = '#00A4EF', GOOG = '#4285F4', META = '#0866FF';
+
+// ─────────────────────────────────────────────
+// CHART 1 — CAPEX STACKED BAR
+// ─────────────────────────────────────────────
+new Chart(document.getElementById('chartCapex'), {
+  type: 'bar',
+  data: {
+    labels: ['2024', '2025', '2026E'],
+    datasets: [
+      { label: 'Amazon',    data: [77, 105, 200], backgroundColor: AMAZON },
+      { label: 'Microsoft', data: [56, 80,  190], backgroundColor: MSFT   },
+      { label: 'Alphabet',  data: [52, 75,  185], backgroundColor: GOOG   },
+      { label: 'Meta',      data: [39, 72,  135], backgroundColor: META   }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, padding: 10 } },
+               tooltip: { callbacks: { label: c => ` ${c.dataset.label}: $${c.raw}B` } } },
+    scales: {
+      x: { stacked: true, grid: { display: false } },
+      y: { stacked: true, ticks: { callback: v => '$' + v + 'B' }, grid: { color: '#eee' } }
+    }
+  }
+});
+
+// ─────────────────────────────────────────────
+// CHART 2 — NVIDIA QUARTERLY
+// ─────────────────────────────────────────────
+new Chart(document.getElementById('chartNvidia'), {
+  type: 'bar',
+  data: {
+    labels: ['Q1 FY25','Q2 FY25','Q3 FY25','Q4 FY25','Q1 FY26','Q2 FY26','Q3 FY26','Q4 FY26'],
+    datasets: [{
+      label: 'Data Centre Revenue ($B)',
+      data: [22.6, 26.3, 30.8, 35.3, 39.0, 40.8, 51.2, 62.3],
+      backgroundColor: ctx => {
+        const i = ctx.dataIndex;
+        return i >= 4 ? RED : '#aaa';
+      },
+      borderRadius: 2
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false },
+               tooltip: { callbacks: { label: c => ` $${c.raw}B` } },
+               annotation: {} },
+    scales: {
+      x: { grid: { display: false } },
+      y: { ticks: { callback: v => '$' + v + 'B' }, grid: { color: '#eee' } }
+    }
+  }
+});
+
+// ─────────────────────────────────────────────
+// CHART 3 — REVENUE GAP
+// ─────────────────────────────────────────────
+new Chart(document.getElementById('chartGap'), {
+  type: 'line',
+  data: {
+    labels: ['2022','2023','2024','2025','2026E','2027E','2028E','2029E','2030E'],
+    datasets: [
+      { label: 'Hyperscaler CapEx', data: [80,120,224,332,710,800,850,900,950],
+        borderColor: RED, backgroundColor: 'rgba(227,18,11,.08)', fill: false,
+        borderWidth: 2.5, pointRadius: 3, tension: 0.3 },
+      { label: 'Global AI Revenue', data: [10,25,60,130,210,330,510,740,1050],
+        borderColor: GREEN, backgroundColor: 'rgba(42,157,143,.08)', fill: false,
+        borderWidth: 2.5, pointRadius: 3, tension: 0.3, borderDash: [] },
+      { label: 'Annual Infra Cost', data: [30,60,130,270,460,550,600,650,700],
+        borderColor: AMBERDK, fill: false,
+        borderWidth: 1.5, pointRadius: 2, tension: 0.3, borderDash: [5,3] }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, padding: 8 } },
+               tooltip: { callbacks: { label: c => ` ${c.dataset.label}: $${c.raw}B` } } },
+    scales: {
+      x: { grid: { display: false } },
+      y: { ticks: { callback: v => '$' + v + 'B' }, grid: { color: '#eee' } }
+    }
+  }
+});
+
+// ─────────────────────────────────────────────
+// CHART 4 — TOKEN COST (LOG SCALE)
+// ─────────────────────────────────────────────
+new Chart(document.getElementById('chartToken'), {
+  type: 'line',
+  data: {
+    labels: ["Nov'22","Mar'23","Aug'23","Jan'24","Jun'24","Nov'24","Apr'25","Dec'25","Apr'26"],
+    datasets: [{
+      label: '$/M output tokens (frontier equiv.)',
+      data: [20, 60, 30, 10, 3, 1, 0.4, 0.15, 0.06],
+      borderColor: RED, backgroundColor: 'rgba(227,18,11,.08)', fill: true,
+      borderWidth: 2.5, pointRadius: 4, tension: 0.35
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false },
+               tooltip: { callbacks: { label: c => ` $${c.raw}/M tokens` } } },
+    scales: {
+      x: { grid: { display: false } },
+      y: { type: 'logarithmic',
+           ticks: { callback: v => {
+             if ([100,60,30,10,3,1,0.4,0.15,0.06,0.01].includes(v)) return '$' + v;
+             return '';
+           }},
+           grid: { color: '#eee' } }
+    }
+  }
+});
+
+// ─────────────────────────────────────────────
+// CHART 5 — DCF NPV COMPARISON
+// ─────────────────────────────────────────────
+new Chart(document.getElementById('chartDcf'), {
+  type: 'bar',
+  data: {
+    labels: ['Microsoft AI', 'Google Cloud AI'],
+    datasets: [
+      { label: 'Bull Case',       data: [1295, 2388], backgroundColor: GREEN,  borderRadius: 3 },
+      { label: 'Base Case',       data: [821,  1438], backgroundColor: NAVY,   borderRadius: 3 },
+      { label: 'Bear Case',       data: [173,  388],  backgroundColor: RED,    borderRadius: 3 },
+      { label: '3-yr Capex Ref.', data: [326,  312],  backgroundColor: 'rgba(200,190,180,.5)',
+        borderRadius: 3, borderDash: [4,2] }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, padding: 10 } },
+               tooltip: { callbacks: { label: c => ` ${c.dataset.label}: $${c.raw}B` } } },
+    scales: {
+      x: { grid: { display: false } },
+      y: { ticks: { callback: v => '$' + v + 'B' }, grid: { color: '#eee' } }
+    }
+  }
+});
+
+// ─────────────────────────────────────────────
+// CHART 6 — BREAK-EVEN TRAJECTORY
+// ─────────────────────────────────────────────
+new Chart(document.getElementById('chartBreakeven'), {
+  type: 'line',
+  data: {
+    labels: ['2024','2025','2026E','2027E','2028E','2029E','2030E'],
+    datasets: [
+      { label: 'Annual Infra Cost', data: [150,270,460,550,600,650,700],
+        borderColor: '#888', fill: false, borderWidth: 2, borderDash: [6,3],
+        pointRadius: 3, tension: 0.3 },
+      { label: 'Bull Revenue',  data: [60,130,210,380,650,950,1300],
+        borderColor: GREEN, fill: false, borderWidth: 2, pointRadius: 3, tension: 0.3 },
+      { label: 'Base Revenue',  data: [60,130,210,330,510,740,1050],
+        borderColor: NAVY, fill: false, borderWidth: 2, pointRadius: 3, tension: 0.3 },
+      { label: 'Bear Revenue',  data: [60,130,210,250,370,450,550],
+        borderColor: RED, fill: false, borderWidth: 2, pointRadius: 3, tension: 0.3 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, padding: 8 } },
+               tooltip: { callbacks: { label: c => ` ${c.dataset.label}: $${c.raw}B` } } },
+    scales: {
+      x: { grid: { display: false } },
+      y: { ticks: { callback: v => '$' + v + 'B' }, grid: { color: '#eee' } }
+    }
+  }
+});
+
+// ─────────────────────────────────────────────
+// CHART 7 — CALC MINI BAR (Break-even vs Market)
+// ─────────────────────────────────────────────
+const calcChart = new Chart(document.getElementById('chartCalc'), {
+  type: 'bar',
+  data: {
+    labels: ['Break-even Cost/M', 'Market Price/M'],
+    datasets: [{
+      data: [3.02, 15.00],
+      backgroundColor: [RED, GREEN],
+      borderRadius: 3
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false },
+               tooltip: { callbacks: { label: c => ' $' + c.raw.toFixed(2) + '/M tokens' } } },
+    scales: {
+      x: { grid: { display: false } },
+      y: { ticks: { callback: v => '$' + v }, grid: { color: '#eee' } }
+    }
+  }
+});
+
+// ─────────────────────────────────────────────
+// CHART 8 — SEAT DYNAMIC BAR
+// ─────────────────────────────────────────────
+const seatChart = new Chart(document.getElementById('chartSeat'), {
+  type: 'bar',
+  data: {
+    labels: ['Copilot ARR', 'MS AI Total ARR', 'Annual CapEx Depn.'],
+    datasets: [{
+      data: [14.4, 37, 63.3],
+      backgroundColor: [MSFT, GREEN, 'rgba(200,190,180,.7)'],
+      borderRadius: 3
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false },
+               tooltip: { callbacks: { label: c => ' $' + c.raw.toFixed(1) + 'B' } } },
+    scales: {
+      x: { grid: { display: false } },
+      y: { ticks: { callback: v => '$' + v + 'B' }, grid: { color: '#eee' },
+           suggestedMax: 100 }
+    }
+  }
+});
+
+// ─────────────────────────────────────────────
+// BREAK-EVEN CALCULATOR LOGIC
+// ─────────────────────────────────────────────
+// peakTPS back-solved from table cost/M at 60% utilisation:
+// cost/M = annualCost / (peakTPS × 0.60 × 31,536,000 / 1e6)
+// → peakTPS = annualCost / (targetCost × 0.60 × 31.536)
+const GPU_PARAMS = {
+  h100: {
+    // $114,032 / (2000 × 0.6 × 31.536) = $3.02/M  ✓
+    frontier:  { annualCost: 114032, peakTPS: 2000,   mktPrice: 15.00 },
+    // $114,032 / (7500 × 0.6 × 31.536) = $0.80/M  ✓
+    efficient: { annualCost: 114032, peakTPS: 7500,   mktPrice: 3.00  },
+    // $114,032 / (67000 × 0.6 × 31.536) = $0.09/M ✓
+    mini:      { annualCost: 114032, peakTPS: 67000,  mktPrice: 0.25  }
+  },
+  b200: {
+    // $137,936 / (7500 × 0.6 × 31.536) = $0.97/M  ✓
+    frontier:  { annualCost: 137936, peakTPS: 7500,   mktPrice: 10.00 },
+    // $137,936 / (22750 × 0.6 × 31.536) = $0.32/M ✓
+    efficient: { annualCost: 137936, peakTPS: 22750,  mktPrice: 3.00  },
+    // $137,936 / (182000 × 0.6 × 31.536) = $0.04/M✓
+    mini:      { annualCost: 137936, peakTPS: 182000, mktPrice: 0.25  }
+  }
+};
+
+function updateCalc() {
+  const gpu  = document.getElementById('calcGpu').value;
+  const util = parseInt(document.getElementById('calcUtil').value) / 100;
+  const wl   = document.getElementById('calcWorkload').value;
+  document.getElementById('calcUtilVal').textContent = Math.round(util * 100) + '%';
+  const p = GPU_PARAMS[gpu][wl];
+  const tokensPerYear = p.peakTPS * 3600 * 8760 * util;
+  const tokensM = tokensPerYear / 1e6;
+  const costPerM = p.annualCost / tokensM;
+  const margin = ((p.mktPrice - costPerM) / p.mktPrice * 100);
+  const marginClamped = Math.max(0, Math.min(100, margin));
+
+  document.getElementById('calcCost').textContent   = '$' + costPerM.toFixed(2);
+  document.getElementById('calcMarketPx').textContent = '$' + p.mktPrice.toFixed(2) + '/M';
+  document.getElementById('calcMargin').textContent  = margin.toFixed(1) + '%';
+  document.getElementById('calcServCost').textContent = '$' + p.annualCost.toLocaleString();
+  document.getElementById('calcTokens').textContent   = (tokensM / 1000).toFixed(1) + 'B';
+
+  const bar = document.getElementById('calcMarginBar');
+  bar.style.width = marginClamped + '%';
+  bar.style.background = margin > 60 ? GREEN : margin > 30 ? AMBERDK : RED;
+
+  calcChart.data.datasets[0].data = [parseFloat(costPerM.toFixed(2)), p.mktPrice];
+  calcChart.data.datasets[0].backgroundColor = [costPerM > p.mktPrice ? '#888' : RED, GREEN];
+  calcChart.update('active');
+}
+
+// ─────────────────────────────────────────────
+// PER-SEAT CALCULATOR LOGIC
+// ─────────────────────────────────────────────
+function updateSeat() {
+  const pct    = parseFloat(document.getElementById('seatPct').value);
+  const price  = parseFloat(document.getElementById('seatPrice').value);
+  const margin = parseFloat(document.getElementById('seatMargin').value);
+  const seats  = 400 * pct / 100; // millions
+  const arr    = seats * price * 12 / 1000; // billions
+  const gp     = arr * margin;
+  const recovery = (arr / 190 * 100);
+
+  document.getElementById('seatPctVal').textContent   = pct.toFixed(0) + '%';
+  document.getElementById('seatCount').textContent    = seats.toFixed(0) + 'M';
+  document.getElementById('seatArr').textContent      = '$' + arr.toFixed(1) + 'B';
+  document.getElementById('seatGp').textContent       = '$' + gp.toFixed(1) + 'B';
+  document.getElementById('seatRecovery').textContent = recovery.toFixed(1) + '%';
+
+  seatChart.data.datasets[0].data = [parseFloat(arr.toFixed(1)), 37, 63.3];
+  seatChart.data.datasets[0].backgroundColor = [
+    arr >= 63.3 ? GREEN : arr >= 37 ? AMBERDK : MSFT,
+    GREEN,
+    'rgba(200,190,180,.7)'
+  ];
+  seatChart.options.scales.y.suggestedMax = Math.max(100, arr * 1.2);
+  seatChart.update('active');
+}
+
+// init calculators on load
+updateCalc();
+updateSeat();
+</script>
+</body>
+</html>
