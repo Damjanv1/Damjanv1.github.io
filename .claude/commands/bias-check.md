@@ -16,7 +16,11 @@ Work through each category in order. For every check:
 - State whether it is **Present**, **Possible**, or **Not applicable** to this analysis
 - If Present or Possible: cite the *specific claim, number, chart, or decision* in the analysis where it appears
 - Assign a severity: 🔴 High / 🟡 Medium / 🟢 Low
-- Give one concrete corrective action
+- Give one concrete corrective action, classified by type:
+  - **[Fix Now]** — a specific change you can make to this analysis before it is used or presented, described precisely enough that someone could action it immediately
+  - **[Restate]** — the bias cannot be fully corrected without new data, but the conclusion should be reworded; provide the exact revised wording
+  - **[New Data]** — describe exactly what additional data, sample, or test would resolve this bias, and what you would do with it
+  - **[Redesign]** — the methodology needs fundamental restructuring; describe what the correct approach looks like
 
 After all nine categories, produce the **Audit Summary**.
 
@@ -218,14 +222,46 @@ After completing all nine categories, produce the following:
 |---|-------------|----------|----------|-----------------------|
 | 1 | ... | ... | 🔴/🟡/🟢 | ... |
 
-### Top 5 Priority Fixes
-Numbered list. Each fix should be specific, actionable, and achievable before this analysis is used or presented.
+### Remediation Plan
+
+Produce a table of every fix identified across all nine categories, prioritised by impact and classified by what type of work is required:
+
+| # | Fix | Type | Effort | Impact | Specific Action |
+|---|-----|------|--------|--------|-----------------|
+| 1 | ... | Fix Now / Restate / New Data / Redesign | Low / Med / High | 🔴/🟡/🟢 | Exact steps |
+
+**Effort key:** Low = under 1 hour; Med = half a day; High = requires new data collection or full reanalysis
+**Impact key:** 🔴 = materially changes conclusions or credibility; 🟡 = improves robustness; 🟢 = good practice
+
+Then group fixes into three tiers:
+
+**Do Before This Analysis Is Used** (Fix Now items, Low/Med effort)
+List each with a one-sentence specific instruction — precise enough to be actioned immediately without further clarification.
+
+**Do Before the Next Version** (New Data and Redesign items)
+List each with: what needs to happen, who needs to do it, and what the analysis can say in the interim.
+
+**Disclose Now Even If You Can't Fix It** (biases that cannot be corrected without major work but must be acknowledged)
+Draft the exact disclosure language to add to the analysis — a caveat, footnote, or limitations section that honestly bounds the conclusions.
+
+---
+
+### Revised Key Conclusions
+
+This is the most important output of the audit. Rewrite the top 2–3 conclusions from the original analysis as they *should* be stated, given the biases found. Show the before and after:
+
+**Original conclusion:** [quote or paraphrase the claim as made]
+**Revised conclusion:** [the corrected version — more hedged, better bounded, or fundamentally different if the bias is severe]
+
+Do this for each major conclusion. If a conclusion cannot be responsibly retained at all given the biases found, say so explicitly.
+
+---
 
 ### Debiasing Techniques Recommended
-Based on the issues found, recommend 1–3 of the following techniques where relevant:
+Based on the issues found, recommend 1–3 of the following techniques where relevant, with a specific instruction for how to apply each one to *this* analysis:
 
-- **Pre-mortem**: Before acting on these findings, assume the decision has failed spectacularly 12 months from now. Write a one-paragraph explanation of why. Then ask: does anything in that explanation change how you interpret the analysis?
-- **Consider the Opposite**: For the single most important conclusion, actively try to construct the strongest possible case for the opposite conclusion using the same data. If that case is easy to make, the original conclusion is fragile.
+- **Pre-mortem**: Assume the decision informed by this analysis has failed spectacularly 12 months from now. Write a one-paragraph explanation of why. Then ask: does anything in that explanation change how you interpret the findings?
+- **Consider the Opposite**: For the single most important conclusion, actively construct the strongest possible case for the opposite conclusion using the same data. If that case is easy to make, the original conclusion is fragile.
 - **Reference Class Check**: Identify 5–10 analogous situations from history or comparable organisations. What was the distribution of outcomes? Place this analysis's projections within that distribution.
 - **Devil's Advocate Review**: Have someone not involved in the analysis review only the disconfirming evidence. What conclusion would they reach?
 - **Confidence Interval Calibration**: For all key forecasts, ask: what range would need to be true for 90% of similar analyses to be correct? That range is almost certainly wider than the one currently stated.
