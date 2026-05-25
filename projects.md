@@ -22,4 +22,13 @@ A near-real-time view of NSW petrol prices &mdash; postcode + radius search, fue
 
 ---
 
+## Analysis & Reports
+
+Long-form analytical pieces with embedded data visualisations.
+
+### [The Valuation of Ambition: SpaceX S-1 Analysis](https://damjanv1.github.io/spacex-s1-analysis.html)
+A Harvard Business Review&ndash;style teardown of SpaceX&rsquo;s $1.75 trillion IPO filing &mdash; word frequency analysis across all 280 pages, TAM vs revenue butterfly charts by segment (log scale), circular investment web, Fortune 500 revenue rank comparison, valuation multiples vs Google / Amazon / Tesla / WeWork, and a competitive landscape review. Data sourced directly from the S-1 PDF.
+
+---
+
 More projects over on [GitHub &rarr;](https://github.com/Damjanv1)
