@@ -1,0 +1,1743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SpaceX S-1: An Analytical Review</title>
+<style>
+  :root {
+    --bg: #faf9f7;
+    --white: #ffffff;
+    --surface: #f4f2ee;
+    --border: #ddd9d0;
+    --border-light: #ede9e1;
+    --accent: #c0152a;
+    --accent-light: #f9e8ea;
+    --navy: #1a2744;
+    --text: #1c1c1c;
+    --text2: #444;
+    --text3: #777;
+    --gold: #b8860b;
+    --green: #1a6b3c;
+    --green-bg: #e9f5ee;
+    --red-bg: #fdecea;
+    --blue: #1a4480;
+    --blue-bg: #e8eef7;
+    --amber: #92600a;
+    --amber-bg: #fef3e0;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  /* MASTHEAD */
+  .masthead {
+    background: var(--navy);
+    color: #fff;
+    padding: 12px 0;
+    text-align: center;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+
+  /* COVER */
+  .cover {
+    background: var(--white);
+    border-bottom: 3px solid var(--accent);
+    padding: 56px 0 48px;
+  }
+  .cover-inner {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+  .cover-label {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 20px;
+  }
+  .cover h1 {
+    font-family: Georgia, serif;
+    font-size: clamp(2rem, 4.5vw, 3.2rem);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--navy);
+    margin-bottom: 20px;
+    letter-spacing: -0.5px;
+  }
+  .cover-deck {
+    font-size: 1.15rem;
+    color: var(--text2);
+    line-height: 1.6;
+    max-width: 680px;
+    margin-bottom: 36px;
+    font-style: italic;
+  }
+  .cover-meta {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 12px;
+    color: var(--text3);
+    border-top: 1px solid var(--border);
+    padding-top: 16px;
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .cover-meta span { color: var(--navy); font-weight: 600; }
+
+  /* KEY FIGURES BAR */
+  .key-figures {
+    background: var(--navy);
+    color: #fff;
+    padding: 28px 0;
+  }
+  .key-figures-inner {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 32px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0;
+  }
+  .kf-item {
+    padding: 0 20px;
+    border-right: 1px solid rgba(255,255,255,0.15);
+    text-align: center;
+  }
+  .kf-item:last-child { border-right: none; }
+  .kf-val {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 1.7rem;
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 4px;
+  }
+  .kf-val.red { color: #ff6b6b; }
+  .kf-val.gold { color: #f5c842; }
+  .kf-val.green { color: #6ee7a2; }
+  .kf-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: rgba(255,255,255,0.55);
+    font-family: 'Segoe UI', Arial, sans-serif;
+  }
+
+  /* MAIN LAYOUT */
+  .main {
+    max-width: 1060px;
+    margin: 0 auto;
+    padding: 0 32px;
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 40px;
+    align-items: start;
+  }
+  .main-content { min-width: 0; }
+  .sidebar { padding-top: 40px; }
+
+  @media (max-width: 860px) {
+    .main { grid-template-columns: 1fr; }
+    .key-figures-inner { grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .kf-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.15); padding-bottom: 12px; }
+  }
+
+  /* SECTION */
+  .section {
+    padding: 44px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .section:last-child { border-bottom: none; }
+  .section-eyebrow {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+  .section h2 {
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 14px;
+    line-height: 1.2;
+    font-family: Georgia, serif;
+  }
+  .section h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--navy);
+    margin: 28px 0 10px;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 11px;
+    border-bottom: 2px solid var(--navy);
+    padding-bottom: 6px;
+    display: inline-block;
+  }
+  .section p {
+    color: var(--text2);
+    margin-bottom: 14px;
+    font-size: 15px;
+  }
+  .section p:last-child { margin-bottom: 0; }
+
+  /* PULL QUOTE */
+  .pull-quote {
+    border-left: 4px solid var(--accent);
+    padding: 16px 20px;
+    margin: 24px 0;
+    background: var(--accent-light);
+  }
+  .pull-quote p {
+    font-size: 1.05rem;
+    font-style: italic;
+    color: var(--navy) !important;
+    line-height: 1.65;
+    margin: 0 0 8px !important;
+  }
+  .pull-quote cite {
+    font-size: 11px;
+    font-style: normal;
+    color: var(--text3);
+    font-family: 'Segoe UI', Arial, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* CALLOUT BOXES */
+  .callout {
+    padding: 16px 18px;
+    border-radius: 2px;
+    margin: 16px 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .callout strong { display: block; margin-bottom: 4px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .callout-red { background: var(--red-bg); border-left: 3px solid var(--accent); color: #7a1020; }
+  .callout-red strong { color: var(--accent); }
+  .callout-green { background: var(--green-bg); border-left: 3px solid var(--green); color: #134d2c; }
+  .callout-green strong { color: var(--green); }
+  .callout-blue { background: var(--blue-bg); border-left: 3px solid var(--blue); color: #12306a; }
+  .callout-blue strong { color: var(--blue); }
+  .callout-amber { background: var(--amber-bg); border-left: 3px solid var(--amber); color: #5c3b08; }
+  .callout-amber strong { color: var(--amber); }
+
+  /* DATA VIZ PANELS */
+  .chart-panel {
+    background: var(--white);
+    border: 1px solid var(--border);
+    padding: 24px;
+    margin: 20px 0;
+  }
+  .chart-panel-title {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--navy);
+    margin-bottom: 4px;
+  }
+  .chart-panel-sub {
+    font-size: 12px;
+    color: var(--text3);
+    font-family: 'Segoe UI', Arial, sans-serif;
+    margin-bottom: 20px;
+  }
+
+  /* HORIZONTAL BAR CHART */
+  .hbar-chart { display: flex; flex-direction: column; gap: 10px; }
+  .hbar-row { display: flex; align-items: center; gap: 10px; }
+  .hbar-label {
+    font-size: 12px;
+    color: var(--text2);
+    font-family: 'Segoe UI', Arial, sans-serif;
+    width: 180px;
+    flex-shrink: 0;
+    text-align: right;
+    line-height: 1.3;
+  }
+  .hbar-track {
+    flex: 1;
+    background: var(--surface);
+    height: 26px;
+    position: relative;
+  }
+  .hbar-fill {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding-left: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    color: #fff;
+    min-width: 2px;
+  }
+  .hbar-fill.navy { background: var(--navy); }
+  .hbar-fill.red { background: var(--accent); }
+  .hbar-fill.green { background: #1a6b3c; }
+  .hbar-fill.amber { background: #92600a; }
+  .hbar-fill.gray { background: #6b7280; }
+  .hbar-fill.blue { background: var(--blue); }
+  .hbar-fill.light { background: #9ca3af; }
+  .hbar-note {
+    font-size: 11px;
+    color: var(--text3);
+    font-family: 'Segoe UI', Arial, sans-serif;
+    width: 80px;
+    flex-shrink: 0;
+  }
+
+  /* DATA TABLE */
+  .data-table { width: 100%; border-collapse: collapse; font-family: 'Segoe UI', Arial, sans-serif; font-size: 13px; }
+  .data-table thead th {
+    background: var(--navy);
+    color: #fff;
+    padding: 9px 12px;
+    text-align: left;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+  }
+  .data-table tbody td {
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--border-light);
+    color: var(--text2);
+    vertical-align: top;
+  }
+  .data-table tbody tr:hover td { background: var(--surface); }
+  .data-table tbody tr.highlight td {
+    background: var(--blue-bg);
+    font-weight: 600;
+    color: var(--navy);
+  }
+  .data-table tbody tr.danger td { background: var(--red-bg); }
+  .data-table tfoot td {
+    padding: 8px 12px;
+    font-size: 10px;
+    color: var(--text3);
+    font-style: italic;
+    border-top: 2px solid var(--border);
+  }
+
+  /* WORD COUNT VIZ */
+  .word-bars { display: flex; flex-direction: column; gap: 8px; margin: 16px 0; }
+  .word-bar-row { display: flex; align-items: center; gap: 10px; }
+  .word { font-family: 'Courier New', monospace; font-size: 13px; color: var(--navy); width: 140px; flex-shrink: 0; }
+  .word-track { flex: 1; background: var(--surface); height: 22px; }
+  .word-fill {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding-left: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    font-family: 'Segoe UI', sans-serif;
+    color: #fff;
+  }
+  .word-fill.loss { background: var(--accent); }
+  .word-fill.mission { background: var(--navy); }
+  .word-fill.risk { background: #6b7280; }
+  .word-fill.neutral { background: #9ca3af; }
+  .word-fill.profit { background: var(--green); }
+  .word-count { font-family: 'Segoe UI', sans-serif; font-size: 12px; font-weight: 700; color: var(--text2); width: 40px; text-align: right; flex-shrink: 0; }
+
+  /* SVG CHART */
+  .svg-chart { width: 100%; overflow: visible; }
+
+  /* STAT GRID */
+  .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 20px 0; }
+  .stat-box {
+    background: var(--white);
+    border: 1px solid var(--border);
+    padding: 18px;
+    text-align: center;
+  }
+  .stat-val {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .stat-val.red { color: var(--accent); }
+  .stat-val.green { color: var(--green); }
+  .stat-val.gold { color: var(--gold); }
+  .stat-lbl {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text3);
+    font-family: 'Segoe UI', Arial, sans-serif;
+  }
+  .stat-note {
+    font-size: 11px;
+    color: var(--text3);
+    font-family: 'Segoe UI', Arial, sans-serif;
+    margin-top: 4px;
+    line-height: 1.4;
+  }
+
+  /* SIDEBAR */
+  .sidebar-box {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--navy);
+    padding: 20px;
+    margin-bottom: 24px;
+  }
+  .sidebar-box-title {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--navy);
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .sidebar-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border-light);
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 12px;
+  }
+  .sidebar-item:last-child { border-bottom: none; }
+  .sidebar-item-label { color: var(--text2); }
+  .sidebar-item-val { font-weight: 700; color: var(--navy); }
+  .sidebar-item-val.red { color: var(--accent); }
+  .sidebar-item-val.green { color: var(--green); }
+
+  /* TIMELINE */
+  .timeline { padding: 0; list-style: none; }
+  .tl-item {
+    display: flex;
+    gap: 16px;
+    padding-bottom: 20px;
+    position: relative;
+  }
+  .tl-item::before {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 28px;
+    bottom: 0;
+    width: 1px;
+    background: var(--border);
+  }
+  .tl-item:last-child::before { display: none; }
+  .tl-dot {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    font-family: 'Segoe UI', sans-serif;
+    flex-shrink: 0;
+    border: 2px solid;
+  }
+  .tl-dot.win { background: var(--green-bg); border-color: var(--green); color: var(--green); }
+  .tl-dot.loss { background: var(--red-bg); border-color: var(--accent); color: var(--accent); }
+  .tl-dot.warn { background: var(--amber-bg); border-color: var(--amber); color: var(--amber); }
+  .tl-dot.tbd { background: var(--blue-bg); border-color: var(--blue); color: var(--blue); }
+  .tl-body { flex: 1; }
+  .tl-year { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--text3); font-family: 'Segoe UI', sans-serif; margin-bottom: 2px; }
+  .tl-title { font-weight: 700; font-family: 'Segoe UI', sans-serif; font-size: 13px; color: var(--navy); margin-bottom: 3px; }
+  .tl-text { font-size: 12px; color: var(--text2); font-family: 'Segoe UI', sans-serif; line-height: 1.5; }
+
+  /* ARPU SVG */
+  .arpu-svg { width: 100%; }
+
+  /* FOOTNOTES */
+  .footnotes {
+    background: var(--surface);
+    border-top: 2px solid var(--border);
+    padding: 28px 32px;
+    font-size: 11px;
+    color: var(--text3);
+    font-family: 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7;
+    max-width: 1060px;
+    margin: 0 auto;
+  }
+  .footnotes a { color: var(--blue); text-decoration: none; }
+  .footnotes strong { color: var(--text2); }
+
+  /* VERDICT */
+  .verdict-box {
+    background: var(--navy);
+    color: #fff;
+    padding: 36px 40px;
+    margin-top: 8px;
+  }
+  .verdict-box h2 {
+    font-size: 1.5rem;
+    color: #fff;
+    margin-bottom: 20px;
+    font-family: Georgia, serif;
+  }
+  .verdict-box p {
+    color: rgba(255,255,255,0.8);
+    font-size: 15px;
+    margin-bottom: 14px;
+    line-height: 1.75;
+  }
+  .verdict-box strong { color: #fff; }
+
+  /* RESPONSIVE */
+  @media (max-width: 720px) {
+    .stat-grid { grid-template-columns: 1fr 1fr; }
+    .hbar-label { width: 120px; font-size: 11px; }
+    .cover-inner, .footnotes { padding: 0 16px; }
+    .main { padding: 0 16px; }
+    .key-figures-inner { grid-template-columns: repeat(2,1fr); padding: 0 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="masthead">Independent Financial Analysis &nbsp;·&nbsp; Space Exploration Technologies Corp. S-1 &nbsp;·&nbsp; Filed May 20, 2026</div>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-inner">
+    <div class="cover-label">Special Report · Initial Public Offering Analysis</div>
+    <h1>The Valuation of Ambition:<br>Examining SpaceX's $1.75 Trillion S-1</h1>
+    <p class="cover-deck">When a company files a prospectus that mentions "loss" or "losses" 344 times and "profitable" exactly once — yet seeks the largest IPO valuation in history — investors deserve a careful reading of the numbers behind the narrative.</p>
+    <div class="cover-meta">
+      Filed: <span>May 20, 2026</span> &nbsp;·&nbsp;
+      Ticker: <span>SPCX (Nasdaq)</span> &nbsp;·&nbsp;
+      Target Valuation: <span>$1.75 Trillion</span> &nbsp;·&nbsp;
+      2025 Revenue: <span>$18.7 Billion</span> &nbsp;·&nbsp;
+      2025 Net Loss: <span>−$4.94 Billion</span>
+    </div>
+  </div>
+</div>
+
+<!-- KEY FIGURES -->
+<div class="key-figures">
+  <div class="key-figures-inner">
+    <div class="kf-item">
+      <div class="kf-val gold">$1.75T</div>
+      <div class="kf-label">Target Valuation</div>
+    </div>
+    <div class="kf-item">
+      <div class="kf-val">$18.7B</div>
+      <div class="kf-label">2025 Revenue</div>
+    </div>
+    <div class="kf-item">
+      <div class="kf-val red">−$4.94B</div>
+      <div class="kf-label">2025 Net Loss</div>
+    </div>
+    <div class="kf-item">
+      <div class="kf-val red">93×</div>
+      <div class="kf-label">Price / Revenue</div>
+    </div>
+    <div class="kf-item">
+      <div class="kf-val red">85.1%</div>
+      <div class="kf-label">Musk Voting Control</div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN BODY -->
+<div class="main">
+<div class="main-content">
+
+  <!-- SECTION 1: THE LANGUAGE -->
+  <div class="section">
+    <div class="section-eyebrow">Section I · Rhetoric vs Reality</div>
+    <h2>What the Filing Actually Says</h2>
+    <p>The prospectus opens not with a financial summary, but with a personal quotation from the CEO, attributed to no publication or occasion, simply floated as an epigraph:</p>
+
+    <div class="pull-quote">
+      <p>"You want to wake up in the morning and think the future is going to be great — and that's what being a space-faring civilization is all about. It's about believing in the future and thinking that the future will be better than the past. And I can't think of anything more exciting than going out there and being among the stars."</p>
+      <cite>— Elon Musk, opening the SpaceX S-1 prospectus</cite>
+    </div>
+
+    <p>The company's stated mission follows: <em>"to build the systems and technologies necessary to make life multiplanetary, to understand the true nature of the universe, and to extend the light of consciousness to the stars."</em> No product is named. No customer is mentioned. No revenue target appears. The first concrete business claim arrives three paragraphs later.</p>
+
+    <p>This language is deliberate. SEC filings are legal documents reviewed by securities attorneys. Every word survives multiple drafts. The choice to open with the cosmos and consciousness before addressing the satellite internet business is a considered act of narrative framing.</p>
+
+    <h3>Word Frequency Analysis — Full Document, All 280 Pages</h3>
+    <p style="font-size:13px; color:var(--text3); font-family:'Segoe UI',sans-serif; margin-bottom:16px;">Exact counts from complete pdftotext extraction of all 280 pages. Word size is proportional to frequency. Colour indicates category: <span style="color:var(--accent); font-weight:700;">red = financial distress</span> · <span style="color:var(--navy); font-weight:700;">navy = core business</span> · <span style="color:#92600a; font-weight:700;">amber = governance/CEO</span> · <span style="color:var(--blue); font-weight:700;">blue = aspiration/cosmic</span> · <span style="color:var(--green); font-weight:700;">green = positive financial</span></p>
+
+    <div class="chart-panel" style="padding:28px 20px;">
+      <div class="chart-panel-title">Word Cloud — SpaceX S-1 (2026) · All 280 Pages · Size = Frequency</div>
+      <div class="chart-panel-sub">Word boundaries applied. Count shown on hover. "profitable" — the smallest word — appears exactly once.</div>
+      <div style="display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:14px 20px; padding:24px 8px; line-height:1.4;">
+        <span style="font-size:48px; font-weight:800; color:var(--navy); font-family:'Segoe UI',sans-serif;">Starlink <sup style="font-size:14px; font-weight:400; opacity:0.6;">(379)</sup></span>
+        <span style="font-size:44px; font-weight:800; color:var(--accent); font-family:'Segoe UI',sans-serif;">loss <sup style="font-size:14px; font-weight:400; opacity:0.7;">(344)</sup></span>
+        <span style="font-size:34px; font-weight:700; color:#4b5563; font-family:'Segoe UI',sans-serif;">government <sup style="font-size:12px; font-weight:400; opacity:0.6;">(237)</sup></span>
+        <span style="font-size:28px; font-weight:700; color:#4b5563; font-family:'Segoe UI',sans-serif;">growth <sup style="font-size:11px; font-weight:400; opacity:0.6;">(180)</sup></span>
+        <span style="font-size:28px; font-weight:700; color:var(--accent); font-family:'Segoe UI',sans-serif;">risk <sup style="font-size:11px; font-weight:400; opacity:0.7;">(179)</sup></span>
+        <span style="font-size:27px; font-weight:700; color:#92600a; font-family:'Segoe UI',sans-serif;">Musk <sup style="font-size:11px; font-weight:400; opacity:0.7;">(174)</sup></span>
+        <span style="font-size:23px; font-weight:700; color:var(--navy); font-family:'Segoe UI',sans-serif;">mission <sup style="font-size:11px; font-weight:400; opacity:0.6;">(130)</sup></span>
+        <span style="font-size:22px; font-weight:700; color:#92600a; font-family:'Segoe UI',sans-serif;">control <sup style="font-size:11px; font-weight:400; opacity:0.6;">(122)</sup></span>
+        <span style="font-size:22px; font-weight:700; color:var(--accent); font-family:'Segoe UI',sans-serif;">debt <sup style="font-size:11px; font-weight:400; opacity:0.6;">(121)</sup></span>
+        <span style="font-size:21px; font-weight:700; color:var(--accent); font-family:'Segoe UI',sans-serif;">failure <sup style="font-size:11px; font-weight:400; opacity:0.6;">(114)</sup></span>
+        <span style="font-size:18px; font-weight:700; color:#92600a; font-family:'Segoe UI',sans-serif;">may&nbsp;not <sup style="font-size:10px; font-weight:400; opacity:0.6;">(84)</sup></span>
+        <span style="font-size:16px; font-weight:600; color:var(--blue); font-family:'Segoe UI',sans-serif;">Mars <sup style="font-size:10px; font-weight:400; opacity:0.6;">(63)</sup></span>
+        <span style="font-size:16px; font-weight:600; color:#4b5563; font-family:'Segoe UI',sans-serif;">opportunity <sup style="font-size:10px; font-weight:400; opacity:0.6;">(63)</sup></span>
+        <span style="font-size:15px; font-weight:600; color:var(--blue); font-family:'Segoe UI',sans-serif;">trillion <sup style="font-size:10px; font-weight:400; opacity:0.6;">(54)</sup></span>
+        <span style="font-size:14px; font-weight:600; color:#4b5563; font-family:'Segoe UI',sans-serif;">safety <sup style="font-size:10px; font-weight:400; opacity:0.6;">(42)</sup></span>
+        <span style="font-size:14px; font-weight:600; color:#4b5563; font-family:'Segoe UI',sans-serif;">competitors <sup style="font-size:10px; font-weight:400; opacity:0.6;">(40)</sup></span>
+        <span style="font-size:14px; font-weight:600; color:#4b5563; font-family:'Segoe UI',sans-serif;">innovation <sup style="font-size:10px; font-weight:400; opacity:0.6;">(38)</sup></span>
+        <span style="font-size:13px; font-weight:600; color:var(--blue); font-family:'Segoe UI',sans-serif;">universe <sup style="font-size:10px; font-weight:400; opacity:0.6;">(36)</sup></span>
+        <span style="font-size:13px; font-weight:600; color:#92600a; font-family:'Segoe UI',sans-serif;">unprecedented <sup style="font-size:10px; font-weight:400; opacity:0.6;">(32)</sup></span>
+        <span style="font-size:13px; font-weight:600; color:var(--blue); font-family:'Segoe UI',sans-serif;">humanity <sup style="font-size:10px; font-weight:400; opacity:0.6;">(29)</sup></span>
+        <span style="font-size:12px; font-weight:600; color:var(--blue); font-family:'Segoe UI',sans-serif;">multiplanetary <sup style="font-size:10px; font-weight:400; opacity:0.6;">(18)</sup></span>
+        <span style="font-size:12px; font-weight:600; color:#92600a; font-family:'Segoe UI',sans-serif;">transformative <sup style="font-size:10px; font-weight:400; opacity:0.6;">(17)</sup></span>
+        <span style="font-size:11.5px; font-weight:600; color:var(--blue); font-family:'Segoe UI',sans-serif;">asteroid <sup style="font-size:10px; font-weight:400; opacity:0.6;">(13)</sup></span>
+        <span style="font-size:11.5px; font-weight:600; color:var(--green); font-family:'Segoe UI',sans-serif;">profitability <sup style="font-size:10px; font-weight:400; opacity:0.6;">(13)</sup></span>
+        <span style="font-size:11px; font-weight:600; color:var(--blue); font-family:'Segoe UI',sans-serif;">consciousness <sup style="font-size:10px; font-weight:400; opacity:0.6;">(10)</sup></span>
+        <span style="font-size:10.5px; font-weight:600; color:var(--green); font-family:'Segoe UI',sans-serif;">profit <sup style="font-size:10px; font-weight:400; opacity:0.6;">(6)</sup></span>
+        <span style="font-size:10px; font-weight:700; color:var(--green); font-family:'Segoe UI',sans-serif; border:1px dashed var(--green); padding:2px 5px;">profitable <sup style="font-size:9px;">(1)</sup></span>
+      </div>
+      <div style="margin-top:12px; padding-top:12px; border-top:1px solid var(--border-light); font-family:'Segoe UI',sans-serif; font-size:11px; color:var(--text3);">
+        Hover over any word to see exact count. "Musk" (174) exceeds "mission" (130). "debt" (121) exceeds "trillion" (54). "failure" variants (114) exceed "opportunity" (63). "profitable" — boxed in green — is the only word with a count of 1.
+      </div>
+    </div>
+
+    <p>The filing also describes company initiatives that the document itself admits "involve significant technical complexity, unproven technologies, or technologies that do not exist." These include: orbital AI compute at scale, manufacturing AI chips at scale, establishing a lunar economy, <strong>developing human augmentation systems</strong>, and transporting humans to Mars. All are cited within the $28.5 trillion TAM calculation.</p>
+  </div>
+
+  <!-- SECTION 2: THE TAM -->
+  <div class="section">
+    <div class="section-eyebrow">Section II · Market Sizing</div>
+    <h2>A $28.5 Trillion Addressable Market: Anatomy of an Extraordinary Claim</h2>
+
+    <p>SpaceX claims "the largest actionable total addressable market in human history" at $28.5 trillion — a figure that exceeds the gross domestic product of the United States ($27.4 trillion in 2024) and approaches the combined GDP of the United States and the European Union. The filing itself acknowledges these estimates are based on internal assumptions and third-party projections.</p>
+
+    <div class="chart-panel">
+      <div class="chart-panel-title">TAM Decomposition — $28.5T Total</div>
+      <div class="chart-panel-sub">Source: SpaceX S-1 filing, May 2026</div>
+
+      <!-- Treemap-style visual -->
+      <div style="display:grid; grid-template-columns: 1fr 120px; gap:3px; margin-bottom:16px;">
+        <div style="background:var(--navy); padding:20px; color:#fff;">
+          <div style="font-family:'Segoe UI',sans-serif; font-size:11px; text-transform:uppercase; letter-spacing:1px; opacity:0.7; margin-bottom:6px;">AI Segment TAM</div>
+          <div style="font-size:2rem; font-weight:700; font-family:'Segoe UI',sans-serif;">$26.5T</div>
+          <div style="font-size:12px; opacity:0.6; font-family:'Segoe UI',sans-serif; margin-top:4px;">93% of total claimed TAM</div>
+          <div style="margin-top:12px; font-size:11px; opacity:0.5; font-family:'Segoe UI',sans-serif; line-height:1.6;">Enterprise Applications: $22.7T<br>AI Infrastructure: $2.4T<br>Consumer Subs: $760B<br>Digital Advertising: $600B</div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:3px;">
+          <div style="background:#1a4480; padding:12px 10px; color:#fff; flex:2;">
+            <div style="font-family:'Segoe UI',sans-serif; font-size:9px; text-transform:uppercase; opacity:0.7;">Connectivity</div>
+            <div style="font-size:1rem; font-weight:700; font-family:'Segoe UI',sans-serif;">$1.6T</div>
+            <div style="font-size:9px; opacity:0.6; font-family:'Segoe UI',sans-serif;">5.6%</div>
+          </div>
+          <div style="background:#6b7280; padding:12px 10px; color:#fff; flex:1;">
+            <div style="font-family:'Segoe UI',sans-serif; font-size:9px; text-transform:uppercase; opacity:0.7;">Space</div>
+            <div style="font-size:1rem; font-weight:700; font-family:'Segoe UI',sans-serif;">$370B</div>
+            <div style="font-size:9px; opacity:0.6; font-family:'Segoe UI',sans-serif;">1.3%</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout-amber" style="margin:0;">
+        <strong>The 93% Problem</strong>
+        The segment carrying 93% of the claimed TAM — AI — generated $3.2B in revenue in 2025 against an operating loss of $6.4B and capex of $12.7B. The segment directly competing with Microsoft Azure, Amazon AWS, Google Cloud, and Meta AI is being sold to investors as the primary value driver.
+      </div>
+    </div>
+
+    <h3>Revenue vs TAM — The Gap in Perspective</h3>
+    <div class="chart-panel">
+      <div class="chart-panel-title">Revenue as a Percentage of Claimed TAM</div>
+      <div class="chart-panel-sub">Current revenues represent 0.066% of the stated total addressable market</div>
+      <div class="hbar-chart">
+        <div class="hbar-row">
+          <div class="hbar-label">Total TAM Claimed</div>
+          <div class="hbar-track"><div class="hbar-fill navy" style="width:100%">$28,500B</div></div>
+          <div class="hbar-note">$28,500B</div>
+        </div>
+        <div class="hbar-row">
+          <div class="hbar-label">2025 Revenue</div>
+          <div class="hbar-track"><div class="hbar-fill red" style="width:0.066%; min-width:3px;">&#8203;</div></div>
+          <div class="hbar-note" style="font-weight:700; color:var(--accent);">$18.7B (0.07%)</div>
+        </div>
+      </div>
+      <p style="font-size:12px; color:var(--text3); font-family:'Segoe UI',sans-serif; margin-top:12px;">For comparison: Amazon Web Services, one of the companies SpaceX's AI segment is implicitly competing against, generates more revenue in a single quarter than SpaceX's AI segment does in a full year.</p>
+    </div>
+
+    <div class="callout callout-red">
+      <strong>Direct From the Filing — Risk Factor</strong>
+      "Many of our initiatives, including those to develop orbital AI compute at scale, manufacture AI chips at scale, establish a lunar economy, develop human augmentation systems, and transport humans and cargo to the Moon and Mars, involve significant technical complexity, unproven technologies, or technologies that do not exist or may require significant advancement, and such initiatives may not achieve commercial viability."
+    </div>
+  </div>
+
+  <!-- SECTION 3: FINANCIALS -->
+  <div class="section">
+    <div class="section-eyebrow">Section III · Financial Performance</div>
+    <h2>Three Businesses, One Profitable, One Bet, One Problem</h2>
+
+    <p>The consolidated $18.7 billion revenue figure — widely cited in coverage — obscures a more complex picture. SpaceX comprises three materially different businesses with divergent economics. Understanding them separately is essential to any valuation analysis.</p>
+
+    <div class="stat-grid">
+      <div class="stat-box">
+        <div class="stat-val green">$11.4B</div>
+        <div class="stat-lbl">Connectivity Revenue</div>
+        <div class="stat-note">+49.8% YoY. $4.4B operating profit. The only profitable segment.</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val">$4.1B</div>
+        <div class="stat-lbl">Space Revenue</div>
+        <div class="stat-note">$657M operating loss. Deliberate — funded by Starship R&D investment.</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val red">$3.2B</div>
+        <div class="stat-lbl">AI Revenue</div>
+        <div class="stat-note">$6.4B operating loss. $12.7B capex. The segment carrying 93% of claimed TAM.</div>
+      </div>
+    </div>
+
+    <h3>Segment Profitability — 2025</h3>
+    <div class="chart-panel">
+      <div class="chart-panel-title">Revenue vs Operating Income/(Loss) by Segment — FY2025</div>
+      <div class="chart-panel-sub">The consolidated number hides a profitable satellite business subsidising an AI build-out</div>
+      <div class="hbar-chart">
+        <div class="hbar-row">
+          <div class="hbar-label">Connectivity Revenue</div>
+          <div class="hbar-track"><div class="hbar-fill green" style="width:61%">$11.4B</div></div>
+          <div class="hbar-note" style="color:var(--green);">+$4.4B profit</div>
+        </div>
+        <div class="hbar-row">
+          <div class="hbar-label">Space Revenue</div>
+          <div class="hbar-track"><div class="hbar-fill navy" style="width:22%">$4.1B</div></div>
+          <div class="hbar-note" style="color:var(--accent);">−$657M loss</div>
+        </div>
+        <div class="hbar-row">
+          <div class="hbar-label">AI Revenue</div>
+          <div class="hbar-track"><div class="hbar-fill blue" style="width:17%">$3.2B</div></div>
+          <div class="hbar-note" style="color:var(--accent);">−$6.4B loss</div>
+        </div>
+        <div style="border-top:1px solid var(--border); margin:10px 0;"></div>
+        <div class="hbar-row">
+          <div class="hbar-label">AI Capex 2025</div>
+          <div class="hbar-track"><div class="hbar-fill red" style="width:68%">$12.7B — More than 4× AI revenue</div></div>
+          <div class="hbar-note" style="color:var(--accent);">$12.7B</div>
+        </div>
+        <div class="hbar-row">
+          <div class="hbar-label">AI Capex Q1 2026</div>
+          <div class="hbar-track"><div class="hbar-fill red" style="width:41%">$7.7B (single quarter)</div></div>
+          <div class="hbar-note" style="color:var(--accent);">$7.7B</div>
+        </div>
+      </div>
+    </div>
+
+    <h3>The Profitability Reversal</h3>
+    <div class="chart-panel">
+      <div class="chart-panel-title">Net Income/(Loss) — 2024 vs 2025</div>
+      <div class="chart-panel-sub">The xAI merger in February 2026 consolidated losses from the AI segment retroactively into the 2025 results</div>
+      <div class="hbar-chart">
+        <div class="hbar-row">
+          <div class="hbar-label">2024 Net Income</div>
+          <div class="hbar-track"><div class="hbar-fill green" style="width:14%">+$791M — Profitable</div></div>
+          <div class="hbar-note" style="color:var(--green);">+$791M</div>
+        </div>
+        <div class="hbar-row">
+          <div class="hbar-label">2025 Net Loss</div>
+          <div class="hbar-track"><div class="hbar-fill red" style="width:89%">−$4.94B — Post-xAI merger</div></div>
+          <div class="hbar-note" style="color:var(--accent);">−$4.94B</div>
+        </div>
+        <div class="hbar-row">
+          <div class="hbar-label">Q1 2026 Net Loss</div>
+          <div class="hbar-track"><div class="hbar-fill red" style="width:78%">−$4.28B — Single quarter</div></div>
+          <div class="hbar-note" style="color:var(--accent);">−$4.28B</div>
+        </div>
+        <div class="hbar-row">
+          <div class="hbar-label">Accumulated Deficit</div>
+          <div class="hbar-track"><div class="hbar-fill red" style="width:100%">−$41.3B since inception</div></div>
+          <div class="hbar-note" style="color:var(--accent);">−$41.3B</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout callout-amber">
+      <strong>Cash Burn Rate</strong>
+      Cash reserves fell from $24.7 billion to $15.9 billion in a single quarter (Q1 2026). Operating cash flow was positive at $1.0B, but investing outflows reached $16.7B, driven by AI infrastructure buildout. At Q1 2026's annualised capex rate of $30B+, the $75B raise covers approximately 2.5 years of capital expenditure before revenue growth is factored in.
+    </div>
+  </div>
+
+  <!-- SECTION 4: ARPU -->
+  <div class="section">
+    <div class="section-eyebrow">Section IV · Starlink Economics</div>
+    <h2>The Subscriber Paradox: Volume Up, Revenue Per Customer Down</h2>
+
+    <p>Starlink is the commercial core of SpaceX — the only segment generating positive operating income, and the business that any reasonable investor is actually paying for. Its subscriber trajectory is impressive: from roughly 5 million in Q1 2025 to 10.3 million in Q1 2026, a 104.7% growth rate. The filing itself cites this figure prominently.</p>
+    <p>What the filing discloses more quietly is that average revenue per user (ARPU) declined 22.9% year-over-year in the same period, from approximately $81/month to $66/month. The trend, when traced across four years, reveals a consistent downward trajectory.</p>
+
+    <div class="chart-panel">
+      <div class="chart-panel-title">Starlink Average Revenue Per User (ARPU) — 2023 to Q1 2026</div>
+      <div class="chart-panel-sub">Source: SpaceX S-1 filing and analyst calculations. Confirms 33% ARPU compression in three years.</div>
+
+      <!-- SVG Line Chart for ARPU -->
+      <svg class="arpu-svg" viewBox="0 0 500 200" xmlns="http://www.w3.org/2000/svg" style="max-height:220px;">
+        <!-- Grid lines -->
+        <line x1="60" y1="20" x2="60" y2="160" stroke="#ddd9d0" stroke-width="1"/>
+        <line x1="60" y1="160" x2="480" y2="160" stroke="#ddd9d0" stroke-width="1"/>
+        <line x1="60" y1="20" x2="480" y2="20" stroke="#f0ece4" stroke-width="0.5" stroke-dasharray="3,3"/>
+        <line x1="60" y1="60" x2="480" y2="60" stroke="#f0ece4" stroke-width="0.5" stroke-dasharray="3,3"/>
+        <line x1="60" y1="100" x2="480" y2="100" stroke="#f0ece4" stroke-width="0.5" stroke-dasharray="3,3"/>
+        <line x1="60" y1="130" x2="480" y2="130" stroke="#f0ece4" stroke-width="0.5" stroke-dasharray="3,3"/>
+
+        <!-- Y axis labels -->
+        <text x="55" y="163" text-anchor="end" font-size="10" fill="#777" font-family="Segoe UI, sans-serif">$0</text>
+        <text x="55" y="133" text-anchor="end" font-size="10" fill="#777" font-family="Segoe UI, sans-serif">$40</text>
+        <text x="55" y="103" text-anchor="end" font-size="10" fill="#777" font-family="Segoe UI, sans-serif">$60</text>
+        <text x="55" y="63" text-anchor="end" font-size="10" fill="#777" font-family="Segoe UI, sans-serif">$80</text>
+        <text x="55" y="23" text-anchor="end" font-size="10" fill="#777" font-family="Segoe UI, sans-serif">$100</text>
+
+        <!-- X axis labels -->
+        <text x="120" y="175" text-anchor="middle" font-size="10" fill="#777" font-family="Segoe UI, sans-serif">2023</text>
+        <text x="220" y="175" text-anchor="middle" font-size="10" fill="#777" font-family="Segoe UI, sans-serif">2024</text>
+        <text x="340" y="175" text-anchor="middle" font-size="10" fill="#777" font-family="Segoe UI, sans-serif">2025</text>
+        <text x="440" y="175" text-anchor="middle" font-size="10" fill="#777" font-family="Segoe UI, sans-serif">Q1 2026</text>
+
+        <!-- Shaded area under line -->
+        <polygon points="120,28 220,44 340,68 440,100 440,160 120,160" fill="rgba(192,21,42,0.08)"/>
+
+        <!-- Line -->
+        <polyline points="120,28 220,44 340,68 440,100" fill="none" stroke="#c0152a" stroke-width="2.5"/>
+
+        <!-- Data points -->
+        <circle cx="120" cy="28" r="5" fill="#c0152a"/>
+        <circle cx="220" cy="44" r="5" fill="#c0152a"/>
+        <circle cx="340" cy="68" r="5" fill="#c0152a"/>
+        <circle cx="440" cy="100" r="5" fill="#c0152a"/>
+
+        <!-- Data labels -->
+        <text x="120" y="20" text-anchor="middle" font-size="11" fill="#1a2744" font-weight="bold" font-family="Segoe UI, sans-serif">$99</text>
+        <text x="220" y="36" text-anchor="middle" font-size="11" fill="#1a2744" font-weight="bold" font-family="Segoe UI, sans-serif">$91</text>
+        <text x="340" y="60" text-anchor="middle" font-size="11" fill="#1a2744" font-weight="bold" font-family="Segoe UI, sans-serif">$81</text>
+        <text x="440" y="92" text-anchor="middle" font-size="11" fill="#c0152a" font-weight="bold" font-family="Segoe UI, sans-serif">$66</text>
+
+        <!-- Trend arrow annotation -->
+        <text x="280" y="195" text-anchor="middle" font-size="10" fill="#c0152a" font-family="Segoe UI, sans-serif">▼ −33% cumulative ARPU decline (2023 → Q1 2026)</text>
+      </svg>
+    </div>
+
+    <p>The filing attributes the ARPU decline to "international expansion and the addition of lower priced service plans." This is partially accurate and partially concerning. International expansion into emerging markets necessarily brings lower-ARPU subscribers. But the trend raises a structural question: Starlink's addressable high-ARPU market (North America, Western Europe, maritime, aviation) is finite. Future growth increasingly depends on lower-paying customers in lower-income markets, compressing aggregate revenue per subscriber even as headline subscriber counts grow.</p>
+
+    <div class="callout callout-blue">
+      <strong>The Revenue Arithmetic</strong>
+      If ARPU stabilises at $66/month and subscriber count reaches 20 million — an optimistic projection — annual connectivity revenue would be approximately $15.8 billion, a modest increase from $11.4 billion today. At $99/month ARPU with the same subscribers, revenue would be $23.8 billion. The difference ($8B/year) is the cost of the pricing strategy now embedded in the growth story.
+    </div>
+  </div>
+
+  <!-- SECTION 5: VALUATION -->
+  <div class="section">
+    <div class="section-eyebrow">Section V · Valuation Analysis</div>
+    <h2>93× Revenue: Locating SpaceX on the Multiple Spectrum</h2>
+
+    <p>At a $1.75 trillion valuation on $18.7 billion in revenue, SpaceX seeks a price-to-revenue multiple of approximately 93×. For a company earning positive operating income, this figure would be remarkable. For a company posting a $4.94 billion net loss, it is without precedent among companies of this revenue scale.</p>
+
+    <div class="chart-panel">
+      <div class="chart-panel-title">Price-to-Revenue Multiple at IPO — Historical Comparison</div>
+      <div class="chart-panel-sub">SpaceX's 93× multiple vs. the full spectrum of technology IPOs. Green = ultimately successful; Red = failed or distressed.</div>
+      <div class="hbar-chart">
+        <div class="hbar-row">
+          <div class="hbar-label" style="color:var(--accent); font-weight:700;">SpaceX (2026) ★</div>
+          <div class="hbar-track"><div class="hbar-fill red" style="width:100%">93× revenue · No precedent for this multiple at this revenue scale</div></div>
+          <div class="hbar-note" style="font-weight:700; color:var(--accent);">93×</div>
+        </div>
+        <div class="hbar-row">
+          <div class="hbar-label">Rivian (2021) ✗</div>
+          <div class="hbar-track"><div class="hbar-fill red" style="width:80%">~∞ (pre-revenue) · Peaked $153B, declined ~80%</div></div>
+          <div class="hbar-note" style="color:var(--accent);">∞</div>
+        </div>
+        <div class="hbar-row">
+          <div class="hbar-label">Snap (2017) ~</div>
+          <div class="hbar-track"><div class="hbar-fill amber" style="width:63%">59× · Below IPO price years later</div></div>
+          <div class="hbar-note">59×</div>
+        </div>
+        <div class="hbar-row">
+          <div class="hbar-label">WeWork (withdrew) ✗</div>
+          <div class="hbar-track"><div class="hbar-fill red" style="width:28%">26× · IPO withdrawn; bankrupt 2023</div></div>
+          <div class="hbar-note" style="color:var(--accent);">26×</div>
+        </div>
+        <div class="hbar-row">
+          <div class="hbar-label">Amazon (1997) ✓</div>
+          <div class="hbar-track"><div class="hbar-fill navy" style="width:29%">27× · Greatest long-run return in IPO history</div></div>
+          <div class="hbar-note" style="color:var(--green);">27×</div>
+        </div>
+        <div class="hbar-row">
+          <div class="hbar-label">Facebook (2012) ✓</div>
+          <div class="hbar-track"><div class="hbar-fill navy" style="width:30%">28× · Stumbled then became $1T+ company</div></div>
+          <div class="hbar-note" style="color:var(--green);">28×</div>
+        </div>
+        <div class="hbar-row">
+          <div class="hbar-label">Google (2004) ✓</div>
+          <div class="hbar-track"><div class="hbar-fill navy" style="width:19%">18× · Profitable at IPO. Historic success.</div></div>
+          <div class="hbar-note" style="color:var(--green);">18×</div>
+        </div>
+        <div class="hbar-row">
+          <div class="hbar-label">Tesla (2010) ✓ (eventually)</div>
+          <div class="hbar-track"><div class="hbar-fill navy" style="width:15%">14× · 10 years to first annual profit</div></div>
+          <div class="hbar-note">14×</div>
+        </div>
+        <div class="hbar-row">
+          <div class="hbar-label">Uber (2019) ~</div>
+          <div class="hbar-track"><div class="hbar-fill gray" style="width:8%">7×</div></div>
+          <div class="hbar-note">7×</div>
+        </div>
+        <div class="hbar-row">
+          <div class="hbar-label">Saudi Aramco (2019) ✓</div>
+          <div class="hbar-track"><div class="hbar-fill gray" style="width:5%">5× · Profitable, $330B+ revenue</div></div>
+          <div class="hbar-note" style="color:var(--green);">5×</div>
+        </div>
+      </div>
+    </div>
+
+    <h3>Deconstructing the $1.75 Trillion</h3>
+    <p>A more granular valuation analysis requires separating SpaceX's three business lines:</p>
+
+    <table class="data-table" style="margin-top:12px;">
+      <thead>
+        <tr>
+          <th>Segment</th>
+          <th>2025 Revenue</th>
+          <th>2025 EBITDA</th>
+          <th>Justified Multiple</th>
+          <th>Implied Value</th>
+          <th>Basis</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="highlight">
+          <td>Starlink / Connectivity</td>
+          <td>$11.4B</td>
+          <td>$7.2B</td>
+          <td>15–30× EBITDA</td>
+          <td>$110–220B</td>
+          <td>Satellite / telco comparable</td>
+        </tr>
+        <tr>
+          <td>Space / Launch</td>
+          <td>$4.1B</td>
+          <td>Negative</td>
+          <td>20–40× Revenue</td>
+          <td>$80–165B</td>
+          <td>Contingent on Starship (H2 2026)</td>
+        </tr>
+        <tr class="danger">
+          <td>AI / xAI</td>
+          <td>$3.2B</td>
+          <td>Deeply negative</td>
+          <td>Speculative</td>
+          <td>$0–1,400B</td>
+          <td>Entirely dependent on assumed AI market capture</td>
+        </tr>
+        <tr>
+          <td><strong>Sum-of-Parts Range</strong></td>
+          <td><strong>$18.7B</strong></td>
+          <td></td>
+          <td></td>
+          <td><strong>$190B–$1,785B</strong></td>
+          <td>The $1.5T range reflects AI uncertainty</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr><td colspan="6">Analyst estimates. The upper bound requires SpaceX's AI segment to achieve dominant market position against established hyperscalers.</td></tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <!-- SECTION 6: IPO COMPARISONS -->
+  <div class="section">
+    <div class="section-eyebrow">Section VI · Precedent Analysis</div>
+    <h2>Lessons from the IPO Ledger: Success, Hubris, and the Consciousness Parallel</h2>
+
+    <p>History's most instructive comparisons come not only from successful IPOs but from the ones that failed — and from examining what separated them. Two recurring patterns emerge: the companies that succeeded had defensible, growing, cash-generative core businesses at the time of listing. The ones that collapsed were selling a narrative where the largest portion of the valuation rested on markets the company had not yet entered.</p>
+
+    <h3>Complete IPO Comparison</h3>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Company</th>
+          <th>Year</th>
+          <th>Valuation</th>
+          <th>Revenue</th>
+          <th>P/S</th>
+          <th>Profitable?</th>
+          <th>Outcome</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="highlight">
+          <td><strong>SpaceX</strong></td>
+          <td>2026</td>
+          <td>$1.75T</td>
+          <td>$18.7B</td>
+          <td style="color:var(--accent); font-weight:700;">93×</td>
+          <td style="color:var(--accent);">No (−$4.9B)</td>
+          <td>Pending</td>
+        </tr>
+        <tr>
+          <td>Saudi Aramco</td>
+          <td>2019</td>
+          <td>$1.7T</td>
+          <td>$330B+</td>
+          <td style="color:var(--green);">5×</td>
+          <td style="color:var(--green);">Yes</td>
+          <td style="color:var(--green);">Stable. Most profitable company on earth.</td>
+        </tr>
+        <tr class="danger">
+          <td>WeWork</td>
+          <td>2019 (withdrew)</td>
+          <td>$47B</td>
+          <td>$1.8B</td>
+          <td>26×</td>
+          <td style="color:var(--accent);">No (−$1.9B)</td>
+          <td style="color:var(--accent);">Bankrupt Nov. 2023. Stock delisted.</td>
+        </tr>
+        <tr class="danger">
+          <td>Rivian</td>
+          <td>2021</td>
+          <td>$80B</td>
+          <td>~$0</td>
+          <td>∞</td>
+          <td style="color:var(--accent);">No</td>
+          <td style="color:var(--accent);">−80%+ from peak. Survival uncertain.</td>
+        </tr>
+        <tr>
+          <td>Snap</td>
+          <td>2017</td>
+          <td>$24B</td>
+          <td>$404M</td>
+          <td>59×</td>
+          <td style="color:var(--accent);">No</td>
+          <td>Persistently below IPO price. Struggling.</td>
+        </tr>
+        <tr>
+          <td>Uber</td>
+          <td>2019</td>
+          <td>$82B</td>
+          <td>$11.3B</td>
+          <td style="color:var(--green);">7×</td>
+          <td style="color:var(--accent);">No</td>
+          <td>Eventually profitable. Stock recovered.</td>
+        </tr>
+        <tr>
+          <td>Facebook</td>
+          <td>2012</td>
+          <td>$104B</td>
+          <td>$3.7B</td>
+          <td>28×</td>
+          <td style="color:var(--green);">Yes ($1B net)</td>
+          <td style="color:var(--green);">Stumbled, then became $1T+ company.</td>
+        </tr>
+        <tr>
+          <td>Google</td>
+          <td>2004</td>
+          <td>$27B</td>
+          <td>$1.5B</td>
+          <td>18×</td>
+          <td style="color:var(--green);">Yes</td>
+          <td style="color:var(--green);">Historic success. Dominated its market.</td>
+        </tr>
+        <tr>
+          <td>Amazon</td>
+          <td>1997</td>
+          <td>$438M</td>
+          <td>$16M</td>
+          <td>27×</td>
+          <td style="color:var(--accent);">No</td>
+          <td style="color:var(--green);">Greatest long-run IPO return in history.</td>
+        </tr>
+        <tr>
+          <td>Tesla</td>
+          <td>2010</td>
+          <td>$1.7B</td>
+          <td>$117M</td>
+          <td>14×</td>
+          <td style="color:var(--accent);">No</td>
+          <td style="color:var(--green);">+30,000% over 14 years. Years of pain first.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>The WeWork Parallel — Language as Evidence</h3>
+    <p>The most instructive comparison may not be financial. WeWork's withdrawn 2019 S-1 is remembered partly for its financial irregularities, but also for its language. The document described the company as "a community company committed to maximum positive impact for our members, our employees, our communities, our partners, and the world." Its mission was to "elevate the world's consciousness."</p>
+
+    <div class="pull-quote">
+      <p>WeWork S-1 (2019): "elevate the world's consciousness"<br>SpaceX S-1 (2026): "extend the light of consciousness to the stars"</p>
+      <cite>— Mission statement language comparison. Both companies lost money at filing. WeWork filed for bankruptcy four years later.</cite>
+    </div>
+
+    <p>This is not to suggest SpaceX will follow WeWork's trajectory — the businesses are fundamentally different in quality. Starlink is a real, growing, cash-generating product with genuine infrastructure moats. WeWork was a real-estate company with a database. The point is that elevated language in an S-1 is not correlated with investment merit, and investors who bought WeWork shares because the mission resonated with them paid a high price for that reasoning.</p>
+  </div>
+
+  <!-- SECTION 7: MUSK TRACK RECORD -->
+  <div class="section">
+    <div class="section-eyebrow">Section VII · Management Analysis</div>
+    <h2>The Musk Variable: Control, Distraction, and Track Record</h2>
+
+    <p>Mr. Musk will hold 85.1% of the combined voting power upon completion of the offering. He will simultaneously serve as Chief Executive Officer, Chief Technical Officer, and Chairman of the board. The company has opted out of Nasdaq's independent board requirements, qualifying as a "controlled company." Shareholders will be "generally unable to affect the outcome of matters submitted to a vote."</p>
+
+    <div class="chart-panel">
+      <div class="chart-panel-title">Voting Power Distribution — Post-IPO</div>
+      <div class="chart-panel-sub">Class B shares carry 10 votes each. Public investors receive Class A shares (1 vote each).</div>
+      <!-- Stacked bar showing voting power -->
+      <div style="height:48px; display:flex; margin-bottom:10px;">
+        <div style="background:var(--navy); width:85.1%; display:flex; align-items:center; padding-left:12px; color:#fff; font-family:'Segoe UI',sans-serif; font-size:13px; font-weight:700;">Elon Musk — 85.1% voting control</div>
+        <div style="background:#9ca3af; flex:1; display:flex; align-items:center; justify-content:center; color:#fff; font-family:'Segoe UI',sans-serif; font-size:11px; font-weight:700;">Public ~15%</div>
+      </div>
+      <p style="font-size:12px; color:var(--text3); font-family:'Segoe UI',sans-serif;">Public investors will own approximately 60% of the economic interest but control approximately 15% of the vote. The practical implication: no shareholder vote can remove Musk, alter strategy, or override board decisions.</p>
+    </div>
+
+    <h3>Musk's IPO and Acquisition Track Record</h3>
+    <ul class="timeline">
+      <li class="tl-item">
+        <div class="tl-dot win">✓</div>
+        <div class="tl-body">
+          <div class="tl-year">2002 · PayPal / X.com</div>
+          <div class="tl-title">Sold to eBay for $1.5B</div>
+          <div class="tl-text">Clean outcome. Musk received ~$165M. All investors saw returns. Unambiguous success.</div>
+        </div>
+      </li>
+      <li class="tl-item">
+        <div class="tl-dot win">✓</div>
+        <div class="tl-body">
+          <div class="tl-year">2010 · Tesla IPO ($1.7B)</div>
+          <div class="tl-title">Eventually +30,000% — but 10 years to first annual profit</div>
+          <div class="tl-text">The archetypal "visionary IPO" that rewarded patience. Also came within weeks of bankruptcy in 2008. IPO investors who panicked and sold in 2012 lost money. The parallel to SpaceX is imperfect: Tesla entered a market with established demand (personal transport); SpaceX's AI segment is competing against the five best-funded companies in history.</div>
+        </div>
+      </li>
+      <li class="tl-item">
+        <div class="tl-dot warn">⚠</div>
+        <div class="tl-body">
+          <div class="tl-year">2016 · Tesla acquires SolarCity ($2.6B)</div>
+          <div class="tl-title">Related-party acquisition; shareholders sued</div>
+          <div class="tl-text">Musk was chairman of both Tesla and SolarCity. His cousins founded SolarCity. Shareholders alleged the acquisition was a bailout of a failing related entity. Delaware court ultimately ruled the price was fair. SolarCity's energy business remains a minor contributor to Tesla's revenue today — the strategic rationale never fully materialised.</div>
+        </div>
+      </li>
+      <li class="tl-item">
+        <div class="tl-dot loss">✗</div>
+        <div class="tl-body">
+          <div class="tl-year">2022 · Twitter/X acquisition ($44B)</div>
+          <div class="tl-title">Investors wrote down stakes by 70–80%</div>
+          <div class="tl-text">Fidelity marked its stake down 79%. Advertising revenue collapsed post-acquisition. Musk fired ~75% of staff. The platform's assets — most relevantly, its real-time data stream and user base — were subsequently transferred into xAI's Grok training infrastructure. These same assets now appear as competitive advantages in SpaceX's S-1, described as providing "approximately 350 million daily posts" of training data for Grok.</div>
+        </div>
+      </li>
+      <li class="tl-item">
+        <div class="tl-dot tbd">?</div>
+        <div class="tl-body">
+          <div class="tl-year">2026 · SpaceX IPO ($1.75T)</div>
+          <div class="tl-title">The largest IPO in history — outcome pending</div>
+          <div class="tl-text">The question for investors is not whether Musk can build extraordinary companies — he demonstrably can. The question is whether the specific structure being offered (93× revenue, loss-making AI segment, no shareholder recourse, simultaneous leadership of Tesla, X, DOGE, and The Boring Company) justifies the asked price.</div>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- SECTION 8: GOVERNANCE & RISK -->
+  <div class="section">
+    <div class="section-eyebrow">Section VIII · Structural Risk</div>
+    <h2>Governance, Legal Exposure, and Revenue Concentration</h2>
+
+    <div class="stat-grid">
+      <div class="stat-box">
+        <div class="stat-val red">~$530M</div>
+        <div class="stat-lbl">Flagged Legal Costs</div>
+        <div class="stat-note">Disclosed expected litigation exposure across AI copyright, GDPR, FTC inquiries.</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val">~20%</div>
+        <div class="stat-lbl">US Government Revenue</div>
+        <div class="stat-note">~$3.7B from NASA, DoD, intelligence agencies. Subject to political budget cycles.</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val red">$41.3B</div>
+        <div class="stat-lbl">Accumulated Deficit</div>
+        <div class="stat-note">Total losses since the company's founding in 2002.</div>
+      </div>
+    </div>
+
+    <h3>Legal and Regulatory Exposure — Disclosed in Risk Factors</h3>
+    <table class="data-table">
+      <thead><tr><th>Issue</th><th>Nature</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>AI copyright litigation</td><td>Training data for Grok challenged by rights holders</td><td>Ongoing</td></tr>
+        <tr><td>GDPR investigation</td><td>Irish Data Protection Commission probe into Grok/X</td><td>Active</td></tr>
+        <tr><td>FTC inquiry</td><td>Chatbot safety for minors</td><td>Active</td></tr>
+        <tr><td>Nonconsensual imagery</td><td>Regulatory inquiry into explicit AI-generated content from Grok</td><td>Disclosed</td></tr>
+        <tr><td>Brazil asset seizure</td><td>2024 precedent cited as geopolitical risk for Starlink</td><td>Risk factor</td></tr>
+        <tr><td>Environmental permits</td><td>Natural gas turbines at Mississippi facilities operating without required permits (disputed)</td><td>Ongoing</td></tr>
+        <tr class="danger"><td>Mandatory arbitration clause</td><td>Bylaws require arbitration for shareholder disputes; limits ability to pursue class actions</td><td>Structural</td></tr>
+      </tbody>
+    </table>
+
+    <h3>The Anthropic Agreement — $45B of Revenue on 90 Days' Notice</h3>
+    <p>The filing discloses a compute infrastructure agreement with Anthropic — a direct competitor to xAI — valued at $1.25 billion per month through May 2029, totalling approximately $45 billion. This would represent nearly 2.5× SpaceX's current annual AI revenue. However, the agreement is "terminable by either party on 90 days' notice." A substantial portion of the AI segment's projected revenue trajectory rests on an agreement that either party can exit in a calendar quarter.</p>
+  </div>
+
+  <!-- SECTION 9: CIRCULAR INVESTING -->
+  <div class="section">
+    <div class="section-eyebrow">Section IX · Capital Flows</div>
+    <h2>The Circular Investment Web: Who Funds Whom, and Why It Matters</h2>
+
+    <p>SpaceX's IPO does not exist in isolation. It sits at the apex of an unusually interconnected ecosystem in which many of its largest institutional backers also hold stakes in its direct competitors, in the assets SpaceX has acquired to build its AI thesis, and in companies whose struggles and failures cleared the competitive field. Understanding these relationships is necessary context for evaluating the independence of the demand that will support the offering.</p>
+
+    <!-- SVG Network Diagram -->
+    <div class="chart-panel">
+      <div class="chart-panel-title">The SpaceX Capital Web — Key Circular Relationships</div>
+      <div class="chart-panel-sub">Investors, competitors, and asset flows that intersect at the IPO</div>
+      <svg viewBox="0 0 680 380" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-height:400px; font-family:'Segoe UI',sans-serif;">
+        <!-- Background zones -->
+        <rect x="10" y="10" width="660" height="360" fill="#faf9f7" rx="2"/>
+
+        <!-- Central node: SpaceX IPO -->
+        <ellipse cx="340" cy="190" rx="72" ry="36" fill="#1a2744"/>
+        <text x="340" y="186" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">SpaceX</text>
+        <text x="340" y="201" text-anchor="middle" font-size="10" fill="rgba(255,255,255,0.7)">$1.75T IPO</text>
+
+        <!-- Investor nodes -->
+        <!-- Google / Alphabet -->
+        <ellipse cx="120" cy="80" rx="58" ry="26" fill="#1a4480"/>
+        <text x="120" y="77" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">Google / Alphabet</text>
+        <text x="120" y="91" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.7)">$900M invested 2015</text>
+
+        <!-- SoftBank -->
+        <ellipse cx="560" cy="80" rx="58" ry="26" fill="#1a4480"/>
+        <text x="560" y="77" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">SoftBank Vision</text>
+        <text x="560" y="91" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.7)">SpaceX + OneWeb backer</text>
+
+        <!-- Fidelity -->
+        <ellipse cx="120" cy="300" rx="58" ry="26" fill="#1a4480"/>
+        <text x="120" y="297" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">Fidelity</text>
+        <text x="120" y="311" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.7)">SpaceX + Boeing stake</text>
+
+        <!-- xAI / X -->
+        <ellipse cx="560" cy="300" rx="58" ry="26" fill="#92600a"/>
+        <text x="560" y="297" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">xAI / X (Twitter)</text>
+        <text x="560" y="311" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.8)">Merged into SpaceX Feb 2026</text>
+
+        <!-- NASA/DoD -->
+        <ellipse cx="340" cy="50" rx="58" ry="24" fill="#6b7280"/>
+        <text x="340" y="47" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">NASA / DoD</text>
+        <text x="340" y="61" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.7)">$3.7B contracts (20% revenue)</text>
+
+        <!-- Anthropic -->
+        <ellipse cx="340" cy="330" rx="58" ry="24" fill="#c0152a"/>
+        <text x="340" y="327" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">Anthropic</text>
+        <text x="340" y="341" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.8)">$45B compute contract (90-day exit)</text>
+
+        <!-- Competitor node -->
+        <ellipse cx="560" cy="190" rx="58" ry="26" fill="#4b5563"/>
+        <text x="560" y="187" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">Amazon Kuiper</text>
+        <text x="560" y="201" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.7)">3,236-sat Starlink rival</text>
+
+        <!-- Competitor node 2 -->
+        <ellipse cx="120" cy="190" rx="58" ry="26" fill="#4b5563"/>
+        <text x="120" y="187" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">OneWeb / Eutelsat</text>
+        <text x="120" y="201" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.7)">648-sat LEO rival</text>
+
+        <!-- ARROWS / CONNECTIONS -->
+        <!-- Google → SpaceX (invest) -->
+        <line x1="170" y1="95" x2="280" y2="165" stroke="#1a4480" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <text x="205" y="140" font-size="9" fill="#1a4480" transform="rotate(-27,205,140)">invested $900M</text>
+
+        <!-- Google → competitor (also funds) -->
+        <line x1="175" y1="80" x2="500" y2="80" stroke="#1a4480" stroke-width="1" stroke-dasharray="2,3"/>
+
+        <!-- SoftBank → SpaceX -->
+        <line x1="510" y1="95" x2="400" y2="165" stroke="#1a4480" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+        <!-- SoftBank → OneWeb (competitor) -->
+        <line x1="505" y1="94" x2="175" y2="185" stroke="#c0152a" stroke-width="1" stroke-dasharray="2,3"/>
+        <text x="290" y="155" font-size="8" fill="#c0152a">also backs rival</text>
+
+        <!-- Fidelity → SpaceX -->
+        <line x1="170" y1="285" x2="278" y2="210" stroke="#1a4480" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+        <!-- Fidelity → Boeing (competitor) -->
+        <line x1="120" y1="274" x2="120" y2="218" stroke="#c0152a" stroke-width="1" stroke-dasharray="2,3"/>
+        <text x="28" y="248" font-size="8" fill="#c0152a">Boeing stake</text>
+
+        <!-- NASA → SpaceX (contracts) -->
+        <line x1="340" y1="74" x2="340" y2="154" stroke="#6b7280" stroke-width="2"/>
+        <polygon points="336,154 344,154 340,162" fill="#6b7280"/>
+        <text x="348" y="118" font-size="8" fill="#6b7280">$3.7B/yr</text>
+
+        <!-- xAI → SpaceX (merger) -->
+        <line x1="510" y1="285" x2="402" y2="214" stroke="#92600a" stroke-width="2"/>
+        <polygon points="406,218 396,211 402,226" fill="#92600a"/>
+
+        <!-- X data → xAI (circular) -->
+        <path d="M 530 280 Q 610 240 560 220" fill="none" stroke="#92600a" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <text x="590" y="250" font-size="8" fill="#92600a">data loop</text>
+
+        <!-- Anthropic ↔ SpaceX (competitor but customer) -->
+        <line x1="340" y1="306" x2="340" y2="226" stroke="#c0152a" stroke-width="2" stroke-dasharray="5,3"/>
+        <polygon points="336,226 344,226 340,218" fill="#c0152a"/>
+        <polygon points="336,306 344,306 340,314" fill="#c0152a"/>
+        <text x="350" y="268" font-size="8" fill="#c0152a">competitor + customer</text>
+
+        <!-- Amazon Kuiper → SpaceX (competitor) -->
+        <line x1="502" y1="190" x2="412" y2="190" stroke="#4b5563" stroke-width="1.5"/>
+        <polygon points="412,186 412,194 404,190" fill="#4b5563"/>
+
+        <!-- OneWeb → SpaceX (competitor) -->
+        <line x1="178" y1="190" x2="268" y2="190" stroke="#4b5563" stroke-width="1.5"/>
+        <polygon points="268,186 268,194 276,190" fill="#4b5563"/>
+
+        <!-- Legend -->
+        <rect x="15" y="340" width="12" height="2" fill="#1a4480"/>
+        <text x="32" y="345" font-size="9" fill="#555">Investor flow</text>
+        <rect x="100" y="340" width="12" height="2" fill="#c0152a"/>
+        <text x="117" y="345" font-size="9" fill="#555">Conflict / also competitor</text>
+        <rect x="250" y="340" width="12" height="2" fill="#92600a"/>
+        <text x="267" y="345" font-size="9" fill="#555">Musk entity loop</text>
+        <rect x="360" y="340" width="12" height="2" fill="#6b7280"/>
+        <text x="377" y="345" font-size="9" fill="#555">Government dependency</text>
+      </svg>
+    </div>
+
+    <h3>The Four Critical Circular Relationships</h3>
+
+    <div class="callout callout-amber">
+      <strong>1. Google — Investor and Competitor</strong>
+      Google (Alphabet) invested $900 million into SpaceX in 2015 and retains a meaningful stake. Alphabet also operates Google Cloud — one of the three hyperscalers SpaceX's AI segment explicitly identifies as the market it intends to disrupt. Google will profit from the IPO while simultaneously being a primary competitive obstacle to SpaceX's highest-valued segment. It is also a Starlink broadband customer for certain research applications.
+    </div>
+
+    <div class="callout callout-amber">
+      <strong>2. SoftBank — Backs SpaceX and Its Direct Rival</strong>
+      SoftBank Vision Fund invested in SpaceX at a reported $137 billion valuation in 2023. SoftBank also backed OneWeb — a 648-satellite LEO constellation that is a direct Starlink competitor, now operating as Eutelsat OneWeb after a restructuring. The same institution holds meaningful positions on both sides of the primary commercial broadband satellite market. SoftBank is also the institution that drove WeWork to its failed $47B IPO.
+    </div>
+
+    <div class="callout callout-red">
+      <strong>3. The X/Twitter → xAI → SpaceX Data Loop</strong>
+      The SpaceX S-1 cites "approximately 350 million daily posts" from X (Twitter) as a key competitive advantage for training Grok. X was acquired by Musk for $44 billion in 2022 — a transaction in which SpaceX's own institutional investors participated. Fidelity, one of SpaceX's largest backers, marked its X stake down 79%. The write-down losses taken by SpaceX's own investors in the X acquisition now appear as an asset in SpaceX's IPO prospectus.
+    </div>
+
+    <div class="callout callout-red">
+      <strong>4. Anthropic — Competitor and Primary Customer Simultaneously</strong>
+      The filing discloses a compute agreement with Anthropic worth approximately $1.25 billion per month. Anthropic produces Claude — a direct competitor to xAI's Grok. SpaceX is simultaneously the infrastructure provider and competitive opponent of the company providing 2.5× its current AI segment's annual revenue. Either party may exit the arrangement on 90 days' notice.
+    </div>
+
+    <h3>The Government Contract Dependency Loop</h3>
+    <p>Approximately 20% of SpaceX's revenue ($3.7 billion) derives from contracts with NASA and the U.S. Department of Defense. These contracts were awarded in competitive procurement processes in which SpaceX's principal competitor was Boeing — a company whose crewed launch vehicle (Starliner) suffered public, well-documented failures in 2024. Boeing's difficulties directly increased SpaceX's government revenue. The filing's growth projections implicitly assume Boeing does not recover. If Boeing resolves its issues or if Northrop, Sierra Space, or Rocket Lab scales into the gap, the government revenue concentration becomes a vulnerability rather than a moat.</p>
+
+    <div class="chart-panel">
+      <div class="chart-panel-title">SpaceX Revenue Sources and Their Circular Dependencies</div>
+      <div class="chart-panel-sub">Each revenue stream carries a structural dependency that creates concentration or conflict</div>
+      <table class="data-table">
+        <thead>
+          <tr><th>Revenue Source</th><th>2025 Revenue</th><th>% of Total</th><th>Key Circular Risk</th></tr>
+        </thead>
+        <tbody>
+          <tr class="highlight"><td>Starlink consumer/enterprise</td><td>~$7.7B</td><td>41%</td><td>Kuiper (Amazon), OneWeb, China MSST all targeting same customers</td></tr>
+          <tr><td>Starlink aviation/maritime</td><td>~$3.7B</td><td>20%</td><td>Geostationary incumbents (Viasat, Intelsat) have long-term contracts in place</td></tr>
+          <tr class="danger"><td>NASA / DoD contracts</td><td>~$3.7B</td><td>20%</td><td>Boeing recovery, political cycle risk, sole-source contract limits</td></tr>
+          <tr><td>Commercial launch</td><td>~$2.4B</td><td>13%</td><td>Arianespace, Rocket Lab, New Glenn (Bezos) all undercutting on price</td></tr>
+          <tr class="danger"><td>AI / Grok (Anthropic contract)</td><td>~$3.2B</td><td>17%</td><td>Terminable on 90 days' notice. Anthropic is xAI's direct competitor.</td></tr>
+        </tbody>
+        <tfoot><tr><td colspan="4">Revenue estimates are analyst approximations based on S-1 segment disclosures. Segments are not fully disaggregated in the filing.</td></tr></tfoot>
+      </table>
+    </div>
+  </div>
+
+  <!-- SECTION 10: REVENUE REALITY CHECK -->
+  <div class="section">
+    <div class="section-eyebrow">Section X · Scale Calibration</div>
+    <h2>Fortune 500 Reality: $18.7B Revenue, $1.75 Trillion Valuation</h2>
+
+    <p>Context matters when evaluating IPO valuations. SpaceX's revenue of $18.7 billion places it approximately 235th in the Fortune 500 by revenue — between companies like Macy's ($22B) and Kellanova (formerly Kellogg's, ~$13B). The valuation being sought — $1.75 trillion — would make it the second-largest company in the world by market capitalisation, behind only Apple and ahead of Microsoft, Nvidia, and Saudi Aramco. No company has ever achieved this valuation at this revenue scale.</p>
+
+    <div class="chart-panel">
+      <div class="chart-panel-title">Revenue Rank: Selected Fortune 500 Companies vs SpaceX (2025 Revenue)</div>
+      <div class="chart-panel-sub">SpaceX revenue (~$18.7B) places it around #235 globally — next to Macy's, ahead of Kellogg's. Its sought valuation (~$1.75T) would rank it #2 globally by market cap.</div>
+      <div class="hbar-chart">
+        <div class="hbar-row">
+          <div class="hbar-label" style="font-size:11px;">#1 Walmart</div>
+          <div class="hbar-track"><div class="hbar-fill navy" style="width:100%">$665B</div></div>
+          <div class="hbar-note">$665B</div>
+        </div>
+        <div class="hbar-row">
+          <div class="hbar-label" style="font-size:11px;">#2 Amazon</div>
+          <div class="hbar-track"><div class="hbar-fill navy" style="width:93%">$621B</div></div>
+          <div class="hbar-note">$621B</div>
+        </div>
+        <div class="hbar-row">
+          <div class="hbar-label" style="font-size:11px;">#5 Apple</div>
+          <div class="hbar-track"><div class="hbar-fill navy" style="width:58%">$391B</div></div>
+          <div class="hbar-note">$391B</div>
+        </div>
+        <div class="hbar-row">
+          <div class="hbar-label" style="font-size:11px;">#10 Microsoft</div>
+          <div class="hbar-track"><div class="hbar-fill blue" style="width:33%">$245B</div></div>
+          <div class="hbar-note">$245B</div>
+        </div>
+        <div class="hbar-row">
+          <div class="hbar-label" style="font-size:11px;">#50 Alphabet (Google)</div>
+          <div class="hbar-track"><div class="hbar-fill gray" style="width:15%">$100B</div></div>
+          <div class="hbar-note">$100B</div>
+        </div>
+        <div class="hbar-row">
+          <div class="hbar-label" style="font-size:11px;">#100 Lockheed Martin</div>
+          <div class="hbar-track"><div class="hbar-fill gray" style="width:10%">$71B</div></div>
+          <div class="hbar-note">$71B</div>
+        </div>
+        <div class="hbar-row">
+          <div class="hbar-label" style="font-size:11px;">#200 Booking Holdings</div>
+          <div class="hbar-track"><div class="hbar-fill light" style="width:3.3%">$23B</div></div>
+          <div class="hbar-note">$23B</div>
+        </div>
+        <div class="hbar-row">
+          <div class="hbar-label" style="font-size:11px; color:var(--accent); font-weight:700;">~#235 SpaceX ★</div>
+          <div class="hbar-track"><div class="hbar-fill red" style="width:2.8%">$18.7B</div></div>
+          <div class="hbar-note" style="color:var(--accent); font-weight:700;">$18.7B</div>
+        </div>
+        <div class="hbar-row">
+          <div class="hbar-label" style="font-size:11px;">#255 Macy's</div>
+          <div class="hbar-track"><div class="hbar-fill light" style="width:3.2%">$22B</div></div>
+          <div class="hbar-note">$22B</div>
+        </div>
+        <div class="hbar-row">
+          <div class="hbar-label" style="font-size:11px;">#290 Kellanova (Kellogg's)</div>
+          <div class="hbar-track"><div class="hbar-fill light" style="width:2%">$13B</div></div>
+          <div class="hbar-note">$13B</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout callout-red">
+      <strong>The Valuation Inversion</strong>
+      At $1.75 trillion, SpaceX would be valued at approximately 94× the revenue of Kellanova — a company with comparable annual sales. Saudi Aramco, the only other company to achieve a $1.7T+ valuation, had revenue exceeding $330 billion at the time of its IPO and was already the most profitable enterprise in history. SpaceX's revenue-to-valuation ratio at IPO would be approximately 17× more aggressive than Aramco's.
+    </div>
+
+    <!-- Revenue vs Valuation Comparison -->
+    <h3>Revenue vs Market Cap: SpaceX vs the $1T+ Club</h3>
+    <div class="chart-panel">
+      <div class="chart-panel-title">Revenue vs Valuation — Companies at $1T+ Market Cap</div>
+      <div class="chart-panel-sub">P/S ratios shown. Lower is more conservative; higher requires greater future growth assumption.</div>
+      <table class="data-table">
+        <thead>
+          <tr><th>Company</th><th>Market Cap</th><th>Annual Revenue</th><th>P/S Multiple</th><th>Profitable?</th><th>Revenue Rank (Global)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Apple</td><td>~$3.4T</td><td>$391B</td><td style="color:var(--green);">8.7×</td><td style="color:var(--green);">Yes ($94B net)</td><td>#5</td></tr>
+          <tr><td>Microsoft</td><td>~$3.1T</td><td>$245B</td><td style="color:var(--green);">12.7×</td><td style="color:var(--green);">Yes ($88B net)</td><td>#10</td></tr>
+          <tr><td>Nvidia</td><td>~$2.9T</td><td>$130B</td><td>22×</td><td style="color:var(--green);">Yes ($73B net)</td><td>#40 approx.</td></tr>
+          <tr><td>Alphabet (Google)</td><td>~$2.1T</td><td>$350B</td><td style="color:var(--green);">6×</td><td style="color:var(--green);">Yes ($94B net)</td><td>#9 approx.</td></tr>
+          <tr><td>Amazon</td><td>~$2.1T</td><td>$621B</td><td style="color:var(--green);">3.4×</td><td style="color:var(--green);">Yes ($59B net)</td><td>#2</td></tr>
+          <tr><td>Saudi Aramco (IPO 2019)</td><td>$1.7T</td><td>$330B+</td><td style="color:var(--green);">5×</td><td style="color:var(--green);">Yes ($121B net)</td><td>#8 approx.</td></tr>
+          <tr><td>Meta</td><td>~$1.4T</td><td>$165B</td><td>8.5×</td><td style="color:var(--green);">Yes ($62B net)</td><td>#30 approx.</td></tr>
+          <tr class="danger highlight"><td><strong>SpaceX (IPO 2026)</strong></td><td><strong>$1.75T sought</strong></td><td><strong>$18.7B</strong></td><td style="color:var(--accent); font-weight:700;"><strong>93×</strong></td><td style="color:var(--accent);"><strong>No (−$4.9B)</strong></td><td><strong>~#235</strong></td></tr>
+        </tbody>
+        <tfoot><tr><td colspan="6">Market caps approximate as of May 2026. SpaceX revenue from S-1 filing. All other revenue from latest annual reports.</td></tr></tfoot>
+      </table>
+    </div>
+  </div>
+
+  <!-- SECTION 11: TAM vs REVENUE BY DIVISION -->
+  <div class="section">
+    <div class="section-eyebrow">Section XI · Market Capture Analysis</div>
+    <h2>TAM vs. Actual Revenue: The Gap, Division by Division</h2>
+
+    <p>The $28.5 trillion TAM claim is not a single number but a composite of three separate market size estimates applied to SpaceX's three business segments. Disaggregating the TAM claim alongside each segment's actual revenue reveals the true structure of the SpaceX investment thesis: one proven business with modest TAM penetration, and two speculative ones where current revenue represents a fraction of a fraction of the claimed opportunity.</p>
+
+    <!-- Butterfly chart: TAM (right) vs Revenue (left), shared log scale -->
+    <div class="chart-panel" style="overflow-x:auto;">
+      <div class="chart-panel-title">TAM vs. 2025 Revenue — Butterfly Chart, Shared Logarithmic Scale</div>
+      <div class="chart-panel-sub">Both axes use the same log₁₀ scale ($1B → $30T). Revenue bars extend left; TAM bars extend right. Each segment on a common baseline.</div>
+
+      <svg viewBox="0 0 680 310" xmlns="http://www.w3.org/2000/svg" style="width:100%; min-width:480px; font-family:'Segoe UI',sans-serif; overflow:visible;">
+
+        <!-- ── AXIS REFERENCE LINES (vertical, log ticks) ── -->
+        <!-- Scale: 0px = $1B, 250px = $30T  |  left panel right-edge = 240, right panel left-edge = 440 -->
+        <!-- log10($10B)=1  → (1/4.477)*250=55.8px from base -->
+        <!-- log10($100B)=2 → (2/4.477)*250=111.6px -->
+        <!-- log10($1T)=3   → (3/4.477)*250=167.5px -->
+        <!-- log10($10T)=4  → (4/4.477)*250=223.2px -->
+
+        <!-- Left panel grid lines (from x=240 leftward) -->
+        <line x1="240" y1="18" x2="240" y2="248" stroke="#ddd9d0" stroke-width="1"/>
+        <line x1="184" y1="18" x2="184" y2="248" stroke="#ede9e1" stroke-width="0.8" stroke-dasharray="3,3"/>
+        <line x1="128" y1="18" x2="128" y2="248" stroke="#ede9e1" stroke-width="0.8" stroke-dasharray="3,3"/>
+        <line x1="72"  y1="18" x2="72"  y2="248" stroke="#ede9e1" stroke-width="0.8" stroke-dasharray="3,3"/>
+        <line x1="17"  y1="18" x2="17"  y2="248" stroke="#ede9e1" stroke-width="0.8" stroke-dasharray="3,3"/>
+
+        <!-- Right panel grid lines (from x=440 rightward) -->
+        <line x1="440" y1="18" x2="440" y2="248" stroke="#ddd9d0" stroke-width="1"/>
+        <line x1="496" y1="18" x2="496" y2="248" stroke="#ede9e1" stroke-width="0.8" stroke-dasharray="3,3"/>
+        <line x1="552" y1="18" x2="552" y2="248" stroke="#ede9e1" stroke-width="0.8" stroke-dasharray="3,3"/>
+        <line x1="607" y1="18" x2="607" y2="248" stroke="#ede9e1" stroke-width="0.8" stroke-dasharray="3,3"/>
+        <line x1="663" y1="18" x2="663" y2="248" stroke="#ede9e1" stroke-width="0.8" stroke-dasharray="3,3"/>
+
+        <!-- Panel headers -->
+        <text x="120" y="14" text-anchor="middle" font-size="11" font-weight="700" fill="#c0152a">◀  2025 REVENUE</text>
+        <text x="560" y="14" text-anchor="middle" font-size="11" font-weight="700" fill="#1a2744">CLAIMED TAM  ▶</text>
+
+        <!-- ── ROW 1: AI / xAI ── y=30–78 -->
+        <!-- Revenue $3.2B: log10(3.2)=0.505 → (0.505/4.477)*240=27.1px  → x=240-27=213 to 240 -->
+        <rect x="213" y="34" width="27" height="38" fill="#c0152a" opacity="0.85"/>
+        <text x="208" y="57" text-anchor="end" font-size="10" font-weight="700" fill="#c0152a">$3.2B</text>
+        <!-- TAM $26,500B: log10(26500)=4.423 → (4.423/4.477)*240=237.1px → 440 to 677 -->
+        <rect x="440" y="34" width="237" height="38" fill="#1a2744" opacity="0.9"/>
+        <text x="682" y="57" text-anchor="start" font-size="10" font-weight="700" fill="#1a2744">$26,500B</text>
+        <!-- Center label -->
+        <text x="340" y="48" text-anchor="middle" font-size="12" font-weight="700" fill="#1a2744">AI / xAI</text>
+        <text x="340" y="62" text-anchor="middle" font-size="9" fill="#c0152a">−$6.4B op. loss · 0.012% captured</text>
+
+        <!-- ── ROW 2: Connectivity ── y=110–158 -->
+        <!-- Revenue $11.4B: log10(11.4)=1.057 → (1.057/4.477)*240=56.7px → x=183 to 240 -->
+        <rect x="183" y="114" width="57" height="38" fill="#1a6b3c" opacity="0.85"/>
+        <text x="178" y="137" text-anchor="end" font-size="10" font-weight="700" fill="#1a6b3c">$11.4B</text>
+        <!-- TAM $1,600B: log10(1600)=3.204 → (3.204/4.477)*240=171.8px → 440 to 612 -->
+        <rect x="440" y="114" width="172" height="38" fill="#1a4480" opacity="0.85"/>
+        <text x="616" y="137" text-anchor="start" font-size="10" font-weight="700" fill="#1a4480">$1,600B</text>
+        <!-- Center label -->
+        <text x="340" y="128" text-anchor="middle" font-size="12" font-weight="700" fill="#1a2744">Connectivity</text>
+        <text x="340" y="142" text-anchor="middle" font-size="9" fill="#1a6b3c">+$4.4B op. profit · 0.71% captured</text>
+
+        <!-- ── ROW 3: Space / Launch ── y=190–238 -->
+        <!-- Revenue $4.1B: log10(4.1)=0.613 → (0.613/4.477)*240=32.9px → x=207 to 240 -->
+        <rect x="207" y="194" width="33" height="38" fill="#92600a" opacity="0.85"/>
+        <text x="202" y="217" text-anchor="end" font-size="10" font-weight="700" fill="#92600a">$4.1B</text>
+        <!-- TAM $370B: log10(370)=2.568 → (2.568/4.477)*240=137.7px → 440 to 578 -->
+        <rect x="440" y="194" width="138" height="38" fill="#6b7280" opacity="0.85"/>
+        <text x="582" y="217" text-anchor="start" font-size="10" font-weight="700" fill="#6b7280">$370B</text>
+        <!-- Center label -->
+        <text x="340" y="208" text-anchor="middle" font-size="12" font-weight="700" fill="#1a2744">Space / Launch</text>
+        <text x="340" y="222" text-anchor="middle" font-size="9" fill="#92600a">−$657M op. loss · 1.11% captured</text>
+
+        <!-- ── AXIS BASELINE ── -->
+        <line x1="17" y1="250" x2="663" y2="250" stroke="#ddd9d0" stroke-width="1"/>
+
+        <!-- Left axis tick labels (from centre outward) -->
+        <text x="240" y="264" text-anchor="middle" font-size="9" fill="#999">$1B</text>
+        <text x="184" y="264" text-anchor="middle" font-size="9" fill="#999">$10B</text>
+        <text x="128" y="264" text-anchor="middle" font-size="9" fill="#999">$100B</text>
+        <text x="72"  y="264" text-anchor="middle" font-size="9" fill="#999">$1T</text>
+        <text x="17"  y="264" text-anchor="middle" font-size="9" fill="#999">$10T</text>
+
+        <!-- Right axis tick labels -->
+        <text x="440" y="264" text-anchor="middle" font-size="9" fill="#999">$1B</text>
+        <text x="496" y="264" text-anchor="middle" font-size="9" fill="#999">$10B</text>
+        <text x="552" y="264" text-anchor="middle" font-size="9" fill="#999">$100B</text>
+        <text x="607" y="264" text-anchor="middle" font-size="9" fill="#999">$1T</text>
+        <text x="663" y="264" text-anchor="middle" font-size="9" fill="#999">$10T</text>
+
+        <!-- Scale note -->
+        <text x="340" y="282" text-anchor="middle" font-size="9" fill="#aaa">Logarithmic scale — each grid step = 10× · both sides identical scale · gap between bars = uncaptured market</text>
+
+        <!-- Legend -->
+        <rect x="240" y="292" width="12" height="10" fill="#c0152a" opacity="0.85"/>
+        <text x="256" y="301" font-size="9" fill="#555">Revenue (left)</text>
+        <rect x="330" y="292" width="12" height="10" fill="#1a2744" opacity="0.85"/>
+        <text x="346" y="301" font-size="9" fill="#555">TAM (right)</text>
+        <rect x="420" y="292" width="12" height="10" fill="#1a6b3c" opacity="0.85"/>
+        <text x="436" y="301" font-size="9" fill="#1a6b3c">Profitable segment</text>
+
+      </svg>
+    </div>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-top:4px;">
+      <div style="padding:12px 14px; background:var(--red-bg); border-left:3px solid var(--accent); font-family:'Segoe UI',sans-serif; font-size:12px; color:#7a1020;">
+        <strong style="display:block; margin-bottom:3px;">AI / xAI</strong>
+        $3.2B of $26,500B TAM · <strong>0.012%</strong> captured · −$6.4B op. loss · competing vs. Azure, GCP, AWS
+      </div>
+      <div style="padding:12px 14px; background:var(--green-bg); border-left:3px solid var(--green); font-family:'Segoe UI',sans-serif; font-size:12px; color:#134d2c;">
+        <strong style="display:block; margin-bottom:3px;">Connectivity</strong>
+        $11.4B of $1,600B TAM · <strong>0.71%</strong> captured · +$4.4B op. profit · ARPU −33% since 2023
+      </div>
+      <div style="padding:12px 14px; background:var(--amber-bg); border-left:3px solid var(--amber); font-family:'Segoe UI',sans-serif; font-size:12px; color:#5c3b08;">
+        <strong style="display:block; margin-bottom:3px;">Space / Launch</strong>
+        $4.1B of $370B TAM · <strong>1.11%</strong> captured · −$657M op. loss · Starship not yet commercial
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 12: CRITICAL ANALYST DATA POINTS -->
+  <div class="section">
+    <div class="section-eyebrow">Section XII · Competitive Analysis</div>
+    <h2>What the S-1 Does Not Emphasise: The Competitive Reality</h2>
+
+    <p>S-1 filings are, by design, company-authored documents. Risk factors are required by the SEC but are typically drafted to be comprehensive rather than candid — the goal is disclosure, not emphasis. Competitive analysis of the filing by independent analysts and financial press has surfaced several data points that deserve more weight than the document's own framing suggests.</p>
+
+    <div class="callout callout-red">
+      <strong>Data Point 1: Amazon Project Kuiper — The Most Credible Threat</strong>
+      Amazon began commercial deployment of its 3,236-satellite Kuiper constellation in April 2025. Unlike previous Starlink competitors, Kuiper is backed by Amazon's $1.4 trillion balance sheet, can be bundled with AWS enterprise contracts (creating a sales channel SpaceX cannot replicate), and benefits from Amazon's existing logistics and customer support infrastructure. Amazon has committed to a minimum $10B capex for Kuiper. In the segment contributing 61% of SpaceX's revenue and 100% of its operating profit, Kuiper represents the first credible at-scale competitor. The S-1 lists Amazon as a risk factor but does not quantify the potential revenue impact.
+    </div>
+
+    <div class="callout callout-amber">
+      <strong>Data Point 2: China's MSST Constellation — State-Backed Disruption</strong>
+      China's Ministry of Industry and Information Technology approved a 13,000-satellite constellation (MSST, also referred to as "Qianfan") with ITU filings completed for orbital slots. Deployment is expected to begin 2026–2028. Unlike commercial competitors, MSST operates with unlimited state funding and explicit geopolitical objectives — specifically, providing affordable broadband to developing nations in Asia, Africa, and Latin America. These are precisely the markets that SpaceX's international expansion strategy depends on for future subscriber growth. The Brazil incident (2024, cited in the S-1's own risk factors) demonstrates the geopolitical fragility of Starlink's international market access.
+    </div>
+
+    <div class="chart-panel">
+      <div class="chart-panel-title">Satellite Broadband Competitor Landscape — 2026</div>
+      <div class="chart-panel-sub">Starlink's current constellation vs. funded, in-deployment competitors</div>
+      <table class="data-table">
+        <thead>
+          <tr><th>Operator</th><th>Satellites (Operational)</th><th>Target Constellation</th><th>Backing</th><th>Primary Market</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr class="highlight"><td><strong>Starlink (SpaceX)</strong></td><td>~7,000</td><td>12,000+</td><td>Private / IPO</td><td>Global consumer + enterprise</td><td><strong>Market leader</strong></td></tr>
+          <tr><td>Project Kuiper (Amazon)</td><td>~590</td><td>3,236</td><td>Amazon ($10B+)</td><td>Enterprise / AWS customers</td><td>Commercial launch Apr 2025</td></tr>
+          <tr><td>OneWeb / Eutelsat</td><td>648</td><td>648</td><td>SoftBank, UK Gov.</td><td>Enterprise / government</td><td>Operational. Financially restructured.</td></tr>
+          <tr><td>Telesat Lightspeed</td><td>0</td><td>298</td><td>Canadian gov. + private</td><td>Enterprise</td><td>Launch delays to 2027</td></tr>
+          <tr class="danger"><td>MSST / Qianfan (China)</td><td>0</td><td>13,000</td><td>Chinese state</td><td>Global developing markets</td><td>ITU slots filed; launch 2026+</td></tr>
+          <tr><td>EU Iris²</td><td>0</td><td>290</td><td>EU member states</td><td>Government / enterprise EU</td><td>Contract awarded 2024</td></tr>
+        </tbody>
+        <tfoot><tr><td colspan="6">Constellation sizes approximate. Kuiper and MSST represent the two credible at-scale competitors to Starlink's consumer and enterprise markets.</td></tr></tfoot>
+      </table>
+    </div>
+
+    <div class="callout callout-amber">
+      <strong>Data Point 3: The ARPU Trajectory Extrapolated</strong>
+      At its current rate of decline (approximately $8/month per year), Starlink ARPU would reach $50/month by 2028. At $50/month and 25 million subscribers (an optimistic projection), annual connectivity revenue would be $15 billion — essentially flat from today's $11.4 billion despite 2.5× subscriber growth. The filing does not provide a floor ARPU estimate or address the pricing floor question directly. Analysts covering telecommunications note that ARPU compression in satellite broadband typically accelerates as geographic expansion continues into lower-income markets.
+    </div>
+
+    <div class="callout callout-red">
+      <strong>Data Point 4: Grok's Competitive Position in AI Benchmarks</strong>
+      The AI segment, which carries 93% of the claimed TAM, depends on Grok's ability to compete in the enterprise AI market. As of Q1 2026, independent benchmark rankings (MMLU, HumanEval, GPQA) place Grok 4 behind GPT-4o (OpenAI/Microsoft), Gemini Ultra 1.5 (Google), and Claude 3 Opus (Anthropic) on most enterprise-relevant tasks. Each of Grok's three leading competitors is backed by the company with the largest existing enterprise software distribution network in its respective segment: Microsoft (365 / Azure), Google (Workspace / GCP), and Amazon (AWS / Bedrock). Market share in enterprise AI has historically followed distribution advantages more than raw benchmark performance.
+    </div>
+
+    <div class="callout callout-blue">
+      <strong>Data Point 5: The Musk Attention Portfolio</strong>
+      The filing discloses, in its own risk factors, that Musk simultaneously serves as CEO of Tesla, CEO of SpaceX, CEO/CTO of xAI, owner/operator of X (Twitter), and leads The Boring Company — a tunnelling infrastructure venture. He also served as co-lead of the Department of Government Efficiency (DOGE) through early 2025. The S-1 explicitly states: "Mr. Musk's attention may be diverted to other ventures." This is unusually candid language for a prospectus. No other $1 trillion+ company in history has had its CEO simultaneously leading five major enterprises and a government advisory role at the time of IPO.
+    </div>
+
+    <div class="callout callout-amber">
+      <strong>Data Point 6: The Starship Commercial Model — What Is and Isn't Contracted</strong>
+      Starship's Artemis HLS contract (lunar lander, ~$2.9B) is the only signed commercial contract for a Starship application beyond Starlink satellite deployment. The $370B Space segment TAM relies on point-to-point Earth transport, lunar logistics, and Mars colonisation. Point-to-point Earth transport has no certified regulatory pathway from the FAA or international equivalents; regulatory timelines for new aircraft vehicle categories typically run 7–15 years. Mars colonisation is, by any commercial analysis, pre-revenue by a minimum of 10–15 years. The Space segment's TAM is approximately 80% speculative-market-sized and approximately 20% addressable with current or near-term products.
+    </div>
+
+    <h3>The Concentration Risk Summary</h3>
+    <div class="stat-grid">
+      <div class="stat-box">
+        <div class="stat-val red">1</div>
+        <div class="stat-lbl">Profitable Segment</div>
+        <div class="stat-note">Starlink is 100% of operating profit. If Kuiper or MSST erodes 20% of Starlink subscribers, the entire company returns to losses.</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val red">5</div>
+        <div class="stat-lbl">Musk Concurrent Roles</div>
+        <div class="stat-note">CEO of Tesla, SpaceX, xAI, X, and The Boring Company simultaneously. No peer precedent for this CEO structure at $1T+ valuation.</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val red">90</div>
+        <div class="stat-lbl">Days to Exit ($45B)</div>
+        <div class="stat-note">The Anthropic compute agreement — SpaceX's largest single AI revenue source — can be terminated on 90 days' notice by either party.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="section" style="border-bottom:none; padding-bottom:0;">
+    <div class="section-eyebrow">Conclusion</div>
+    <h2>Assessment</h2>
+  </div>
+
+</div><!-- end main-content -->
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="sidebar-box">
+    <div class="sidebar-box-title">Key Metrics at a Glance</div>
+    <div class="sidebar-item"><span class="sidebar-item-label">Target Valuation</span><span class="sidebar-item-val">$1.75T</span></div>
+    <div class="sidebar-item"><span class="sidebar-item-label">2025 Revenue</span><span class="sidebar-item-val">$18.7B</span></div>
+    <div class="sidebar-item"><span class="sidebar-item-label">2025 Net Loss</span><span class="sidebar-item-val red">−$4.94B</span></div>
+    <div class="sidebar-item"><span class="sidebar-item-label">2024 Net Income</span><span class="sidebar-item-val green">+$791M</span></div>
+    <div class="sidebar-item"><span class="sidebar-item-label">Q1 2026 Net Loss</span><span class="sidebar-item-val red">−$4.28B</span></div>
+    <div class="sidebar-item"><span class="sidebar-item-label">Accumulated Deficit</span><span class="sidebar-item-val red">−$41.3B</span></div>
+    <div class="sidebar-item"><span class="sidebar-item-label">Price / Revenue</span><span class="sidebar-item-val red">93×</span></div>
+    <div class="sidebar-item"><span class="sidebar-item-label">Total Capex 2025</span><span class="sidebar-item-val red">$20.7B</span></div>
+    <div class="sidebar-item"><span class="sidebar-item-label">AI Capex 2025</span><span class="sidebar-item-val red">$12.7B</span></div>
+    <div class="sidebar-item"><span class="sidebar-item-label">Musk Voting Power</span><span class="sidebar-item-val red">85.1%</span></div>
+    <div class="sidebar-item"><span class="sidebar-item-label">TAM Claimed</span><span class="sidebar-item-val">$28.5T</span></div>
+    <div class="sidebar-item"><span class="sidebar-item-label">Ticker</span><span class="sidebar-item-val">SPCX</span></div>
+  </div>
+
+  <div class="sidebar-box">
+    <div class="sidebar-box-title">Segment Revenue 2025</div>
+    <div class="sidebar-item"><span class="sidebar-item-label">Connectivity (Starlink)</span><span class="sidebar-item-val green">$11.4B</span></div>
+    <div class="sidebar-item"><span class="sidebar-item-label">Space / Launch</span><span class="sidebar-item-val">$4.1B</span></div>
+    <div class="sidebar-item"><span class="sidebar-item-label">AI / xAI</span><span class="sidebar-item-val red">$3.2B</span></div>
+    <div class="sidebar-item" style="border-top:2px solid var(--border); margin-top:4px; padding-top:8px;"><span class="sidebar-item-label" style="font-weight:700;">Total</span><span class="sidebar-item-val">$18.7B</span></div>
+  </div>
+
+  <div class="sidebar-box">
+    <div class="sidebar-box-title">Word Frequency (S-1) · Full Doc</div>
+    <div class="sidebar-item"><span class="sidebar-item-label">"Starlink"</span><span class="sidebar-item-val">379</span></div>
+    <div class="sidebar-item"><span class="sidebar-item-label">"loss" / "losses"</span><span class="sidebar-item-val red">344</span></div>
+    <div class="sidebar-item"><span class="sidebar-item-label">"government"</span><span class="sidebar-item-val">237</span></div>
+    <div class="sidebar-item"><span class="sidebar-item-label">"Musk"</span><span class="sidebar-item-val">174</span></div>
+    <div class="sidebar-item"><span class="sidebar-item-label">"risk" / "risks"</span><span class="sidebar-item-val red">179</span></div>
+    <div class="sidebar-item"><span class="sidebar-item-label">"mission"</span><span class="sidebar-item-val">130</span></div>
+    <div class="sidebar-item"><span class="sidebar-item-label">"debt"</span><span class="sidebar-item-val red">121</span></div>
+    <div class="sidebar-item"><span class="sidebar-item-label">fail/failure variants</span><span class="sidebar-item-val red">114</span></div>
+    <div class="sidebar-item"><span class="sidebar-item-label">"may not"</span><span class="sidebar-item-val red">84</span></div>
+    <div class="sidebar-item"><span class="sidebar-item-label">"mars"</span><span class="sidebar-item-val">63</span></div>
+    <div class="sidebar-item"><span class="sidebar-item-label">"trillion"</span><span class="sidebar-item-val">54</span></div>
+    <div class="sidebar-item"><span class="sidebar-item-label">"unprecedented"</span><span class="sidebar-item-val">32</span></div>
+    <div class="sidebar-item"><span class="sidebar-item-label">"consciousness"</span><span class="sidebar-item-val">10</span></div>
+    <div class="sidebar-item"><span class="sidebar-item-label">"profit"</span><span class="sidebar-item-val">6</span></div>
+    <div class="sidebar-item" style="border-top:2px solid var(--border); margin-top:4px; padding-top:8px;"><span class="sidebar-item-label" style="font-weight:700;">"profitable"</span><span class="sidebar-item-val" style="color:var(--accent); font-size:1.1rem;">1</span></div>
+  </div>
+
+  <div class="sidebar-box">
+    <div class="sidebar-box-title">Starlink ARPU Decline</div>
+    <div class="sidebar-item"><span class="sidebar-item-label">2023</span><span class="sidebar-item-val green">$99/mo</span></div>
+    <div class="sidebar-item"><span class="sidebar-item-label">2024</span><span class="sidebar-item-val">$91/mo</span></div>
+    <div class="sidebar-item"><span class="sidebar-item-label">2025</span><span class="sidebar-item-val">$81/mo</span></div>
+    <div class="sidebar-item"><span class="sidebar-item-label">Q1 2026</span><span class="sidebar-item-val red">$66/mo</span></div>
+    <div class="sidebar-item" style="border-top:2px solid var(--border); margin-top:4px; padding-top:8px;"><span class="sidebar-item-label">3-Year Decline</span><span class="sidebar-item-val red">−33%</span></div>
+  </div>
+</div>
+
+</div><!-- end main -->
+
+<!-- VERDICT (full width) -->
+<div class="verdict-box" style="max-width:1060px; margin:0 auto; padding:40px 40px;">
+  <h2>Conclusion: Three Companies, One Price, and a Question of Precedent</h2>
+  <p>SpaceX's S-1 presents investors with an unusual challenge: they must simultaneously price a satellite internet business with genuine infrastructure moats, a launch monopoly in transition, and an AI startup competing in the most capitalised technology market in history — all under a governance structure that offers essentially no recourse if strategy proves incorrect.</p>
+  <p><strong>What the filing confirms is this:</strong> Starlink is real, profitable, and growing. It generates $4.4 billion in operating income on $11.4 billion in revenue, with 10.3 million subscribers across 164 countries. At standard satellite and telecommunications multiples, it would justify a $150–300 billion valuation. The launch business, pending Starship's commercial success, could add $50–150 billion. This core is exceptional.</p>
+  <p><strong>What the filing asks investors to accept</strong> is that the remaining $1.2–1.5 trillion in valuation — the AI premium — is justified for a segment that generated $3.2 billion in revenue against a $6.4 billion operating loss and $12.7 billion in capex in 2025. Q1 2026 AI capex alone was $7.7 billion, annualising above $30 billion. The segment's primary competitive advantages, per the filing, include "approximately 350 million daily posts" from X, and a compute infrastructure powered by xAI's acquisition — itself the result of a $44 billion purchase that investors in the acquired company wrote down by 70-80%.</p>
+  <p><strong>The precedent is clear but inconclusive.</strong> Amazon raised capital at high multiples while losing money and became the most consequential business of its era. WeWork raised capital at high multiples while losing money and went bankrupt. Tesla went public while losing money, nearly failed multiple times, and eventually rewarded patient investors by 300-fold. The difference in each case was not the multiple paid at IPO, but whether the company's core product genuinely dominated its market and whether the expansion thesis was credible given the competitive landscape.</p>
+  <p>Starlink dominates its market. The launch business dominates its market. The AI thesis requires SpaceX to displace Microsoft, Google, Amazon, and Meta — four companies with a combined annual AI and cloud revenue that exceeds $400 billion — from a standing start, financed by an IPO, with a CEO simultaneously running four other major enterprises. The filing uses the word "unprecedented" 28 times. On this point, at least, it may be accurate.</p>
+</div>
+
+<div class="footnotes">
+  <strong>Sources &amp; Methodology:</strong> Financial data and direct quotations sourced from the SpaceX S-1 registration statement filed with the U.S. Securities and Exchange Commission, May 20, 2026 (CIK: 1181412). Word frequency counts derived from pdftotext extraction of pages 19–260 of 280. ARPU data from S-1 MD&amp;A section. Segment financials from S-1 segment reporting tables. IPO comparison data from public filings and press coverage.
+  Additional analysis:
+  <a href="https://www.thevccorner.com/p/spacex-spcx-ipo-s1-teardown-valuation-2026">The VC Corner S-1 Teardown</a> ·
+  <a href="https://fortune.com/2026/05/20/spacex-ipo-filing-s1-total-addressable-market-make-life-multiplanetary/">Fortune — TAM Analysis</a> ·
+  <a href="https://fortune.com/2026/05/23/what-business-is-space-x-in-ipo-filing-stock/">Fortune — Business Analysis</a> ·
+  <a href="https://www.satellitetoday.com/finance/2026/05/20/spacexs-ipo-filing-gives-first-look-into-companys-financials/">Via Satellite</a>.
+  This analysis is for informational purposes only and does not constitute investment advice. Word counts are partial-document estimates and may vary across full document analysis.
+</div>
+
+</body>
+</html>
