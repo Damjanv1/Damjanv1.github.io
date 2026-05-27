@@ -29,6 +29,9 @@ Long-form analytical pieces with embedded data visualisations.
 ### [The Valuation of Ambition: SpaceX S-1 Analysis](https://damjanv1.github.io/spacex-s1-analysis.html)
 A Harvard Business Review&ndash;style teardown of SpaceX&rsquo;s $1.75 trillion IPO filing &mdash; word frequency analysis across all 280 pages, TAM vs revenue butterfly charts by segment (log scale), circular investment web, Fortune 500 revenue rank comparison, valuation multiples vs Google / Amazon / Tesla / WeWork, and a competitive landscape review. Data sourced directly from the S-1 PDF.
 
+### [Australian Occupations &amp; AI Exposure](https://damjanv1.github.io/au-ai-jobs.html)
+A canvas treemap of ~14 million Australian workers across the ANZSCO occupation classification &mdash; sized by employment, coloured by AI exposure. Tracks how exposure estimates evolved across four published studies from 2021 to 2026 (Felten, Eloundou, Gmyrek/ILO, and a Karpathy-style LLM prompt). Toggle between AI Exposure, Job Growth, Median Pay, and Education colour modes. Data: ABS Labour Force, Jobs &amp; Skills Australia projections, and crosswalked AI exposure indices.
+
 ---
 
 More projects over on [GitHub &rarr;](https://github.com/Damjanv1)
