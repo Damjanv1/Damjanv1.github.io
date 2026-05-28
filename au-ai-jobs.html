@@ -239,6 +239,7 @@ const CATEGORIES = [
 ];
 
 const YEARS = [2021, 2023, 2024, 2026];
+const YEAR_KEYS = [21, 23, 24, 26];
 const STUDIES = ["Felten et al. (AIOE index)", "Eloundou et al. (GPTs are GPTs)", "Gmyrek / ILO ISCO-08", "Karpathy-style LLM prompt"];
 
 // ── STATE ─────────────────────────────────────────────────────────────────────
@@ -301,7 +302,7 @@ function payColor(v) {
 }
 const EDU_COLORS = {"No req.":"#4a2060","Year 12":"#6b3080","Certificate":"#8b6820","Degree":"#1a6060","Postgrad":"#0a4040"};
 function cellColor(occ) {
-  if (mode==='exposure') return expColor(occ.exp[YEARS[yearIdx]]);
+  if (mode==='exposure') return expColor(occ.exp[YEAR_KEYS[yearIdx]]);
   if (mode==='growth') return growthColor(occ.g5);
   if (mode==='pay') return payColor(occ.pay);
   return EDU_COLORS[occ.edu]||'#333';
@@ -311,7 +312,7 @@ function cellColor(occ) {
 const canvas = document.getElementById('map');
 const ctx = canvas.getContext('2d');
 
-function getExpValue(occ) { return occ.exp[YEARS[yearIdx]]; }
+function getExpValue(occ) { return occ.exp[YEAR_KEYS[yearIdx]]; }
 
 function buildRects() {
   const dpr = window.devicePixelRatio||1;
@@ -425,7 +426,7 @@ canvas.addEventListener('mousemove', e => {
     document.getElementById('ttGrowth').textContent = (occ.g5>0?'+':'')+occ.g5+'%';
     document.getElementById('ttGrowth').style.color = occ.g5>0?'#4ade80':occ.g5<0?'#f87171':'#e0e3f0';
     document.getElementById('ttEdu').textContent = occ.edu;
-    const expData = [{id:'ttE21',vid:'ttV21',yr:2021},{id:'ttE23',vid:'ttV23',yr:2023},{id:'ttE24',vid:'ttV24',yr:2024},{id:'ttE26',vid:'ttV26',yr:2026}];
+    const expData = [{id:'ttE21',vid:'ttV21',yr:21},{id:'ttE23',vid:'ttV23',yr:23},{id:'ttE24',vid:'ttV24',yr:24},{id:'ttE26',vid:'ttV26',yr:26}];
     for (const ed of expData) {
       const v = occ.exp[ed.yr];
       document.getElementById(ed.id).style.width = (v*10)+'%';
@@ -467,7 +468,7 @@ slider.addEventListener('input', ()=>{
 function updateStats() {
   const all = CATEGORIES.flatMap(c=>c.groups);
   const totalJobs = all.reduce((s,g)=>s+g.jobs,0);
-  const wavgExp = all.reduce((s,g)=>s+g.jobs*g.exp[YEARS[yearIdx]],0)/totalJobs;
+  const wavgExp = all.reduce((s,g)=>s+g.jobs*g.exp[YEAR_KEYS[yearIdx]],0)/totalJobs;
   const wavgGrowth = all.reduce((s,g)=>s+g.jobs*g.g5,0)/totalJobs;
   const wavgPay = all.reduce((s,g)=>s+g.jobs*g.pay,0)/totalJobs;
   document.getElementById('stAvgExp').textContent = wavgExp.toFixed(1)+'/10';
@@ -479,7 +480,7 @@ function updateStats() {
   // Tier bar
   const tiers=[0,0,0,0,0]; // 0-2,2-4,4-6,6-8,8+
   for (const g of all) {
-    const v=g.exp[YEARS[yearIdx]];
+    const v=g.exp[YEAR_KEYS[yearIdx]];
     const ti=v<2?0:v<4?1:v<6?2:v<8?3:4;
     tiers[ti]+=g.jobs;
   }
@@ -497,7 +498,7 @@ function updateStats() {
   hist.innerHTML='';
   for (const cat of CATEGORIES) {
     const catTotal=cat.groups.reduce((s,g)=>s+g.jobs,0);
-    const wavg=cat.groups.reduce((s,g)=>s+g.jobs*g.exp[YEARS[yearIdx]],0)/catTotal;
+    const wavg=cat.groups.reduce((s,g)=>s+g.jobs*g.exp[YEAR_KEYS[yearIdx]],0)/catTotal;
     const row=document.createElement('div'); row.className='hist-row';
     const maxAvg=9.5;
     row.innerHTML=`<div class="hist-label">${cat.name.split(' ')[0]}</div>
