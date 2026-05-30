@@ -7,92 +7,133 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0d0f18;color:#e0e3f0;height:100vh;display:flex;flex-direction:column;overflow:hidden}
-header{padding:12px 24px 10px;background:#111422;border-bottom:1px solid #1e2236;display:flex;align-items:center;gap:16px;flex-shrink:0}
-header h1{font-size:18px;font-weight:700;color:#fff;letter-spacing:-0.3px;white-space:nowrap}
+header{padding:12px 24px 10px;background:#111422;border-bottom:1px solid #1e2236;flex-shrink:0}
+header h1{font-size:18px;font-weight:700;color:#fff;letter-spacing:-0.3px}
 header p{font-size:11px;color:#6b7094;margin-top:1px}
 .tabs{display:flex;gap:2px;background:#111422;border-bottom:1px solid #1a1d2e;padding:0 24px;flex-shrink:0}
 .tab{padding:9px 18px;border:none;background:transparent;color:#6b7094;cursor:pointer;font-size:13px;font-family:inherit;border-bottom:2px solid transparent;transition:all .15s;margin-bottom:-1px}
 .tab.active{color:#7cb9ff;border-bottom-color:#4a9eff}
 .tab:hover:not(.active){color:#b0b8d8}
-.panel{display:none;flex:1;min-height:0;overflow:hidden}
+.panel{display:none;flex:1;min-height:0;overflow:hidden;flex-direction:column}
 .panel.active{display:flex}
 
-/* ── TREEMAP PANEL ── */
-#panel-treemap{flex-direction:column}
-.tm-controls{display:flex;align-items:center;gap:12px;padding:8px 24px;background:#111422;border-bottom:1px solid #1a1d2e;flex-shrink:0;flex-wrap:wrap}
+/* ── METHODOLOGY BANNER ── */
+.method-bar{background:#111e2a;border-bottom:1px solid #1e3050;padding:0;flex-shrink:0;overflow:hidden;transition:max-height .3s ease}
+.method-bar.collapsed{max-height:34px}
+.method-bar.expanded{max-height:240px}
+.method-toggle{display:flex;align-items:center;gap:8px;padding:8px 24px;cursor:pointer;user-select:none}
+.method-toggle span.icon{font-size:11px;color:#4a9eff;transition:transform .2s}
+.method-toggle span.label{font-size:12px;color:#7cb9ff;font-weight:600}
+.method-toggle span.summary{font-size:11px;color:#4b5280;margin-left:4px}
+.method-toggle span.chevron{margin-left:auto;font-size:11px;color:#4b5280;transition:transform .2s}
+.method-bar.expanded .method-toggle span.chevron{transform:rotate(180deg)}
+.method-body{padding:2px 24px 14px;display:grid;grid-template-columns:1fr 1fr;gap:12px 28px}
+.method-section h4{font-size:11px;font-weight:700;color:#7cb9ff;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
+.method-section p{font-size:11px;color:#7a8090;line-height:1.65}
+.method-section a{color:#4a9eff;text-decoration:none;border-bottom:1px solid #1e3050}
+.method-section a:hover{border-bottom-color:#4a9eff}
+
+/* ── TREEMAP CONTROLS ── */
+.tm-controls{display:flex;align-items:center;gap:12px;padding:7px 24px;background:#111422;border-bottom:1px solid #1a1d2e;flex-shrink:0;flex-wrap:wrap}
 .btn-group{display:flex;gap:2px;background:#161929;border-radius:6px;padding:2px}
 .btn{padding:4px 11px;border:none;background:transparent;color:#6b7094;cursor:pointer;font-size:12px;border-radius:4px;transition:all .15s;white-space:nowrap;font-family:inherit}
 .btn.active{background:#1e3a6e;color:#7cb9ff}
 .btn:hover:not(.active){background:#1a1d2e;color:#ccc}
-.year-wrap{display:flex;align-items:center;gap:8px;margin-left:auto}
-.ctrl-label{font-size:11px;color:#555;text-transform:uppercase;letter-spacing:.5px}
-#yearSlider{width:150px;accent-color:#4a9eff;cursor:pointer}
-#yearDisplay{font-size:13px;font-weight:700;color:#4a9eff;min-width:32px}
-.study-tag{font-size:11px;color:#4b5280;min-width:150px}
+.yr-wrap{display:flex;align-items:center;gap:8px;margin-left:auto}
+.ctrl-lbl{font-size:11px;color:#555;text-transform:uppercase;letter-spacing:.5px}
+input[type=range]{accent-color:#4a9eff;cursor:pointer}
+.yr-num{font-size:13px;font-weight:700;color:#4a9eff;min-width:32px}
+.yr-study{font-size:11px;color:#4b5280;min-width:150px}
+
+/* ── TREEMAP BODY ── */
 .tm-body{display:flex;flex:1;min-height:0}
+.tm-wrap{position:relative;flex:1;min-width:0;display:flex}
 canvas#map{display:block;flex:1;cursor:pointer;min-width:0}
 .back-btn{position:absolute;top:8px;left:8px;background:#1e3a6e;color:#7cb9ff;border:1px solid #2a5090;border-radius:6px;padding:5px 12px;font-size:12px;cursor:pointer;font-family:inherit;display:none;z-index:10}
-.tm-wrap{position:relative;flex:1;min-width:0;display:flex}
-.sidebar{width:252px;background:#111422;border-left:1px solid #1a1d2e;overflow-y:auto;padding:14px;flex-shrink:0}
+.sidebar{width:248px;background:#111422;border-left:1px solid #1a1d2e;overflow-y:auto;padding:13px;flex-shrink:0}
 .sb-block{background:#161929;border-radius:7px;padding:11px;margin-bottom:9px}
 .sb-block h3{font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:#4b5280;margin-bottom:8px}
 .stat-row{display:flex;justify-content:space-between;margin-bottom:5px}
 .stat-row .lbl{font-size:12px;color:#8890b0}
 .stat-row .val{font-size:12px;font-weight:600;color:#e0e3f0}
-.tier-bar{display:flex;border-radius:4px;overflow:hidden;height:18px;margin:7px 0 3px;gap:2px}
+.tier-bar{display:flex;border-radius:4px;overflow:hidden;height:18px;margin:6px 0 3px;gap:2px}
 .tier-seg{display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:rgba(255,255,255,.88);min-width:1px;transition:flex .35s ease}
 .hist-row{display:flex;align-items:center;gap:6px;margin-bottom:4px}
-.hist-label{font-size:11px;color:#6b7094;width:62px;text-align:right;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.hist-bar-bg{flex:1;height:11px;background:#1a1d2e;border-radius:2px;overflow:hidden}
-.hist-bar-fill{height:100%;border-radius:2px;transition:width .3s ease}
-.hist-pct{font-size:10px;color:#4b5280;width:24px;text-align:right;flex-shrink:0}
+.hist-lbl{font-size:11px;color:#6b7094;width:60px;text-align:right;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hist-bg{flex:1;height:10px;background:#1a1d2e;border-radius:2px;overflow:hidden}
+.hist-fill{height:100%;border-radius:2px;transition:width .3s ease}
+.hist-val{font-size:10px;color:#4b5280;width:22px;text-align:right;flex-shrink:0}
 .leg-row{display:flex;align-items:center;gap:7px;margin-bottom:5px}
-.leg-swatch{width:10px;height:10px;border-radius:2px;flex-shrink:0}
-.leg-text{font-size:11px;color:#6b7094}
+.leg-sw{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+.leg-txt{font-size:11px;color:#6b7094}
 
 /* ── SLOPE / QUAD PANELS ── */
 #panel-slope,#panel-quad{flex-direction:row;overflow:hidden}
-.chart-wrap{flex:1;min-width:0;padding:28px 16px 20px 24px;display:flex;flex-direction:column;overflow:hidden}
-.chart-wrap h2{font-size:15px;font-weight:700;color:#fff;margin-bottom:4px}
-.chart-wrap p.sub{font-size:12px;color:#6b7094;margin-bottom:16px;line-height:1.5}
-.svg-wrap{flex:1;min-height:0;position:relative}
-.svg-wrap svg{width:100%;height:100%}
-.insight-panel{width:240px;background:#111422;border-left:1px solid #1a1d2e;padding:16px;overflow-y:auto;flex-shrink:0}
-.insight-panel h3{font-size:13px;font-weight:700;color:#fff;margin-bottom:12px}
-.insight-card{background:#161929;border-radius:7px;padding:11px;margin-bottom:9px;border-left:3px solid #4a9eff}
-.insight-card.warn{border-left-color:#d46a00}
-.insight-card.good{border-left-color:#1e8449}
-.insight-card.neutral{border-left-color:#4b5280}
-.insight-card h4{font-size:12px;font-weight:700;color:#fff;margin-bottom:5px}
-.insight-card p{font-size:11px;color:#8890b0;line-height:1.55}
-.insight-card .tag{display:inline-block;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:2px 6px;border-radius:3px;margin-bottom:5px}
-.tag-risk{background:#3a1a0a;color:#d46a00}
-.tag-safe{background:#0a2a1a;color:#4ade80}
-.tag-watch{background:#1a1a3a;color:#7cb9ff}
+.chart-outer{flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden}
+.chart-head{padding:20px 24px 4px;flex-shrink:0}
+.chart-head h2{font-size:15px;font-weight:700;color:#fff;margin-bottom:3px}
+.chart-head p{font-size:11px;color:#6b7094;line-height:1.5}
+.quad-ctrls{display:flex;align-items:center;gap:10px;padding:6px 24px;border-bottom:1px solid #1a1d2e;flex-shrink:0;background:#111422}
+.svg-wrap{flex:1;min-height:0;padding:8px 12px 4px 8px}
+.svg-wrap svg{width:100%;height:100%;display:block}
+.ins-panel{width:232px;background:#111422;border-left:1px solid #1a1d2e;padding:14px;overflow-y:auto;flex-shrink:0}
+.ins-panel h3{font-size:13px;font-weight:700;color:#fff;margin-bottom:11px}
+.ins-card{background:#161929;border-radius:7px;padding:10px;margin-bottom:9px;border-left:3px solid #4a9eff}
+.ins-card.warn{border-left-color:#d46a00}
+.ins-card.good{border-left-color:#1e8449}
+.ins-card.note{border-left-color:#4b5280}
+.ins-card h4{font-size:12px;font-weight:700;color:#fff;margin-bottom:4px}
+.ins-card p{font-size:11px;color:#8890b0;line-height:1.55}
+.ins-tag{display:inline-block;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:2px 5px;border-radius:3px;margin-bottom:5px}
+.tag-r{background:#3a1a0a;color:#d46a00}
+.tag-g{background:#0a2a1a;color:#4ade80}
+.tag-b{background:#1a1a3a;color:#7cb9ff}
+.tag-n{background:#1a1a2a;color:#6b7094}
 
-/* ── TOOLTIP ── */
-#tooltip{position:fixed;background:#161929;border:1px solid #2a2e4a;border-radius:9px;padding:12px 14px;font-size:12px;max-width:260px;pointer-events:none;z-index:200;display:none;box-shadow:0 12px 32px rgba(0,0,0,.7)}
-#tooltip h3{font-size:13px;font-weight:700;color:#fff;margin-bottom:3px;line-height:1.3}
-.tt-code{font-size:10px;color:#4b5280;margin-bottom:8px}
-.tt-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:8px}
-.tt-cell{background:#1f2340;border-radius:5px;padding:5px 7px}
-.tt-cell-l{font-size:9px;color:#4b5280;text-transform:uppercase;margin-bottom:1px}
-.tt-cell-v{font-size:12px;font-weight:600;color:#e0e3f0}
-.tt-exp-row{display:flex;align-items:center;gap:6px;margin-bottom:4px}
-.tt-exp-label{font-size:10px;color:#6b7094;width:30px;flex-shrink:0}
-.tt-exp-bg{flex:1;height:4px;background:#1f2340;border-radius:2px;overflow:hidden}
-.tt-exp-fill{height:100%;border-radius:2px}
-.tt-exp-val{font-size:10px;font-weight:700;width:24px;text-align:right;flex-shrink:0}
-.tt-divider{height:1px;background:#1f2340;margin:8px 0}
-.tt-rat{font-size:11px;color:#8890b0;line-height:1.55;font-style:italic}
+/* ── DETAIL MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:300;display:none;align-items:center;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal{background:#13162a;border:1px solid #2a2e50;border-radius:12px;width:520px;max-width:90vw;max-height:80vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.8)}
+.modal-hd{display:flex;align-items:flex-start;justify-content:space-between;padding:20px 22px 14px;border-bottom:1px solid #1e2236}
+.modal-hd-left h2{font-size:17px;font-weight:700;color:#fff;line-height:1.3;margin-bottom:3px}
+.modal-hd-left .code{font-size:11px;color:#4b5280}
+.modal-close{background:none;border:none;color:#4b5280;font-size:20px;cursor:pointer;padding:0 4px;line-height:1;flex-shrink:0;margin-left:12px}
+.modal-close:hover{color:#fff}
+.modal-body{padding:18px 22px 20px}
+.modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+.mod-cell{background:#1a1d30;border-radius:6px;padding:9px 11px}
+.mod-cell-l{font-size:9px;color:#4b5280;text-transform:uppercase;letter-spacing:.3px;margin-bottom:2px}
+.mod-cell-v{font-size:13px;font-weight:600;color:#e0e3f0}
+.exp-section h4{font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:#4b5280;margin-bottom:10px}
+.exp-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.exp-yr{font-size:11px;color:#6b7094;width:32px;flex-shrink:0}
+.exp-study{font-size:10px;color:#3a3f5c;flex:0 0 140px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.exp-bar-bg{flex:1;height:6px;background:#1a1d30;border-radius:3px;overflow:hidden}
+.exp-bar-fill{height:100%;border-radius:3px}
+.exp-val{font-size:11px;font-weight:700;width:26px;text-align:right;flex-shrink:0}
+.mod-divider{height:1px;background:#1e2236;margin:14px 0}
+.mod-rat{font-size:12px;color:#9098b8;line-height:1.65;margin-bottom:16px}
+.mod-links{display:flex;gap:10px;flex-wrap:wrap}
+.mod-link{display:inline-flex;align-items:center;gap:5px;padding:7px 13px;border-radius:6px;font-size:12px;font-weight:600;text-decoration:none;transition:all .15s}
+.mod-link.primary{background:#1e3a6e;color:#7cb9ff;border:1px solid #2a5090}
+.mod-link.primary:hover{background:#2a4a80;color:#a0d0ff}
+.mod-link.secondary{background:#161929;color:#6b7094;border:1px solid #2a2e4a}
+.mod-link.secondary:hover{background:#1e2236;color:#b0b8d8}
+
+/* ── SHARED TOOLTIP (quad hover) ── */
+#tooltip{position:fixed;background:#161929;border:1px solid #2a2e4a;border-radius:9px;padding:11px 13px;font-size:12px;max-width:240px;pointer-events:none;z-index:200;display:none;box-shadow:0 10px 28px rgba(0,0,0,.7)}
+#tooltip h3{font-size:12px;font-weight:700;color:#fff;margin-bottom:2px;line-height:1.3}
+#tooltip .tt-code{font-size:10px;color:#4b5280;margin-bottom:7px}
+.tt-row{display:flex;justify-content:space-between;margin-bottom:3px}
+.tt-row .tl{font-size:11px;color:#8890b0}
+.tt-row .tv{font-size:11px;font-weight:600;color:#e0e3f0}
 </style>
 </head>
 <body>
+
 <header>
-  <div>
-    <h1>Australian Occupations &amp; AI Exposure</h1>
-    <p>14 million workers · ANZSCO classification · four studies tracked 2021–2026</p>
-  </div>
+  <h1>Australian Occupations &amp; AI Exposure</h1>
+  <p>~14 million workers · ANZSCO classification · AI exposure tracked across four independent studies, 2021–2026</p>
 </header>
 
 <nav class="tabs">
@@ -101,32 +142,53 @@ canvas#map{display:block;flex:1;cursor:pointer;min-width:0}
   <button class="tab" data-tab="quad">Risk vs Growth</button>
 </nav>
 
-<!-- TREEMAP PANEL -->
+<!-- ── TREEMAP PANEL ── -->
 <div id="panel-treemap" class="panel active">
+
+  <div class="method-bar collapsed" id="methodBar">
+    <div class="method-toggle" id="methodToggle">
+      <span class="icon">ⓘ</span>
+      <span class="label">About the data</span>
+      <span class="summary">· employment figures, AI exposure methodology, and what to trust (and not trust)</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="method-body">
+      <div class="method-section">
+        <h4>Employment &amp; Pay</h4>
+        <p>Employment figures are from <a href="https://www.abs.gov.au/statistics/labour/employment-and-unemployment/labour-force-australia-detailed/latest-release" target="_blank">ABS Labour Force Detailed</a> (Feb 2025), aggregated to ANZSCO 3-digit minor groups and rounded to the nearest 5,000. Treat them as order-of-magnitude estimates — the ABS releases these quarterly and the figures shift. Pay data is from <a href="https://www.abs.gov.au/statistics/labour/earnings-and-working-conditions/employee-earnings-and-hours-australia/latest-release" target="_blank">ABS Employee Earnings 2023</a>. Job growth projections are from <a href="https://www.jobsandskills.gov.au/data/employment-projections" target="_blank">Jobs and Skills Australia</a> (May 2025 to May 2035), which covers ~350 ANZSCO occupations.</p>
+      </div>
+      <div class="method-section">
+        <h4>AI Exposure Scores</h4>
+        <p>This is the part that needs the most caveats. The 2021 scores adapt <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3812132" target="_blank">Felten, Raj &amp; Seamans' AIOE index</a>, built before large language models became mainstream — it reflects pre-ChatGPT AI capabilities. The 2023 scores use <a href="https://science.org/doi/10.1126/science.adj0998" target="_blank">Eloundou et al. "GPTs are GPTs"</a> (Science, 2023), crosswalked from US SOC codes via ISCO-08 to ANZSCO. That crosswalk introduces noise — some occupations have meaningfully different task profiles in Australia vs the US. The 2024 scores draw on <a href="https://www.ilo.org/publications/generative-ai-and-jobs" target="_blank">Gmyrek's ILO analysis</a>, which was coded natively in ISCO-08. The 2026 scores apply the scoring methodology from <a href="https://jobs.karpathy.ai" target="_blank">Andrej Karpathy's jobs.karpathy.ai</a> to ANZSCO descriptions. None of these were designed for Australian occupations. The relative positions and directional trends are the useful signal — individual decimal points are not.</p>
+      </div>
+    </div>
+  </div>
+
   <div class="tm-controls">
-    <span class="ctrl-label">Colour by</span>
+    <span class="ctrl-lbl">Colour by</span>
     <div class="btn-group" id="modeGroup">
       <button class="btn active" data-mode="exposure">AI Exposure</button>
       <button class="btn" data-mode="growth">Job Growth</button>
       <button class="btn" data-mode="pay">Median Pay</button>
       <button class="btn" data-mode="edu">Education</button>
     </div>
-    <div class="year-wrap" id="yearWrap">
-      <span class="ctrl-label">Study year</span>
-      <input type="range" id="yearSlider" min="0" max="3" step="1" value="0">
-      <span id="yearDisplay">2021</span>
-      <span class="study-tag" id="studyTag">Felten et al. (AIOE index)</span>
+    <div class="yr-wrap" id="yearWrap">
+      <span class="ctrl-lbl">Study year</span>
+      <input type="range" id="yearSlider" min="0" max="3" step="1" value="0" style="width:140px">
+      <span class="yr-num" id="yearDisplay">2021</span>
+      <span class="yr-study" id="studyTag">Felten et al. (AIOE index)</span>
     </div>
   </div>
+
   <div class="tm-body">
     <div class="tm-wrap">
       <canvas id="map"></canvas>
       <button class="back-btn" id="backBtn">← All sectors</button>
     </div>
     <div class="sidebar">
-      <div class="sb-block" id="sbOverview">
+      <div class="sb-block">
         <h3 id="sbTitle">All Sectors</h3>
-        <div class="stat-row"><span class="lbl">Total workers</span><span class="val">14.0M</span></div>
+        <div class="stat-row"><span class="lbl">Workers (total)</span><span class="val">14.0M</span></div>
         <div class="stat-row"><span class="lbl">Avg AI exposure</span><span class="val" id="stAvgExp">–</span></div>
         <div class="stat-row"><span class="lbl">Avg 5-yr growth</span><span class="val" id="stAvgGrowth">–</span></div>
         <div class="stat-row"><span class="lbl">Avg median pay</span><span class="val" id="stAvgPay">–</span></div>
@@ -140,7 +202,7 @@ canvas#map{display:block;flex:1;cursor:pointer;min-width:0}
           <div class="tier-seg" style="background:#d46a00" id="t3"></div>
           <div class="tier-seg" style="background:#bf3020" id="t4"></div>
         </div>
-        <div style="display:flex;justify-content:space-between;font-size:9px;color:#4b5280">
+        <div style="display:flex;justify-content:space-between;font-size:9px;color:#4b5280;margin-top:1px">
           <span>0–2</span><span>2–4</span><span>4–6</span><span>6–8</span><span>8+</span>
         </div>
       </div>
@@ -149,93 +211,127 @@ canvas#map{display:block;flex:1;cursor:pointer;min-width:0}
         <div id="sectorHist"></div>
       </div>
       <div class="sb-block">
-        <h3 id="legendTitle">AI Exposure scale</h3>
+        <h3 id="legendTitle">AI Exposure</h3>
         <div id="legendItems"></div>
       </div>
-      <div class="sb-block" style="font-size:10px;color:#3a3f5c;line-height:1.6">
-        <h3>Sources</h3>
-        <p>Employment: ABS Labour Force 6291.0.55.001</p>
-        <p>Pay: ABS Employee Earnings 2023</p>
-        <p>Growth: JSA projections 2025–2035</p>
-        <p>AI 2021: Felten, Raj &amp; Seamans (AIOE)</p>
-        <p>AI 2023: Eloundou et al. "GPTs are GPTs"</p>
-        <p>AI 2024: Gmyrek / ILO ISCO-08</p>
-        <p>AI 2026: Karpathy-style LLM prompt</p>
-      </div>
     </div>
   </div>
 </div>
 
-<!-- SLOPE PANEL -->
+<!-- ── SLOPE PANEL ── -->
 <div id="panel-slope" class="panel">
-  <div class="chart-wrap">
-    <h2>How AI Exposure Changed by Sector (2021 → 2026)</h2>
-    <p class="sub">Weighted-average AI exposure score per ANZSCO major group across four independent studies. The 2021→2023 jump reflects GPT-4's arrival — white-collar professional work suddenly entered high-risk territory.</p>
+  <div class="chart-outer">
+    <div class="chart-head">
+      <h2>How AI Exposure Changed by Sector (2021 → 2026)</h2>
+      <p>Weighted-average exposure per ANZSCO major group across four studies. The 2021→2023 gap is the GPT-4 moment — white-collar professional work crossed into high-risk territory in under two years.</p>
+    </div>
     <div class="svg-wrap" id="slopeWrap"></div>
   </div>
-  <div class="insight-panel">
+  <div class="ins-panel">
     <h3>Key Findings</h3>
-    <div class="insight-card warn">
-      <div class="tag tag-risk">Biggest jump</div>
+    <div class="ins-card warn">
+      <div class="ins-tag tag-r">Biggest jump</div>
       <h4>Clerical &amp; Admin</h4>
-      <p>Highest-exposed sector throughout. Contact centre, data entry, and accounting clerks face structural workforce contraction that is already underway.</p>
+      <p>Highest-exposed sector throughout all four studies. Contact centre, data entry, and accounting clerk roles are already contracting — AI is accelerating a trend that predates LLMs.</p>
     </div>
-    <div class="insight-card warn">
-      <div class="tag tag-risk">Surprise riser</div>
+    <div class="ins-card warn">
+      <div class="ins-tag tag-r">Surprise riser</div>
       <h4>Professionals</h4>
-      <p>The 2021→2023 gap was the largest for this sector. GPT-4-level LLMs pushed lawyers, accountants, and analysts from "moderate" to "high" exposure in under two years.</p>
+      <p>The 2021→2023 jump was largest here. Lawyers, accountants, analysts — work that looked safe in the pre-ChatGPT era moved firmly into high-exposure territory once GPT-4 arrived.</p>
     </div>
-    <div class="insight-card good">
-      <div class="tag tag-safe">Most insulated</div>
+    <div class="ins-card good">
+      <div class="ins-tag tag-g">Most insulated</div>
       <h4>Trades &amp; Labourers</h4>
-      <p>Physical trades (electricians, plumbers, carpenters) and outdoor labourers show minimal exposure change across all four studies. Growing infrastructure demand adds further insulation.</p>
+      <p>Electricians, plumbers, carpenters — flat across all four studies. Physical work in variable environments has a natural ceiling on AI impact. Growing infrastructure demand adds further insulation.</p>
     </div>
-    <div class="insight-card" style="border-left-color:#7cb9ff">
-      <div class="tag tag-watch">Nuanced</div>
+    <div class="ins-card" style="border-left-color:#7cb9ff">
+      <div class="ins-tag tag-b">Nuanced</div>
       <h4>ICT Professionals</h4>
-      <p>Very high exposure but also the fastest-growing sector. AI augments rather than eliminates — productivity per developer is soaring, but the occupation is not shrinking.</p>
+      <p>Very high exposure but also the fastest-growing sector. AI is restructuring the work, not eliminating it — productivity per developer is rising, and demand keeps pace.</p>
     </div>
-    <div class="insight-card neutral">
-      <div class="tag" style="background:#1a1a2a;color:#8890b0">Context</div>
-      <h4>About the scores</h4>
-      <p>2021–2024 scores are crosswalked from published academic studies (Felten, Eloundou, Gmyrek). 2026 scores use the Karpathy LLM-scoring methodology applied to ANZSCO descriptions.</p>
+    <div class="ins-card note">
+      <div class="ins-tag tag-n">Caveat</div>
+      <h4>On the scores</h4>
+      <p>2021–2024 scores crosswalk published academic studies to ANZSCO. 2026 scores use the Karpathy LLM-scoring methodology. The crosswalks introduce noise — use the trends, not the decimals.</p>
     </div>
   </div>
 </div>
 
-<!-- QUADRANT PANEL -->
+<!-- ── QUADRANT PANEL ── -->
 <div id="panel-quad" class="panel">
-  <div class="chart-wrap">
-    <h2>Risk vs Growth: Where Do Australian Occupations Sit?</h2>
-    <p class="sub">Each circle is an ANZSCO occupation group — sized by employment, coloured by sector. X axis: AI exposure in 2026. Y axis: projected 5-year job growth. Quadrant lines at exposure = 5 and growth = 0%.</p>
+  <div class="chart-outer">
+    <div class="chart-head">
+      <h2>Risk vs Growth: Where Do Australian Occupations Sit?</h2>
+      <p>Each circle is an ANZSCO occupation group — sized by employment, coloured by sector. Use the slider to watch occupations drift right as AI exposure rises across study years.</p>
+    </div>
+    <div class="quad-ctrls">
+      <span class="ctrl-lbl">Study year</span>
+      <input type="range" id="quadSlider" min="0" max="3" step="1" value="0" style="width:140px">
+      <span class="yr-num" id="quadYearDisplay">2021</span>
+      <span class="yr-study" id="quadStudyTag">Felten et al. (AIOE index)</span>
+    </div>
     <div class="svg-wrap" id="quadWrap"></div>
   </div>
-  <div class="insight-panel">
+  <div class="ins-panel">
     <h3>The Four Quadrants</h3>
-    <div class="insight-card good">
-      <div class="tag tag-safe">Top-left</div>
+    <div class="ins-card good">
+      <div class="ins-tag tag-g">Top-left</div>
       <h4>Safe Havens</h4>
-      <p>Low AI exposure, positive job growth. Physical trades, healthcare support, construction, and childcare. Strong demand, limited AI displacement. Best near-term employment outlook.</p>
+      <p>Low AI exposure, positive job growth. Physical trades, healthcare support, construction. Strong demand, limited displacement risk. Best near-term employment outlook.</p>
     </div>
-    <div class="insight-card" style="border-left-color:#7cb9ff">
-      <div class="tag tag-watch">Top-right</div>
+    <div class="ins-card" style="border-left-color:#7cb9ff">
+      <div class="ins-tag tag-b">Top-right</div>
       <h4>Augmented</h4>
-      <p>High exposure but growing. ICT professionals, engineering, health diagnostics. AI is restructuring these roles — productivity jumps, headcount grows but at a slower rate than output.</p>
+      <p>High exposure but growing. ICT, engineering, health diagnostics. AI restructures these roles — output per worker grows, but so does headcount (just more slowly than output).</p>
     </div>
-    <div class="insight-card warn">
-      <div class="tag tag-risk">Bottom-right</div>
+    <div class="ins-card warn">
+      <div class="ins-tag tag-r">Bottom-right</div>
       <h4>Vulnerable</h4>
-      <p>High AI exposure and stagnant or declining jobs. Clerical, data entry, contact centres, accounting clerks. These roles are already contracting and AI accelerates the decline.</p>
+      <p>High AI exposure and flat or declining jobs. Clerical, data entry, contact centres. These are already contracting. Slide to 2026 and watch the cluster grow.</p>
     </div>
-    <div class="insight-card neutral">
-      <div class="tag" style="background:#1a1a2a;color:#8890b0">Bottom-left</div>
+    <div class="ins-card note">
+      <div class="ins-tag tag-n">Bottom-left</div>
       <h4>Fading</h4>
-      <p>Low AI exposure but also low/negative growth. Manual manufacturing, agriculture, some hospitality. Decline is structural (offshoring, automation) rather than AI-specific.</p>
+      <p>Low AI exposure but low or negative growth. Manufacturing, some agriculture. Structural decline from offshoring and conventional automation — not primarily an AI story.</p>
     </div>
-    <div class="insight-card warn">
-      <div class="tag tag-risk">Policy note</div>
-      <h4>The Clerk Problem</h4>
-      <p>Australia has ~500k general clerks, data entry workers, and contact centre staff in the Vulnerable quadrant — the largest concentration of workers facing near-term AI displacement.</p>
+    <div class="ins-card warn">
+      <div class="ins-tag tag-r">Watch</div>
+      <h4>~500k clerks</h4>
+      <p>General clerks, data entry workers, and contact centre staff represent the largest single block in the Vulnerable quadrant. Slide from 2021 to 2026 to see how far right they move.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ── DETAIL MODAL ── -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-hd">
+      <div class="modal-hd-left">
+        <h2 id="modTitle"></h2>
+        <div class="code" id="modCode"></div>
+      </div>
+      <button class="modal-close" id="modalClose">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-grid">
+        <div class="mod-cell"><div class="mod-cell-l">Employed</div><div class="mod-cell-v" id="modJobs"></div></div>
+        <div class="mod-cell"><div class="mod-cell-l">Median pay</div><div class="mod-cell-v" id="modPay"></div></div>
+        <div class="mod-cell"><div class="mod-cell-l">5-yr job growth</div><div class="mod-cell-v" id="modGrowth"></div></div>
+        <div class="mod-cell"><div class="mod-cell-l">Typical education</div><div class="mod-cell-v" id="modEdu"></div></div>
+      </div>
+      <div class="exp-section">
+        <h4>AI Exposure by study</h4>
+        <div class="exp-row"><span class="exp-yr">2021</span><span class="exp-study">Felten, Raj & Seamans</span><div class="exp-bar-bg"><div class="exp-bar-fill" id="mE21" style="background:#2980b9"></div></div><span class="exp-val" id="mV21"></span></div>
+        <div class="exp-row"><span class="exp-yr">2023</span><span class="exp-study">Eloundou et al.</span><div class="exp-bar-bg"><div class="exp-bar-fill" id="mE23" style="background:#c8a800"></div></div><span class="exp-val" id="mV23"></span></div>
+        <div class="exp-row"><span class="exp-yr">2024</span><span class="exp-study">Gmyrek / ILO</span><div class="exp-bar-bg"><div class="exp-bar-fill" id="mE24" style="background:#d46a00"></div></div><span class="exp-val" id="mV24"></span></div>
+        <div class="exp-row"><span class="exp-yr">2026</span><span class="exp-study">Karpathy prompt</span><div class="exp-bar-bg"><div class="exp-bar-fill" id="mE26" style="background:#bf3020"></div></div><span class="exp-val" id="mV26"></span></div>
+      </div>
+      <div class="mod-divider"></div>
+      <div class="mod-rat" id="modRat"></div>
+      <div class="mod-links">
+        <a id="modLinkJSA" class="mod-link primary" href="#" target="_blank">Job Outlook →</a>
+        <a id="modLinkABS" class="mod-link secondary" href="https://www.abs.gov.au/statistics/classifications/anzsco-australian-and-new-zealand-standard-classification-occupations/latest-release" target="_blank">ANZSCO reference</a>
+      </div>
     </div>
   </div>
 </div>
@@ -243,236 +339,206 @@ canvas#map{display:block;flex:1;cursor:pointer;min-width:0}
 <div id="tooltip">
   <h3 id="ttTitle"></h3>
   <div class="tt-code" id="ttCode"></div>
-  <div class="tt-grid">
-    <div class="tt-cell"><div class="tt-cell-l">Employed</div><div class="tt-cell-v" id="ttJobs"></div></div>
-    <div class="tt-cell"><div class="tt-cell-l">Median pay</div><div class="tt-cell-v" id="ttPay"></div></div>
-    <div class="tt-cell"><div class="tt-cell-l">5-yr growth</div><div class="tt-cell-v" id="ttGrowth"></div></div>
-    <div class="tt-cell"><div class="tt-cell-l">Education</div><div class="tt-cell-v" id="ttEdu"></div></div>
-  </div>
-  <div style="font-size:10px;color:#4b5280;margin-bottom:5px">AI Exposure by study</div>
-  <div class="tt-exp-row"><span class="tt-exp-label">2021</span><div class="tt-exp-bg"><div class="tt-exp-fill" id="ttE21" style="background:#2980b9"></div></div><span class="tt-exp-val" id="ttV21"></span></div>
-  <div class="tt-exp-row"><span class="tt-exp-label">2023</span><div class="tt-exp-bg"><div class="tt-exp-fill" id="ttE23" style="background:#d46a00"></div></div><span class="tt-exp-val" id="ttV23"></span></div>
-  <div class="tt-exp-row"><span class="tt-exp-label">2024</span><div class="tt-exp-bg"><div class="tt-exp-fill" id="ttE24" style="background:#d46a00"></div></div><span class="tt-exp-val" id="ttV24"></span></div>
-  <div class="tt-exp-row"><span class="tt-exp-label">2026</span><div class="tt-exp-bg"><div class="tt-exp-fill" id="ttE26" style="background:#bf3020"></div></div><span class="tt-exp-val" id="ttV26"></span></div>
-  <div class="tt-divider"></div>
-  <div class="tt-rat" id="ttRat"></div>
+  <div class="tt-row"><span class="tl">Employed</span><span class="tv" id="ttJobs"></span></div>
+  <div class="tt-row"><span class="tl">5-yr growth</span><span class="tv" id="ttGrowth"></span></div>
+  <div class="tt-row"><span class="tl">AI exposure</span><span class="tv" id="ttExp"></span></div>
+  <div style="font-size:10px;color:#4b5280;margin-top:5px">Click for full details →</div>
 </div>
 
 <script>
 // ── DATA ──────────────────────────────────────────────────────────────────────
 const CATEGORIES = [
   {id:"1",name:"Managers",color:"#1e4a7f",groups:[
-    {code:"111",title:"Chief Executives & General Managers",jobs:85,pay:185000,g5:8,edu:"Degree",exp:{21:5.5,23:6.2,24:6.5,26:7.0},rat:"Leadership demands human judgment, relationship capital, and organisational authority. AI assists analysis and drafting but cannot replicate trust-building, negotiation, and strategic intuition in ambiguous environments."},
-    {code:"121",title:"Farmers & Farm Managers",jobs:65,pay:72000,g5:2,edu:"Certificate",exp:{21:2.0,23:2.5,24:2.5,26:3.0},rat:"Farm management is inherently physical, weather-driven, and place-dependent. AI helps with yield modelling and market analysis, but daily decisions require on-ground observation and physical intervention."},
-    {code:"131",title:"Sales, Marketing & PR Managers",jobs:50,pay:145000,g5:10,edu:"Degree",exp:{21:5.8,23:6.8,24:7.0,26:7.5},rat:"Strategic marketing is increasingly AI-augmented — campaign optimisation, copywriting, and audience targeting are well within LLM capabilities. Relationship management and brand judgment retain human value."},
-    {code:"132",title:"Business Administration Managers",jobs:125,pay:138000,g5:7,edu:"Degree",exp:{21:6.0,23:6.8,24:7.0,26:7.2},rat:"Administrative leadership sits largely in the knowledge domain — policy drafting, reporting, process design. AI is already reshaping these tasks, though accountability and stakeholder trust remain human anchors."},
-    {code:"133",title:"Construction & Engineering Managers",jobs:38,pay:155000,g5:9,edu:"Degree",exp:{21:4.0,23:4.5,24:4.5,26:5.0},rat:"Site management blends digital planning with physical oversight of complex, variable environments. AI helps with scheduling and estimation; real-time safety decisions and contractor management still need humans."},
-    {code:"134",title:"Education, Health & Welfare Managers",jobs:82,pay:128000,g5:13,edu:"Degree",exp:{21:5.0,23:5.5,24:5.8,26:6.2},rat:"Managing people-intensive services involves substantial administrative and strategic work AI can assist, but human empathy and institutional trust matter deeply in healthcare and welfare contexts."},
-    {code:"135",title:"ICT Managers",jobs:68,pay:165000,g5:18,edu:"Degree",exp:{21:6.5,23:7.5,24:7.8,26:8.2},rat:"ICT management is almost entirely digital — architecture decisions, vendor contracts, team leadership. AI co-pilots are already transforming how technical leaders work, compressing planning and review cycles substantially."},
-    {code:"139",title:"Other Specialist Managers",jobs:105,pay:132000,g5:9,edu:"Degree",exp:{21:5.5,23:6.0,24:6.2,26:6.5},rat:"A heterogeneous group spanning operations, logistics, and property management. Knowledge work components are high but physical site responsibilities and stakeholder management provide partial insulation."}
+    {code:"111",title:"Chief Executives & General Managers",jobs:85,pay:185000,g5:8,edu:"Degree",exp:{21:5.5,23:6.2,24:6.5,26:7.0},rat:"Leadership still runs on human judgment — the ability to read a room, take accountability, and build institutional trust over years. AI is genuinely useful for scenario modelling, briefing synthesis, and correspondence. What it does not have is skin in the game."},
+    {code:"121",title:"Farmers & Farm Managers",jobs:65,pay:72000,g5:2,edu:"Certificate",exp:{21:2.0,23:2.5,24:2.5,26:3.0},rat:"Farm management is grounded in place — soil conditions, local weather, water access, stock behaviour. AI tools help with yield forecasting and commodity price analysis, but the daily call of when to plant, spray, or muster is still made by someone who was there yesterday."},
+    {code:"131",title:"Sales, Marketing & PR Managers",jobs:50,pay:145000,g5:10,edu:"Degree",exp:{21:5.8,23:6.8,24:7.0,26:7.5},rat:"The craft element of marketing — knowing which message lands — is under significant pressure from AI copy and optimisation tools. What survives: brand judgment, client relationships, and the instinct for what feels off about a campaign before the data confirms it."},
+    {code:"132",title:"Business Administration Managers",jobs:125,pay:138000,g5:7,edu:"Degree",exp:{21:6.0,23:6.8,24:7.0,26:7.2},rat:"Policy drafting, board reporting, and governance documentation are high-volume knowledge tasks that AI now handles at pace. Managers in this group are retaining value through accountability and stakeholder coordination — the things that need a named person attached."},
+    {code:"133",title:"Construction & Engineering Managers",jobs:38,pay:155000,g5:9,edu:"Degree",exp:{21:4.0,23:4.5,24:4.5,26:5.0},rat:"Project scheduling and cost estimation are moving into AI-assisted tools quickly. The site side — safety decisions, subcontractor management, reading a build that's running behind — is still genuinely human. The best managers in this field will use AI to get ahead of problems, not replace their judgment about them."},
+    {code:"134",title:"Education, Health & Welfare Managers",jobs:82,pay:128000,g5:13,edu:"Degree",exp:{21:5.0,23:5.5,24:5.8,26:6.2},rat:"Administrative burden in these sectors is high and increasingly AI-reducible. The managers who spend 40% of their time on reporting and compliance documentation will find that time freed up — which creates pressure on what they do with it."},
+    {code:"135",title:"ICT Managers",jobs:68,pay:165000,g5:18,edu:"Degree",exp:{21:6.5,23:7.5,24:7.8,26:8.2},rat:"Technical leadership is almost entirely digital — architecture choices, vendor evaluation, team structure. AI is already changing how these managers review code, assess vendor proposals, and plan roadmaps. The job is not going away, but it will look quite different in five years."},
+    {code:"139",title:"Other Specialist Managers",jobs:105,pay:132000,g5:9,edu:"Degree",exp:{21:5.5,23:6.0,24:6.2,26:6.5},rat:"A broad group covering operations, logistics, and property. Knowledge work components are significant, but most roles retain physical site or stakeholder responsibilities that anchor human involvement."}
   ]},
   {id:"2",name:"Professionals",color:"#1a5c38",groups:[
-    {code:"211",title:"Arts & Media Professionals",jobs:58,pay:82000,g5:5,edu:"Degree",exp:{21:6.5,23:7.8,24:8.0,26:8.5},rat:"Generative AI directly competes with writing, illustration, and media production. The jump from 2021 to 2023 was dramatic as LLMs mastered creative text. Authentic voice and editorial judgment retain some value but structural disruption is severe."},
-    {code:"212",title:"Accountants, Auditors & Company Secretaries",jobs:148,pay:105000,g5:4,edu:"Degree",exp:{21:7.0,23:7.8,24:8.0,26:8.5},rat:"Accounting is paradigmatically digital — data processing, reconciliation, and report generation are core LLM strengths. Regulatory judgment and client trust slow the transition but workforce headcount will shrink materially."},
-    {code:"221",title:"Financial Analysts & Dealers",jobs:82,pay:118000,g5:8,edu:"Degree",exp:{21:7.0,23:7.8,24:8.0,26:8.2},rat:"Financial analysis — modelling, research, and reporting — is highly AI-amenable. Relationship-based dealmaking and fiduciary accountability provide partial shields, but analyst pools are already contracting at major banks."},
-    {code:"222",title:"Human Resource & Training Professionals",jobs:68,pay:98000,g5:7,edu:"Degree",exp:{21:6.0,23:6.8,24:7.0,26:7.5},rat:"HR increasingly runs on data and policy documents that AI handles well. Sensitive workplace investigations and culture work require empathy and discretion, but routine recruitment, onboarding, and L&D are rapidly automating."},
-    {code:"223",title:"Information & Knowledge Professionals",jobs:42,pay:102000,g5:6,edu:"Degree",exp:{21:6.5,23:7.5,24:7.5,26:8.0},rat:"Librarians, records managers, and policy analysts operate in the document domain that LLMs dominate. Research synthesis and knowledge curation face direct substitution pressure."},
-    {code:"224",title:"Sales, Marketing & PR Professionals",jobs:95,pay:100000,g5:10,edu:"Degree",exp:{21:6.5,23:7.5,24:7.5,26:8.0},rat:"Marketing copy, campaign analysis, and PR drafting are among the most LLM-disrupted professional tasks. Client strategy and brand relationship work retain human value but the occupation is deeply restructuring."},
-    {code:"225",title:"ICT Professionals",jobs:285,pay:122000,g5:22,edu:"Degree",exp:{21:7.5,23:8.8,24:8.8,26:9.0},rat:"Software development, data science, and IT consulting are almost entirely digital. AI already writes and reviews production code. Senior architects retain high value but junior roles face radical compression."},
-    {code:"231",title:"Air & Marine Transport Professionals",jobs:22,pay:135000,g5:6,edu:"Certificate",exp:{21:3.0,23:3.5,24:3.5,26:4.0},rat:"Pilots and ship officers require real-time physical operation of complex machinery in variable environments. Autopilot augments but cannot replace certified human operators under current regulatory frameworks."},
-    {code:"232",title:"Architects, Designers & Surveyors",jobs:78,pay:105000,g5:8,edu:"Degree",exp:{21:5.5,23:7.0,24:7.2,26:7.8},rat:"Generative design tools have transformed what one designer can produce. Physical site assessment and client co-creation retain human value, but output-per-headcount has surged."},
-    {code:"233",title:"Engineering Professionals",jobs:148,pay:118000,g5:11,edu:"Degree",exp:{21:5.5,23:6.5,24:6.5,26:7.0},rat:"Engineering spans physical and digital: structural calculations and report-writing are highly AI-amenable; physical inspection, site safety, and regulatory sign-off require licensed humans."},
-    {code:"234",title:"Natural & Physical Scientists",jobs:92,pay:102000,g5:9,edu:"Postgrad",exp:{21:6.0,23:7.0,24:7.0,26:7.5},rat:"Literature review, data analysis, and hypothesis generation are increasingly AI-assisted. Experimental lab work retains human necessity, but the knowledge synthesis burden is compressing fast."},
-    {code:"241",title:"School Teachers",jobs:285,pay:92000,g5:8,edu:"Degree",exp:{21:4.5,23:5.5,24:5.5,26:6.0},rat:"AI tutors can now teach many subjects more patiently and adaptively than human teachers. Classroom management, socialisation, and pastoral care require physical human presence. The role will transform, not disappear."},
-    {code:"242",title:"Early Childhood Teachers",jobs:68,pay:75000,g5:12,edu:"Degree",exp:{21:3.0,23:3.5,24:3.5,26:4.0},rat:"Caring for young children is fundamentally physical, relational, and safety-critical. AI can assist with documentation and communication, but the core supervision and developmental nurturing requires human presence."},
-    {code:"249",title:"Other Education Professionals",jobs:48,pay:100000,g5:9,edu:"Postgrad",exp:{21:5.5,23:6.5,24:6.5,26:7.0},rat:"Curriculum developers and education advisors produce knowledge artefacts — course materials, assessments, reports — that AI generates efficiently. Instructional design judgment retains human value."},
-    {code:"251",title:"Health Diagnostic Professionals",jobs:78,pay:128000,g5:10,edu:"Postgrad",exp:{21:5.5,23:6.5,24:6.5,26:7.0},rat:"Radiologists and pathologists increasingly work with AI diagnostic tools that read imaging with high accuracy. The specialist provides clinical context, patient communication, and legal accountability."},
-    {code:"252",title:"Allied Health Therapists",jobs:125,pay:92000,g5:14,edu:"Degree",exp:{21:4.0,23:4.8,24:5.0,26:5.5},rat:"Physiotherapists, occupational therapists, and speech pathologists provide hands-on assessment and therapeutic touch that AI cannot replicate. Documentation and treatment planning are increasingly AI-assisted."},
-    {code:"253",title:"Medical Practitioners",jobs:135,pay:215000,g5:11,edu:"Postgrad",exp:{21:5.0,23:6.0,24:6.2,26:6.5},rat:"GPs and specialists face growing AI diagnostic capability, but physical examination, patient rapport, and medicolegal accountability ground the profession. AI dramatically augments information synthesis."},
-    {code:"254",title:"Nurses & Midwives",jobs:265,pay:88000,g5:13,edu:"Degree",exp:{21:4.0,23:4.8,24:5.0,26:5.5},rat:"Nursing is a physical, relational profession — patient care, medication administration, and clinical assessment require human presence. AI helps with documentation, triage, and monitoring data anomaly detection."},
-    {code:"261",title:"Business & Systems Analysts",jobs:125,pay:115000,g5:16,edu:"Degree",exp:{21:7.5,23:8.5,24:8.5,26:9.0},rat:"Requirements gathering, system documentation, and process modelling are precisely the high-value cognitive tasks LLMs perform well. AI is already generating user stories, flowcharts, and specifications."},
-    {code:"262",title:"Database Administrators & Architects",jobs:58,pay:120000,g5:14,edu:"Degree",exp:{21:7.0,23:8.0,24:8.2,26:8.5},rat:"Database work is entirely digital. Schema design, query optimisation, and migration scripts are well within LLM capability. Cloud-managed databases are also abstracting away operational DBA roles at scale."},
-    {code:"263",title:"ICT Security & Network Engineers",jobs:48,pay:118000,g5:20,edu:"Degree",exp:{21:6.5,23:7.5,24:7.5,26:8.0},rat:"Security and network work is digital but highly specialised. AI assists with threat detection and configuration review, but adversarial creativity and deep systems knowledge still command premium."},
-    {code:"271",title:"Legal Professionals",jobs:92,pay:128000,g5:6,edu:"Postgrad",exp:{21:6.5,23:7.8,24:8.0,26:8.5},rat:"Legal drafting, research, and due diligence were among the first professional tasks demonstrated at GPT-4 level. Courtroom advocacy and client trust retain human necessity, but junior associate roles are severely pressured."},
-    {code:"272",title:"Social & Welfare Professionals",jobs:118,pay:85000,g5:14,edu:"Degree",exp:{21:4.5,23:5.5,24:5.5,26:6.0},rat:"Social work, counselling, and case management involve deep human relationships and physical community engagement. Documentation and intake screening are AI-amenable, but the relational core is irreplaceable."}
+    {code:"211",title:"Arts & Media Professionals",jobs:58,pay:82000,g5:5,edu:"Degree",exp:{21:6.5,23:7.8,24:8.0,26:8.5},rat:"The arrival of capable generative text and image tools in 2022–23 was not a gradual shift for this group — it was a step change. Journalists, copywriters, and illustrators are finding that AI does a version of their work quickly and cheaply. The value premium on genuine voice, editorial judgment, and original vision is real but harder to monetise."},
+    {code:"212",title:"Accountants, Auditors & Company Secretaries",jobs:148,pay:105000,g5:4,edu:"Degree",exp:{21:7.0,23:7.8,24:8.0,26:8.5},rat:"The Big Four are already restructuring graduate intake around this. Reconciliation, data extraction, draft reporting — the work that occupied junior accountants for decades is now handled in minutes. Client advisory and regulatory sign-off are the remaining human anchors, and they are under ongoing pressure."},
+    {code:"221",title:"Financial Analysts & Dealers",jobs:82,pay:118000,g5:8,edu:"Degree",exp:{21:7.0,23:7.8,24:8.0,26:8.2},rat:"Research synthesis, financial modelling, and report drafting are genuinely AI-capable tasks at the level previously requiring a junior analyst. The relationship layer of dealmaking and the accountability of sign-off remain human, but the supporting workforce is contracting."},
+    {code:"222",title:"Human Resource & Training Professionals",jobs:68,pay:98000,g5:7,edu:"Degree",exp:{21:6.0,23:6.8,24:7.0,26:7.5},rat:"Policy documents, job descriptions, compliance training, and offer letters — a significant proportion of HR work sits in document production that AI now handles at speed. Sensitive investigations, culture diagnosis, and termination management retain human necessity."},
+    {code:"223",title:"Information & Knowledge Professionals",jobs:42,pay:102000,g5:6,edu:"Degree",exp:{21:6.5,23:7.5,24:7.5,26:8.0},rat:"Research synthesis and knowledge management are the core LLM use case. Librarians and policy analysts doing literature reviews are already using AI tools that compress days of work into hours. The professional value is shifting toward evaluation and framing rather than retrieval."},
+    {code:"224",title:"Sales, Marketing & PR Professionals",jobs:95,pay:100000,g5:10,edu:"Degree",exp:{21:6.5,23:7.5,24:7.5,26:8.0},rat:"Content production, SEO, and campaign copy are the clearest displacement story here. Brand strategy and media relationships retain value. The occupation is restructuring rather than disappearing — fewer people producing more output."},
+    {code:"225",title:"ICT Professionals",jobs:285,pay:122000,g5:22,edu:"Degree",exp:{21:7.5,23:8.8,24:8.8,26:9.0},rat:"Software development, data science, and systems architecture are almost entirely computer-based, which is precisely where AI is most capable. GitHub Copilot and similar tools are already meaningfully changing what one developer can ship. Senior engineers retain value through system design and judgment calls; junior roles are under real pressure."},
+    {code:"231",title:"Air & Marine Transport Professionals",jobs:22,pay:135000,g5:6,edu:"Certificate",exp:{21:3.0,23:3.5,24:3.5,26:4.0},rat:"Pilots and ship officers operate complex physical systems in high-consequence, unpredictable environments. Automation assists but certified human operators remain a regulatory requirement — and for good reason."},
+    {code:"232",title:"Architects, Designers & Surveyors",jobs:78,pay:105000,g5:8,edu:"Degree",exp:{21:5.5,23:7.0,24:7.2,26:7.8},rat:"The generative design tools (Midjourney, AI-assisted CAD, parametric modelling) have changed what a single designer can produce in a day. Physical site assessment and client collaboration retain human necessity, but the headcount per project is falling."},
+    {code:"233",title:"Engineering Professionals",jobs:148,pay:118000,g5:11,edu:"Degree",exp:{21:5.5,23:6.5,24:6.5,26:7.0},rat:"Calculations, technical reports, and simulation work are all AI-amenable. Physical inspection, safety certification, and professional sign-off keep licensed engineers in the loop. The more interesting shift is in how much time AI frees up — and whether firms pass that on as productivity or headcount reduction."},
+    {code:"234",title:"Natural & Physical Scientists",jobs:92,pay:102000,g5:9,edu:"Postgrad",exp:{21:6.0,23:7.0,24:7.0,26:7.5},rat:"Literature review and data analysis have been meaningfully accelerated by AI tools — weeks of synthesis work compressed into hours. Experimental design, lab execution, and peer credibility remain human. Research output per person is going up; whether that translates to fewer people or more science is still playing out."},
+    {code:"241",title:"School Teachers",jobs:285,pay:92000,g5:8,edu:"Degree",exp:{21:4.5,23:5.5,24:5.5,26:6.0},rat:"AI tutoring tools are genuinely capable at many subjects, and lesson planning and marking are being automated. The profession is not disappearing — the socialisation, pastoral care, and real-time behaviour management that constitute most of a teacher's day are stubbornly human. The administrative burden, however, will reduce significantly."},
+    {code:"242",title:"Early Childhood Teachers",jobs:68,pay:75000,g5:12,edu:"Degree",exp:{21:3.0,23:3.5,24:3.5,26:4.0},rat:"Caring for young children is hands-on, unpredictable, and safety-critical. The documentation and parent communication side of the role is increasingly AI-assisted, but the core work — physical supervision of small humans — has no digital substitute."},
+    {code:"249",title:"Other Education Professionals",jobs:48,pay:100000,g5:9,edu:"Postgrad",exp:{21:5.5,23:6.5,24:6.5,26:7.0},rat:"Curriculum development, instructional design, and education consulting are knowledge production roles. AI is already being used to draft course materials, assessments, and learning pathways. The value premium is shifting toward framework design and quality review."},
+    {code:"251",title:"Health Diagnostic Professionals",jobs:78,pay:128000,g5:10,edu:"Postgrad",exp:{21:5.5,23:6.5,24:6.5,26:7.0},rat:"AI diagnostic tools are reading radiology images at specialist-level accuracy in narrow domains. The radiologist role is shifting toward quality assurance, edge cases, and the clinical conversation that follows a diagnosis. Headcount pressure in pure reading roles is real."},
+    {code:"252",title:"Allied Health Therapists",jobs:125,pay:92000,g5:14,edu:"Degree",exp:{21:4.0,23:4.8,24:5.0,26:5.5},rat:"Physiotherapy, occupational therapy, and speech pathology all depend on physical assessment and hands-on treatment. Documentation and treatment planning are increasingly assisted by AI tools. The therapeutic relationship and physical skill remain the core of the work."},
+    {code:"253",title:"Medical Practitioners",jobs:135,pay:215000,g5:11,edu:"Postgrad",exp:{21:5.0,23:6.0,24:6.2,26:6.5},rat:"AI is already helping GPs with differential diagnosis, documentation, and patient communication. Physical examination, clinical judgment under uncertainty, and the doctor-patient relationship are the remaining foundations. The most significant near-term shift is probably administrative burden reduction rather than clinical displacement."},
+    {code:"254",title:"Nurses & Midwives",jobs:265,pay:88000,g5:13,edu:"Degree",exp:{21:4.0,23:4.8,24:5.0,26:5.5},rat:"Nursing is physically demanding, relational, and time-sensitive. AI assists with documentation (a significant time sink), triage prioritisation, and monitoring anomaly detection. The direct patient care work — assessment, medication, emotional support — is not remotely automatable."},
+    {code:"261",title:"Business & Systems Analysts",jobs:125,pay:115000,g5:16,edu:"Degree",exp:{21:7.5,23:8.5,24:8.5,26:9.0},rat:"User stories, process documentation, requirements specifications — this is the kind of structured knowledge work LLMs do well at speed. AI tools are already generating first drafts of most BA outputs. The senior analyst role is increasingly about shaping the brief, not writing the artefact."},
+    {code:"262",title:"Database Administrators & Architects",jobs:58,pay:120000,g5:14,edu:"Degree",exp:{21:7.0,23:8.0,24:8.2,26:8.5},rat:"SQL generation, schema design, and migration scripting are well within current AI capability. Cloud-managed databases are abstracting away operational DBA work at scale. The architecture and governance layer retains value; the routine operational role is shrinking."},
+    {code:"263",title:"ICT Security & Network Engineers",jobs:48,pay:118000,g5:20,edu:"Degree",exp:{21:6.5,23:7.5,24:7.5,26:8.0},rat:"Security work is digital but adversarial — the attacker adapts, so the defender has to as well. AI assists with threat detection and configuration review but the creative side of security (red teaming, novel threat modelling) still needs experienced humans. Growing threat surface is expanding this workforce despite high AI exposure."},
+    {code:"271",title:"Legal Professionals",jobs:92,pay:128000,g5:6,edu:"Postgrad",exp:{21:6.5,23:7.8,24:8.0,26:8.5},rat:"Contract drafting, legal research, and due diligence were among the first tasks where GPT-4-level performance was convincingly demonstrated. The firms know it. Junior associate pipeline is already contracting at major practices. Courtroom advocacy and client trust remain human anchors — for now."},
+    {code:"272",title:"Social & Welfare Professionals",jobs:118,pay:85000,g5:14,edu:"Degree",exp:{21:4.5,23:5.5,24:5.5,26:6.0},rat:"Case management, community engagement, and therapeutic relationships are relational in ways AI cannot replicate. The documentation burden — case notes, reports, referrals — is significant and increasingly AI-assisted. Demand from an ageing population and mental health needs is growing the workforce faster than AI is displacing it."}
   ]},
   {id:"3",name:"Technicians & Trades",color:"#5c3010",groups:[
-    {code:"311",title:"Science & Medical Technicians",jobs:48,pay:82000,g5:8,edu:"Certificate",exp:{21:5.0,23:5.5,24:5.8,26:6.2},rat:"Lab and medical technicians blend physical sample handling with data recording. AI assists with result interpretation and protocol adherence, but hands-on sample preparation requires physical presence."},
-    {code:"312",title:"Building & Engineering Technicians",jobs:68,pay:88000,g5:7,edu:"Certificate",exp:{21:4.0,23:4.8,24:5.0,26:5.5},rat:"Drafting, estimation, and inspection support straddle physical and digital. AI-assisted CAD and BIM is shifting the knowledge work component, but site work remains physical."},
-    {code:"313",title:"ICT Support Technicians",jobs:42,pay:78000,g5:10,edu:"Certificate",exp:{21:6.0,23:7.0,24:7.0,26:7.5},rat:"Tier 1 and tier 2 support is facing rapid AI disruption. Chatbots and AI diagnostic tools now handle a large proportion of helpdesk tickets. Hardware troubleshooting and on-site infrastructure work partially buffer displacement."},
-    {code:"321",title:"Automotive Electricians & Mechanics",jobs:82,pay:75000,g5:5,edu:"Certificate",exp:{21:2.0,23:2.5,24:2.5,26:3.0},rat:"Vehicle repair requires hands-on diagnosis and physical repair. Diagnostic software and AI-assisted fault-code interpretation help, but the mechanical work itself cannot be digitised."},
-    {code:"322",title:"Metal & Welding Trades Workers",jobs:32,pay:78000,g5:4,edu:"Certificate",exp:{21:1.8,23:2.0,24:2.0,26:2.5},rat:"Welding, fabrication, and sheet metal work are physical manual trades. Custom fabrication, repair, and maintenance on diverse structures still requires skilled tradespeople."},
-    {code:"323",title:"Carpenters & Joiners",jobs:82,pay:78000,g5:8,edu:"Certificate",exp:{21:1.5,23:1.8,24:1.8,26:2.0},rat:"Carpentry is fundamentally physical. AI has minimal direct impact — the job requires precision manual work, spatial reasoning, and on-site problem-solving in variable environments."},
-    {code:"324",title:"Plumbers",jobs:62,pay:88000,g5:9,edu:"Certificate",exp:{21:1.5,23:1.8,24:1.8,26:2.0},rat:"Plumbing requires physical installation and repair work in residential and commercial settings. The core hands-on trade is highly protected from AI displacement."},
-    {code:"332",title:"Painters & Decorators",jobs:42,pay:72000,g5:6,edu:"Certificate",exp:{21:1.5,23:1.8,24:1.8,26:2.0},rat:"Painting and surface finishing are hands-on physical trades. AI assists with colour consultation and job estimation but has no impact on the physical execution."},
-    {code:"341",title:"Electricians",jobs:98,pay:92000,g5:12,edu:"Certificate",exp:{21:2.0,23:2.5,24:2.5,26:3.0},rat:"Electrical work is a licensed, safety-critical physical trade. Growing demand from solar, EV charging, and building electrification is expanding the workforce. AI has minimal displacement impact."},
-    {code:"342",title:"Telecommunications Trades Workers",jobs:22,pay:85000,g5:3,edu:"Certificate",exp:{21:3.0,23:3.5,24:3.5,26:4.0},rat:"Telecom field work is physical but network configuration and fault diagnosis are increasingly AI-assisted. Remote management tools are reducing some truck-roll requirements."},
-    {code:"351",title:"Chefs & Cooks",jobs:132,pay:62000,g5:4,edu:"Certificate",exp:{21:2.5,23:3.0,24:3.0,26:3.5},rat:"Cooking is a tactile, sensory, real-time skill. AI assists with menu planning and inventory management but cannot replicate physical kitchen work."},
-    {code:"391",title:"Hairdressers & Beauty Therapists",jobs:48,pay:52000,g5:3,edu:"Certificate",exp:{21:1.8,23:2.0,24:2.0,26:2.2},rat:"Hairdressing is a physical, tactile service requiring human touch and real-time client communication. The service itself has no digital substitute."}
+    {code:"311",title:"Science & Medical Technicians",jobs:48,pay:82000,g5:8,edu:"Certificate",exp:{21:5.0,23:5.5,24:5.8,26:6.2},rat:"Lab technicians bridge physical sample handling and digital data recording. AI assists with result interpretation and quality control flagging, but sample preparation, equipment calibration, and chain-of-custody integrity remain hands-on."},
+    {code:"312",title:"Building & Engineering Technicians",jobs:68,pay:88000,g5:7,edu:"Certificate",exp:{21:4.0,23:4.8,24:5.0,26:5.5},rat:"Drafting, estimation, and inspection support are moving into AI-assisted tools. Site work and field inspection remain physical. The most useful shift is probably AI handling the documentation side, freeing more time for the part that requires being present."},
+    {code:"313",title:"ICT Support Technicians",jobs:42,pay:78000,g5:10,edu:"Certificate",exp:{21:6.0,23:7.0,24:7.0,26:7.5},rat:"Tier-1 helpdesk is the clearest near-term displacement story in this group. AI chatbots and diagnostic tools now resolve most ticket categories that previously required a human. Hardware troubleshooting and on-site infrastructure work partially offset this."},
+    {code:"321",title:"Automotive Electricians & Mechanics",jobs:82,pay:75000,g5:5,edu:"Certificate",exp:{21:2.0,23:2.5,24:2.5,26:3.0},rat:"AI-assisted fault code diagnosis is useful, but the physical repair work requires hands, tools, and access to the vehicle. The EV transition is changing what mechanics need to know more than AI is changing what they do day to day."},
+    {code:"322",title:"Metal & Welding Trades Workers",jobs:32,pay:78000,g5:4,edu:"Certificate",exp:{21:1.8,23:2.0,24:2.0,26:2.5},rat:"Skilled fabrication and welding are physical trades where robotics is relevant (and already deployed in high-volume manufacturing), but custom fabrication, repair, and diverse-site maintenance are still performed by people."},
+    {code:"323",title:"Carpenters & Joiners",jobs:82,pay:78000,g5:8,edu:"Certificate",exp:{21:1.5,23:1.8,24:1.8,26:2.0},rat:"Carpentry requires physical skill, spatial reasoning, and on-site problem-solving in environments that vary every job. AI has no direct impact on the core trade. Australia's housing construction pipeline is generating sustained demand."},
+    {code:"324",title:"Plumbers",jobs:62,pay:88000,g5:9,edu:"Certificate",exp:{21:1.5,23:1.8,24:1.8,26:2.0},rat:"Licensed plumbing work requires physical installation and repair in residential and commercial settings. Strong demand from housing construction and water infrastructure renewal. AI has essentially no impact on the trade itself."},
+    {code:"332",title:"Painters & Decorators",jobs:42,pay:72000,g5:6,edu:"Certificate",exp:{21:1.5,23:1.8,24:1.8,26:2.0},rat:"AI can suggest colour palettes and help with job estimation, but the physical surface preparation, application, and finishing work is fully manual. Trade work in a growing housing market."},
+    {code:"341",title:"Electricians",jobs:98,pay:92000,g5:12,edu:"Certificate",exp:{21:2.0,23:2.5,24:2.5,26:3.0},rat:"One of the strongest-outlook trades in Australia. Solar, battery storage, EV charging, and building electrification are generating sustained additional demand. Licensed electrical work is safety-certified and physical — AI impact on the core job is minimal."},
+    {code:"342",title:"Telecommunications Trades Workers",jobs:22,pay:85000,g5:3,edu:"Certificate",exp:{21:3.0,23:3.5,24:3.5,26:4.0},rat:"Field installation work is physical, but remote management tools are reducing some truck-roll requirements for network faults. AI-assisted network diagnostics is the relevant displacement trend, not generative AI."},
+    {code:"351",title:"Chefs & Cooks",jobs:132,pay:62000,g5:4,edu:"Certificate",exp:{21:2.5,23:3.0,24:3.0,26:3.5},rat:"Cooking is a tactile, real-time skill executed in a physical environment. AI assists with menu design, inventory management, and ordering — the administrative side. The kitchen work itself is not going anywhere."},
+    {code:"391",title:"Hairdressers & Beauty Therapists",jobs:48,pay:52000,g5:3,edu:"Certificate",exp:{21:1.8,23:2.0,24:2.0,26:2.2},rat:"A physical, relational, touch-based service with no digital substitute. Booking software and AI style suggestions are relevant at the edges; the actual service is irreplaceable."}
   ]},
   {id:"4",name:"Community & Personal Service",color:"#3a1a50",groups:[
-    {code:"411",title:"Health & Welfare Support Workers",jobs:152,pay:68000,g5:18,edu:"Certificate",exp:{21:3.0,23:3.5,24:3.5,26:4.0},rat:"Aged care, disability support, and allied health assistance require physical care, human empathy, and real-time responsiveness. Growing demand from an ageing population outpaces any displacement."},
-    {code:"421",title:"Child Carers",jobs:132,pay:58000,g5:12,edu:"Certificate",exp:{21:2.0,23:2.5,24:2.5,26:3.0},rat:"Child care is fundamentally human — supervision, socialisation, and physical safety require constant human presence. AI assists with developmental assessments and parent communication."},
-    {code:"431",title:"Bar Attendants, Café Workers & Waitstaff",jobs:182,pay:55000,g5:2,edu:"No req.",exp:{21:2.5,23:3.0,24:3.0,26:3.5},rat:"Hospitality service is face-to-face and physical. Self-ordering kiosks and AI scheduling are changing back-office work, but the service interaction and physical food delivery remain human."},
-    {code:"441",title:"Police, Firefighters & Defence Members",jobs:105,pay:95000,g5:5,edu:"Certificate",exp:{21:3.0,23:3.5,24:3.5,26:4.0},rat:"Emergency services require physical response, real-time judgment under pressure, and community authority. AI assists dispatch, crime analysis, and administrative work but the operational core is inherently human."},
-    {code:"442",title:"Security Officers & Prison Guards",jobs:48,pay:65000,g5:4,edu:"Certificate",exp:{21:2.5,23:3.0,24:3.0,26:3.5},rat:"Physical security requires human presence, authority, and real-time response. AI-assisted surveillance and access control are augmenting but not replacing security personnel in most settings."},
-    {code:"451",title:"Sports & Fitness Workers",jobs:58,pay:62000,g5:8,edu:"Certificate",exp:{21:2.8,23:3.2,24:3.2,26:3.8},rat:"Personal training and coaching are relational and physical. AI fitness apps compete with some coaching functions, but in-person motivation, technique correction, and physical supervision retain high human value."},
-    {code:"452",title:"Travel Attendants & Tour Guides",jobs:38,pay:62000,g5:5,edu:"No req.",exp:{21:3.5,23:4.0,24:4.0,26:4.5},rat:"Cabin crew and tour guides operate in physical, real-time service environments. AI assists with itinerary planning and translation, but safety procedures and cultural interpretation require humans."}
+    {code:"411",title:"Health & Welfare Support Workers",jobs:152,pay:68000,g5:18,edu:"Certificate",exp:{21:3.0,23:3.5,24:3.5,26:4.0},rat:"Aged care and disability support are physically demanding, person-centred roles with growing demand from demographics. AI assists with care planning and documentation but the physical assistance and human connection are what the role is. One of the most structurally secure occupational groups in Australia."},
+    {code:"421",title:"Child Carers",jobs:132,pay:58000,g5:12,edu:"Certificate",exp:{21:2.0,23:2.5,24:2.5,26:3.0},rat:"Child care is supervision, development, and safety — all requiring physical human presence. AI assists with developmental assessment documentation and parent communication. Demand is growing from workforce participation and government childcare investment."},
+    {code:"431",title:"Bar Attendants, Café Workers & Waitstaff",jobs:182,pay:55000,g5:2,edu:"No req.",exp:{21:2.5,23:3.0,24:3.0,26:3.5},rat:"Self-ordering kiosks and AI scheduling have changed back-of-house operations, but the in-person service experience remains human — particularly at the quality end of hospitality. High employment headcount with modest growth."},
+    {code:"441",title:"Police, Firefighters & Defence Members",jobs:105,pay:95000,g5:5,edu:"Certificate",exp:{21:3.0,23:3.5,24:3.5,26:4.0},rat:"Emergency response requires physical presence, legal authority, and real-time judgment in high-stakes situations. AI assists with crime analysis, incident reporting, and dispatch routing. The operational core is human by necessity."},
+    {code:"442",title:"Security Officers & Prison Guards",jobs:48,pay:65000,g5:4,edu:"Certificate",exp:{21:2.5,23:3.0,24:3.0,26:3.5},rat:"Physical security depends on deterrence, presence, and authority. AI-assisted surveillance systems are augmenting, not replacing, security personnel in most Australian settings."},
+    {code:"451",title:"Sports & Fitness Workers",jobs:58,pay:62000,g5:8,edu:"Certificate",exp:{21:2.8,23:3.2,24:3.2,26:3.8},rat:"In-person coaching is relational and physical. AI fitness apps have taken some of the lower end of the market, but one-on-one coaching, group classes, and rehabilitation exercise remain human services."},
+    {code:"452",title:"Travel Attendants & Tour Guides",jobs:38,pay:62000,g5:5,edu:"No req.",exp:{21:3.5,23:4.0,24:4.0,26:4.5},rat:"Cabin crew operate in a regulated, safety-critical physical environment. Tour guides provide cultural interpretation and real-time responsiveness to a group. AI translation and AI itinerary tools are relevant at the edges; the core service is human."}
   ]},
   {id:"5",name:"Clerical & Administrative",color:"#1a3a1a",groups:[
-    {code:"511",title:"Contract & Project Administrators",jobs:102,pay:95000,g5:6,edu:"Degree",exp:{21:6.5,23:7.5,24:7.5,26:8.0},rat:"Contract administration — drafting, tracking, compliance checking — is a high-fidelity LLM task. AI tools are already reviewing contracts faster and more consistently than humans."},
-    {code:"521",title:"Office Managers & Executive Assistants",jobs:105,pay:82000,g5:2,edu:"Certificate",exp:{21:6.5,23:7.5,24:7.8,26:8.2},rat:"EA and office management tasks — calendar management, correspondence, document preparation — are precisely where AI agents are most impactful. Agentic AI is compressing the number of assistants needed per executive."},
-    {code:"531",title:"General Clerks",jobs:202,pay:65000,g5:-3,edu:"Year 12",exp:{21:7.5,23:8.5,24:8.5,26:9.0},rat:"General clerical work — data entry, document processing, mail handling — sits at the highest exposure tier. LLMs and robotic process automation already perform much of this work. Workforce contraction is underway."},
-    {code:"532",title:"Keyboard Operators & Data Entry Workers",jobs:22,pay:58000,g5:-8,edu:"Year 12",exp:{21:8.5,23:9.0,24:9.2,26:9.5},rat:"Data entry is the canonical high-exposure occupation. AI can perform this work at superhuman speed and accuracy. The workforce is already contracting and structural decline will continue."},
-    {code:"541",title:"Accounting & Payroll Clerks",jobs:135,pay:72000,g5:-2,edu:"Certificate",exp:{21:7.5,23:8.5,24:8.5,26:9.0},rat:"Accounts payable, payroll processing, and reconciliation are high-repetition digital tasks that AI and RPA perform better than humans. Structural workforce decline is already visible in industry headcount data."},
-    {code:"542",title:"Financial & Insurance Clerks",jobs:58,pay:78000,g5:1,edu:"Certificate",exp:{21:7.5,23:8.0,24:8.2,26:8.8},rat:"Claims processing, underwriting support, and loan administration are repetitive digital workflows highly amenable to AI. Some customer service requirement and regulatory complexity slows full automation."},
-    {code:"551",title:"Receptionists & Office Support Workers",jobs:82,pay:62000,g5:0,edu:"Year 12",exp:{21:7.0,23:8.0,24:8.2,26:8.8},rat:"Receptionist work is increasingly displaced by AI scheduling, chatbots, and automated front-of-house systems. Physical presence requirements slow some displacement, particularly in healthcare."},
-    {code:"561",title:"Contact Centre & Customer Service Workers",jobs:135,pay:62000,g5:-2,edu:"Year 12",exp:{21:7.5,23:8.2,24:8.5,26:9.0},rat:"Call centre and customer service work is experiencing rapid AI displacement. LLMs now resolve most tier-1 queries more effectively than human agents. Workforce contraction is significant and accelerating."},
-    {code:"591",title:"Logistics & Inventory Clerks",jobs:62,pay:72000,g5:3,edu:"Year 12",exp:{21:6.5,23:7.5,24:7.5,26:8.0},rat:"Logistics administration — freight booking, customs documentation, inventory tracking — is a high-value LLM task. Integration with warehouse management systems is deepening automation."},
-    {code:"599",title:"Other Clerical Workers",jobs:52,pay:68000,g5:0,edu:"Year 12",exp:{21:7.0,23:8.0,24:8.0,26:8.5},rat:"A catch-all of filing, scheduling, and administrative support tasks. Nearly all are digital and amenable to AI automation, with displacement occurring across sectors."}
+    {code:"511",title:"Contract & Project Administrators",jobs:102,pay:95000,g5:6,edu:"Degree",exp:{21:6.5,23:7.5,24:7.5,26:8.0},rat:"Contract review, variation tracking, and compliance documentation are high-fidelity LLM tasks. AI tools are already reviewing contracts at greater consistency than human reviewers. The value in this role is shifting toward stakeholder negotiation and exception handling."},
+    {code:"521",title:"Office Managers & Executive Assistants",jobs:105,pay:82000,g5:2,edu:"Certificate",exp:{21:6.5,23:7.5,24:7.8,26:8.2},rat:"Calendar management, correspondence drafting, travel booking, and meeting preparation — the core EA task stack — is exactly where AI agents are being deployed first. The ratio of executives to assistants is changing in real time."},
+    {code:"531",title:"General Clerks",jobs:202,pay:65000,g5:-3,edu:"Year 12",exp:{21:7.5,23:8.5,24:8.5,26:9.0},rat:"Document processing, data entry, mail handling, filing — the work of a general clerk is the kind of repetitive digital task that AI and RPA handle well. Headcount in this category has been declining since the early 2000s and that trajectory is accelerating."},
+    {code:"532",title:"Keyboard Operators & Data Entry Workers",jobs:22,pay:58000,g5:-8,edu:"Year 12",exp:{21:8.5,23:9.0,24:9.2,26:9.5},rat:"The canonical high-exposure occupation. Entering structured data from documents into systems is something AI does faster and more accurately than humans. This workforce has already contracted substantially and will continue to do so."},
+    {code:"541",title:"Accounting & Payroll Clerks",jobs:135,pay:72000,g5:-2,edu:"Certificate",exp:{21:7.5,23:8.5,24:8.5,26:9.0},rat:"Accounts payable, payroll runs, and reconciliation are repetitive digital workflows where AI and RPA tools are already deployed at scale. The junior accounting pipeline that previously funnelled through these roles is narrowing."},
+    {code:"542",title:"Financial & Insurance Clerks",jobs:58,pay:78000,g5:1,edu:"Certificate",exp:{21:7.5,23:8.0,24:8.2,26:8.8},rat:"Claims processing, loan administration, and underwriting support are structured digital workflows. AI is being deployed across insurance and financial services administration. Modest positive growth projection reflects some specialisation in complex cases."},
+    {code:"551",title:"Receptionists & Office Support Workers",jobs:82,pay:62000,g5:0,edu:"Year 12",exp:{21:7.0,23:8.0,24:8.2,26:8.8},rat:"AI scheduling tools and automated check-in systems are displacing receptionist headcount in many settings. Healthcare, premium hospitality, and client-facing legal and financial services are retaining human receptionists where presence matters."},
+    {code:"561",title:"Contact Centre & Customer Service Workers",jobs:135,pay:62000,g5:-2,edu:"Year 12",exp:{21:7.5,23:8.2,24:8.5,26:9.0},rat:"This is one of the clearest near-term displacement stories in the Australian labour market. Conversational AI now handles the large majority of tier-1 queries better than human agents. The workforce is already declining and the next two years will accelerate that."},
+    {code:"591",title:"Logistics & Inventory Clerks",jobs:62,pay:72000,g5:3,edu:"Year 12",exp:{21:6.5,23:7.5,24:7.5,26:8.0},rat:"Freight booking, inventory management, and customs documentation are structured digital tasks with established AI tooling. Integration with warehouse management systems is deepening automation across the logistics sector."},
+    {code:"599",title:"Other Clerical Workers",jobs:52,pay:68000,g5:0,edu:"Year 12",exp:{21:7.0,23:8.0,24:8.0,26:8.5},rat:"A catch-all group of filing, scheduling, and administrative support roles. The common feature is that most tasks are digital, repetitive, and structured — exactly the AI displacement profile."}
   ]},
   {id:"6",name:"Sales Workers",color:"#4a2800",groups:[
-    {code:"611",title:"Insurance Agents & Sales Representatives",jobs:82,pay:88000,g5:5,edu:"Certificate",exp:{21:5.5,23:6.5,24:6.5,26:7.0},rat:"B2B sales involves relationship management and negotiation that resist full automation. Lead generation, proposal drafting, and CRM management are increasingly AI-handled, compressing the support layer."},
-    {code:"621",title:"Sales Assistants & Salespersons",jobs:352,pay:55000,g5:1,edu:"No req.",exp:{21:4.0,23:4.5,24:4.5,26:5.0},rat:"Retail sales assistants face pressure from e-commerce and AI recommendation engines, but in-person product handling, fitting, and customer consultation retain value."},
-    {code:"631",title:"Checkout Operators & Cashiers",jobs:88,pay:50000,g5:-5,edu:"No req.",exp:{21:5.5,23:6.0,24:6.0,26:6.5},rat:"Checkout automation is well advanced. Self-service checkouts, cashierless stores, and AI-managed payments are rapidly reducing workforce need."},
-    {code:"639",title:"Other Sales Support Workers",jobs:48,pay:58000,g5:2,edu:"No req.",exp:{21:5.0,23:5.5,24:5.5,26:6.0},rat:"Sales support — merchandising, demonstration, telemarketing — spans physical and digital. Phone-based and online sales support faces AI competition; physical merchandising retains some human requirement."}
+    {code:"611",title:"Insurance Agents & Sales Representatives",jobs:82,pay:88000,g5:5,edu:"Certificate",exp:{21:5.5,23:6.5,24:6.5,26:7.0},rat:"Relationship-based B2B sales has a human layer that is hard to displace. AI is taking over lead generation, proposal drafting, and CRM management — the support layer. The field-facing, relationship-dependent side is more durable."},
+    {code:"621",title:"Sales Assistants & Salespersons",jobs:352,pay:55000,g5:1,edu:"No req.",exp:{21:4.0,23:4.5,24:4.5,26:5.0},rat:"E-commerce and AI recommendation engines have changed where Australians buy things. In-person retail that depends on product knowledge, fitting, or trial retains value. The purely transactional end (electronics, commodity retail) is structurally challenged."},
+    {code:"631",title:"Checkout Operators & Cashiers",jobs:88,pay:50000,g5:-5,edu:"No req.",exp:{21:5.5,23:6.0,24:6.0,26:6.5},rat:"Checkout automation is well advanced. Self-service checkouts are ubiquitous; cashierless store trials are underway. The role is contracting and remaining positions often combine checkout with customer service and loss prevention."},
+    {code:"639",title:"Other Sales Support Workers",jobs:48,pay:58000,g5:2,edu:"No req.",exp:{21:5.0,23:5.5,24:5.5,26:6.0},rat:"Telemarketing faces direct AI competition. Physical merchandising and product demonstration are more resilient. A mixed group with varied trajectories depending on which end of the spectrum the specific role sits."}
   ]},
   {id:"7",name:"Machinery Operators & Drivers",color:"#1a1a4a",groups:[
-    {code:"711",title:"Crane, Hoist & Lift Operators",jobs:18,pay:98000,g5:6,edu:"Certificate",exp:{21:1.5,23:2.0,24:2.0,26:2.5},rat:"Heavy equipment operation requires physical presence, spatial judgment, and safety certification. Remote-controlled and semi-automated cranes are growing but certified operators remain essential on most sites."},
-    {code:"712",title:"Drillers, Miners & Shot Firers",jobs:28,pay:115000,g5:4,edu:"Certificate",exp:{21:1.8,23:2.2,24:2.2,26:2.8},rat:"Mining and drilling operations are physically demanding and safety-critical. Autonomous haul trucks operate in some large mines, but shot firing and underground operations still require certified humans."},
-    {code:"721",title:"Machine & Production Operators",jobs:82,pay:68000,g5:2,edu:"Certificate",exp:{21:2.5,23:3.0,24:3.0,26:3.5},rat:"Machine operation in manufacturing involves monitoring, adjustment, and quality checking. Industrial AI and robotics are displacing repetitive assembly work, but operators of complex machinery retain value."},
-    {code:"731",title:"Automobile, Bus & Rail Drivers",jobs:122,pay:72000,g5:3,edu:"Certificate",exp:{21:2.0,23:2.5,24:2.5,26:3.0},rat:"Autonomous vehicles remain commercially limited in Australia. Urban bus and rail drivers face long-term risk from driverless systems, but regulatory and infrastructure barriers mean displacement is measured in decades."},
-    {code:"732",title:"Delivery Drivers",jobs:82,pay:65000,g5:5,edu:"No req.",exp:{21:2.0,23:2.5,24:2.5,26:3.0},rat:"Last-mile delivery automation faces regulatory and practical limits in Australian urban environments. Route optimisation and dispatch AI is already deployed; physical delivery remains human."},
-    {code:"741",title:"Seafarers & Fishing Trades",jobs:12,pay:88000,g5:2,edu:"Certificate",exp:{21:1.5,23:1.8,24:1.8,26:2.2},rat:"Maritime and fishing operations are physically demanding in unpredictable ocean environments. Navigation AI assists but certified mariners remain legally and practically essential."}
+    {code:"711",title:"Crane, Hoist & Lift Operators",jobs:18,pay:98000,g5:6,edu:"Certificate",exp:{21:1.5,23:2.0,24:2.0,26:2.5},rat:"Remote-operated and semi-automated cranes are growing in port and high-volume construction settings, but complex civil and building sites still require certified operators. Safety and variability are the barriers to full automation."},
+    {code:"712",title:"Drillers, Miners & Shot Firers",jobs:28,pay:115000,g5:4,edu:"Certificate",exp:{21:1.8,23:2.2,24:2.2,26:2.8},rat:"Autonomous haul trucks run in some large open-cut mines, but drilling, shot firing, and underground operations require licensed people. Australian mine automation is progressing but remains capital-intensive and context-dependent."},
+    {code:"721",title:"Machine & Production Operators",jobs:82,pay:68000,g5:2,edu:"Certificate",exp:{21:2.5,23:3.0,24:3.0,26:3.5},rat:"High-volume, repetitive manufacturing operations face ongoing automation investment. Complex or variable machine operation — custom runs, maintenance, quality exception handling — retains human involvement."},
+    {code:"731",title:"Automobile, Bus & Rail Drivers",jobs:122,pay:72000,g5:3,edu:"Certificate",exp:{21:2.0,23:2.5,24:2.5,26:3.0},rat:"Autonomous vehicles in Australia face regulatory, infrastructure, and practical constraints that make mass displacement of transport drivers a longer-term story. Level 4 autonomy is not deployed at scale. Rail automation is advancing in some settings."},
+    {code:"732",title:"Delivery Drivers",jobs:82,pay:65000,g5:5,edu:"No req.",exp:{21:2.0,23:2.5,24:2.5,26:3.0},rat:"Last-mile delivery automation via drone and robot is in pilot stage in Australia. Practical constraints (addresses, weather, access) mean human drivers remain the norm. Route optimisation and dispatch AI is fully deployed; the physical delivery step is the remaining bottleneck."},
+    {code:"741",title:"Seafarers & Fishing Trades",jobs:12,pay:88000,g5:2,edu:"Certificate",exp:{21:1.5,23:1.8,24:1.8,26:2.2},rat:"Ocean-going operations require licensed mariners. Navigation AI assists; it does not replace. Commercial fishing involves physical work in variable and hazardous conditions with no near-term automation path."}
   ]},
   {id:"8",name:"Labourers",color:"#2a2010",groups:[
-    {code:"811",title:"Farm & Horticultural Labourers",jobs:68,pay:52000,g5:0,edu:"No req.",exp:{21:1.0,23:1.2,24:1.2,26:1.5},rat:"Agricultural labour is physically demanding, seasonally variable, and involves fine motor skills difficult to automate economically at scale in Australia. Some robotic harvesting is emerging for specific crops."},
-    {code:"821",title:"Building & Construction Labourers",jobs:92,pay:68000,g5:8,edu:"No req.",exp:{21:1.2,23:1.5,24:1.5,26:2.0},rat:"Construction labouring is highly physical and variable. Demand is growing from housing construction. AI has minimal direct impact, though site logistics software improves coordination."},
-    {code:"831",title:"Food Process Workers",jobs:48,pay:58000,g5:2,edu:"No req.",exp:{21:2.0,23:2.2,24:2.2,26:2.8},rat:"Food processing combines machine operation with quality inspection. Automated grading and packaging equipment is displacing some roles, but food safety inspection and variable product handling retain human involvement."},
-    {code:"841",title:"Storepersons & Warehouse Workers",jobs:92,pay:65000,g5:4,edu:"No req.",exp:{21:3.0,23:3.5,24:3.5,26:4.0},rat:"Amazon-style warehouse automation is transforming the sector. AI-guided picking systems and inventory robotics are reducing labour intensity, but full automation of complex warehouses remains capital-intensive."},
-    {code:"851",title:"Cleaners & Laundry Workers",jobs:132,pay:55000,g5:5,edu:"No req.",exp:{21:1.2,23:1.5,24:1.5,26:2.0},rat:"Cleaning is a physical service in variable, socially complex environments. Robotic floor-scrubbing machines are deployed, but comprehensive building cleaning still requires human adaptation and judgment."},
-    {code:"891",title:"Other Labourers",jobs:52,pay:58000,g5:3,edu:"No req.",exp:{21:1.5,23:1.8,24:1.8,26:2.2},rat:"A diverse group of miscellaneous manual workers. Physical work in variable environments provides strong protection from AI displacement in the near term."}
+    {code:"811",title:"Farm & Horticultural Labourers",jobs:68,pay:52000,g5:0,edu:"No req.",exp:{21:1.0,23:1.2,24:1.2,26:1.5},rat:"Harvesting, pruning, and field work are physically demanding tasks that vary by crop, season, and condition. Robotic harvesting is emerging for specific high-value crops (strawberries, grapes) but broad-scale economical automation of Australian farm labour is not yet viable."},
+    {code:"821",title:"Building & Construction Labourers",jobs:92,pay:68000,g5:8,edu:"No req.",exp:{21:1.2,23:1.5,24:1.5,26:2.0},rat:"Earthworks, concreting, and material handling are physical, variable, and safety-managed. Australia's housing backlog and infrastructure pipeline are generating strong demand. AI has minimal direct impact on this work."},
+    {code:"831",title:"Food Process Workers",jobs:48,pay:58000,g5:2,edu:"No req.",exp:{21:2.0,23:2.2,24:2.2,26:2.8},rat:"Automated grading, packaging, and portioning are reducing headcount in some food processing settings. Food safety inspection and handling of variable or irregular product still requires people. A gradual rather than sudden transition."},
+    {code:"841",title:"Storepersons & Warehouse Workers",jobs:92,pay:65000,g5:4,edu:"No req.",exp:{21:3.0,23:3.5,24:3.5,26:4.0},rat:"The Amazon-style fully-automated warehouse is changing the industry benchmark. AI-guided picking systems and conveyor automation are reducing labour intensity in large-scale distribution. Smaller, complex, or irregular operations remain more manual."},
+    {code:"851",title:"Cleaners & Laundry Workers",jobs:132,pay:55000,g5:5,edu:"No req.",exp:{21:1.2,23:1.5,24:1.5,26:2.0},rat:"Robotic floor-scrubbers and vacuums are deployed in some commercial settings. Comprehensive building cleaning across diverse spaces — with furniture, obstacles, and access issues — remains human. Demand from healthcare and facilities management is stable."},
+    {code:"891",title:"Other Labourers",jobs:52,pay:58000,g5:3,edu:"No req.",exp:{21:1.5,23:1.8,24:1.8,26:2.2},rat:"Removalists, car park attendants, and miscellaneous manual workers. Physical, variable work with strong practical barriers to automation in the near term."}
   ]}
 ];
 
-const YEARS=[2021,2023,2024,2026], YEAR_KEYS=[21,23,24,26];
+const YEARS=[2021,2023,2024,2026], YK=[21,23,24,26];
 const STUDIES=["Felten et al. (AIOE index)","Eloundou et al. (GPTs are GPTs)","Gmyrek / ILO ISCO-08","Karpathy-style LLM prompt"];
+const JOB_OUTLOOK_URL = t => `https://joboutlook.gov.au/occupations/${t.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')}/`;
+const JSA_URL = t => `https://www.jobsandskills.gov.au/labour-market-insights/occupations?q=${encodeURIComponent(t)}`;
 
-// ── SHARED STATE & UTILS ──────────────────────────────────────────────────────
-let mode="exposure", yearIdx=0, zoomedCat=null, hoveredOcc=null, rects=[];
+// ── STATE ─────────────────────────────────────────────────────────────────────
+let mode="exposure", yearIdx=0, quadYearIdx=0, zoomedCat=null, hoveredOcc=null, rects=[];
 
+// ── UTILS ─────────────────────────────────────────────────────────────────────
 function expColor(v){if(v<2)return'#1a5f8a';if(v<4)return'#2980b9';if(v<6)return'#c8a800';if(v<8)return'#d46a00';return'#bf3020';}
 function growthColor(v){if(v<-5)return'#8b0000';if(v<0)return'#c0392b';if(v<5)return'#7d6608';if(v<12)return'#1e8449';return'#0d5c30';}
-function payColor(v){const t=Math.min(1,Math.max(0,(v-45000)/155000));const r=Math.round(20+t*180),g=Math.round(20+t*120),b=Math.round(120-t*80);return`rgb(${r},${g},${b})`;}
-const EDU_COLORS={"No req.":"#4a2060","Year 12":"#6b3080","Certificate":"#8b6820","Degree":"#1a6060","Postgrad":"#0a4040"};
-function cellColor(occ){if(mode==='exposure')return expColor(occ.exp[YEAR_KEYS[yearIdx]]);if(mode==='growth')return growthColor(occ.g5);if(mode==='pay')return payColor(occ.pay);return EDU_COLORS[occ.edu]||'#333';}
-function fmtJobs(j){return j>=1000?`${(j/1000).toFixed(0)}k`:`${j}k`;}
-function fmtPay(p){return`$${(p/1000).toFixed(0)}k`;}
+function payColor(v){const t=Math.min(1,Math.max(0,(v-45000)/155000));return`rgb(${Math.round(20+t*180)},${Math.round(20+t*120)},${Math.round(120-t*80)})`;}
+const EDU_C={"No req.":"#4a2060","Year 12":"#6b3080","Certificate":"#8b6820","Degree":"#1a6060","Postgrad":"#0a4040"};
+function cellColor(occ){if(mode==='exposure')return expColor(occ.exp[YK[yearIdx]]);if(mode==='growth')return growthColor(occ.g5);if(mode==='pay')return payColor(occ.pay);return EDU_C[occ.edu]||'#333';}
+function fmtJ(j){return`${(j*1000).toLocaleString()}`;}
+function fmtP(p){return`$${(p/1000).toFixed(0)}k`;}
 function lighten(hex,a){const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);return`rgb(${Math.min(255,r+a*200)},${Math.min(255,g+a*200)},${Math.min(255,b+a*200)})`;}
-function catAvgExp(cat,yk){const tj=cat.groups.reduce((s,g)=>s+g.jobs,0);return cat.groups.reduce((s,g)=>s+g.jobs*g.exp[yk],0)/tj;}
+function catAvg(cat,yk){const tj=cat.groups.reduce((s,g)=>s+g.jobs,0);return cat.groups.reduce((s,g)=>s+g.jobs*g.exp[yk],0)/tj;}
 
 // ── SQUARIFY ─────────────────────────────────────────────────────────────────
 function squarify(items,x,y,w,h){const r=[];_sq(items.slice().sort((a,b)=>b.v-a.v),x,y,w,h,r);return r;}
 function _sq(items,x,y,w,h,res){
-  if(!items.length)return;
-  if(items.length===1){res.push({x,y,w,h,d:items[0]});return;}
+  if(!items.length)return;if(items.length===1){res.push({x,y,w,h,d:items[0]});return;}
   const tot=items.reduce((s,d)=>s+d.v,0),sc=(w*h)/tot;
   let row=[items[0]],rv=items[0].v;
   for(let i=1;i<items.length;i++){const nrv=rv+items[i].v;if(_wr([...row,items[i]],nrv,w,h,sc)>_wr(row,rv,w,h,sc))break;row.push(items[i]);rv=nrv;}
-  const ra=rv*sc,wide=w>=h,rlen=wide?ra/h:ra/w;
+  const ra=rv*sc,wide=w>=h,rl=wide?ra/h:ra/w;
   let off=wide?y:x;
-  for(const d of row){const s=(d.v/rv)*(wide?h:w);res.push(wide?{x,y:off,w:rlen,h:s,d}:{x:off,y,w:s,h:rlen,d});off+=s;}
-  const rem=items.slice(row.length);
-  wide?_sq(rem,x+rlen,y,w-rlen,h,res):_sq(rem,x,y+rlen,w,h-rlen,res);
+  for(const d of row){const s=(d.v/rv)*(wide?h:w);res.push(wide?{x,y:off,w:rl,h:s,d}:{x:off,y,w:s,h:rl,d});off+=s;}
+  const rem=items.slice(row.length);wide?_sq(rem,x+rl,y,w-rl,h,res):_sq(rem,x,y+rl,w,h-rl,res);
 }
-function _wr(row,rv,w,h,sc){const ra=rv*sc,wide=w>=h,rlen=wide?ra/h:ra/w;return row.reduce((m,d)=>{const s=(d.v/rv)*(wide?h:w);return Math.max(m,Math.max(rlen/s,s/rlen));},0);}
+function _wr(row,rv,w,h,sc){const ra=rv*sc,wide=w>=h,rl=wide?ra/h:ra/w;return row.reduce((m,d)=>{const s=(d.v/rv)*(wide?h:w);return Math.max(m,Math.max(rl/s,s/rl));},0);}
 
 // ── TREEMAP ───────────────────────────────────────────────────────────────────
-const canvas=document.getElementById('map');
-const ctx=canvas.getContext('2d');
+const canvas=document.getElementById('map'),ctx=canvas.getContext('2d');
 const backBtn=document.getElementById('backBtn');
 
 function buildRects(){
-  const dpr=window.devicePixelRatio||1;
-  const W=canvas.offsetWidth,H=canvas.offsetHeight;
-  canvas.width=W*dpr;canvas.height=H*dpr;
-  ctx.scale(dpr,dpr);
-  const GAP=4;
+  const dpr=window.devicePixelRatio||1,W=canvas.offsetWidth,H=canvas.offsetHeight;
+  canvas.width=W*dpr;canvas.height=H*dpr;ctx.scale(dpr,dpr);
   rects=[];
+  const G=4;
   if(!zoomedCat){
-    // Overview: one rect per major group
-    const items=CATEGORIES.map(c=>({v:c.groups.reduce((s,g)=>s+g.jobs,0),cat:c}));
-    for(const r of squarify(items,GAP,GAP,W-GAP*2,H-GAP*2)) rects.push({...r,type:'cat'});
+    for(const r of squarify(CATEGORIES.map(c=>({v:c.groups.reduce((s,g)=>s+g.jobs,0),cat:c})),G,G,W-G*2,H-G*2))
+      rects.push({...r,type:'cat'});
   } else {
     const cat=CATEGORIES.find(c=>c.id===zoomedCat);
-    const items=cat.groups.map(g=>({v:g.jobs,occ:g}));
-    for(const r of squarify(items,GAP,GAP,W-GAP*2,H-GAP*2)) rects.push({...r,type:'occ',cat});
+    for(const r of squarify(cat.groups.map(g=>({v:g.jobs,occ:g})),G,G,W-G*2,H-G*2))
+      rects.push({...r,type:'occ',cat});
   }
   drawTM();
 }
 
 function drawTM(){
-  const dpr=window.devicePixelRatio||1;
   const W=canvas.offsetWidth,H=canvas.offsetHeight;
-  ctx.clearRect(0,0,W*dpr,H*dpr);
+  ctx.clearRect(0,0,W,H);
   for(const r of rects){
-    const isHov=hoveredOcc&&(r.type==='cat'?r.d.cat===hoveredOcc:r.d.occ===hoveredOcc);
+    const hov=hoveredOcc&&(r.type==='cat'?r.d.cat===hoveredOcc:r.d.occ===hoveredOcc);
     if(r.type==='cat'){
-      const cat=r.d.cat;
-      const avgExp=catAvgExp(cat,YEAR_KEYS[yearIdx]);
-      const col=mode==='exposure'?expColor(avgExp):cat.color;
-      ctx.fillStyle=isHov?lighten(col,0.15):col;
+      const cat=r.d.cat,avg=catAvg(cat,YK[yearIdx]);
+      const col=mode==='exposure'?expColor(avg):cat.color;
+      ctx.fillStyle=hov?lighten(col,0.15):col;
       ctx.fillRect(r.x+.5,r.y+.5,r.w-1,r.h-1);
-      // Label
-      if(r.w>50&&r.h>30){
-        const fs=Math.min(14,Math.max(10,r.w/10));
-        ctx.fillStyle='rgba(255,255,255,0.92)';
-        ctx.font=`bold ${fs}px -apple-system,sans-serif`;
-        ctx.textAlign='center';
-        ctx.fillText(cat.name,r.x+r.w/2,r.y+r.h/2-fs*0.3);
-        if(r.h>48){
-          ctx.fillStyle='rgba(255,255,255,0.55)';
-          ctx.font=`${Math.max(9,fs*0.78)}px -apple-system,sans-serif`;
-          const jobs=cat.groups.reduce((s,g)=>s+g.jobs,0);
-          ctx.fillText(`${(jobs/1000).toFixed(1)}M workers`,r.x+r.w/2,r.y+r.h/2+fs*1.1);
-          if(mode==='exposure'&&r.h>68){
-            ctx.fillStyle=expColor(avgExp);
-            ctx.fillText(`${avgExp.toFixed(1)}/10 exposure`,r.x+r.w/2,r.y+r.h/2+fs*2.2);
-          }
-        }
+      if(r.w>50&&r.h>28){
+        const fs=Math.min(14,Math.max(10,r.w/9));
+        ctx.fillStyle='rgba(255,255,255,0.93)';ctx.font=`bold ${fs}px -apple-system,sans-serif`;ctx.textAlign='center';
+        ctx.fillText(cat.name,r.x+r.w/2,r.y+r.h/2+(r.h>50?-fs*0.4:fs*0.35));
+        if(r.h>52){ctx.fillStyle='rgba(255,255,255,0.5)';ctx.font=`${Math.max(9,fs*0.75)}px -apple-system,sans-serif`;const tj=cat.groups.reduce((s,g)=>s+g.jobs,0);ctx.fillText(`${(tj/1000).toFixed(1)}M  ·  click to explore`,r.x+r.w/2,r.y+r.h/2+fs*1.1);}
+        if(mode==='exposure'&&r.h>72){ctx.fillStyle=expColor(avg);ctx.font=`${Math.max(9,fs*0.75)}px -apple-system,sans-serif`;ctx.fillText(`${avg.toFixed(1)}/10 avg exposure`,r.x+r.w/2,r.y+r.h/2+fs*2.2);}
       }
-      ctx.strokeStyle='rgba(0,0,0,0.4)';ctx.lineWidth=0.5;
-      ctx.strokeRect(r.x+.5,r.y+.5,r.w-1,r.h-1);
     } else {
-      const occ=r.d.occ;
-      const col=cellColor(occ);
-      ctx.fillStyle=isHov?lighten(col,0.2):col;
+      const occ=r.d.occ,col=cellColor(occ);
+      ctx.fillStyle=hov?lighten(col,0.2):col;
       ctx.fillRect(r.x+.5,r.y+.5,r.w-1,r.h-1);
       if(r.w>36&&r.h>20){
-        ctx.fillStyle=isHov?'rgba(255,255,255,0.98)':'rgba(255,255,255,0.85)';
+        ctx.fillStyle=hov?'rgba(255,255,255,0.98)':'rgba(255,255,255,0.85)';
         const fs=Math.min(11,Math.max(8,r.w/14));
-        ctx.font=`${fs}px -apple-system,sans-serif`;
-        ctx.textAlign='center';
+        ctx.font=`${fs}px -apple-system,sans-serif`;ctx.textAlign='center';
         const words=occ.title.split(' ');let line='',lines=[];
         for(const w of words){const t=line?line+' '+w:w;if(ctx.measureText(t).width>r.w-6){if(line)lines.push(line);line=w;}else line=t;}
         if(line)lines.push(line);
         const ml=Math.min(lines.length,Math.floor((r.h-6)/fs));
         const sy=r.y+(r.h-ml*fs*1.2)/2+fs;
-        for(let i=0;i<ml;i++) ctx.fillText(lines[i],r.x+r.w/2,sy+i*fs*1.2);
-        if(r.h>42&&r.w>52){ctx.fillStyle='rgba(255,255,255,0.4)';ctx.font=`${Math.min(9,fs*0.85)}px -apple-system,sans-serif`;ctx.fillText(fmtJobs(occ.jobs),r.x+r.w/2,r.y+r.h-5);}
+        for(let i=0;i<ml;i++)ctx.fillText(lines[i],r.x+r.w/2,sy+i*fs*1.2);
+        if(r.h>44&&r.w>52){ctx.fillStyle='rgba(255,255,255,0.4)';ctx.font=`${Math.min(9,fs*0.85)}px -apple-system,sans-serif`;ctx.fillText(fmtJ(occ.jobs),r.x+r.w/2,r.y+r.h-5);}
       }
-      ctx.strokeStyle='rgba(0,0,0,0.35)';ctx.lineWidth=0.5;
-      ctx.strokeRect(r.x+.5,r.y+.5,r.w-1,r.h-1);
     }
+    ctx.strokeStyle='rgba(0,0,0,0.35)';ctx.lineWidth=0.5;ctx.strokeRect(r.x+.5,r.y+.5,r.w-1,r.h-1);
   }
 }
 
 canvas.addEventListener('click',e=>{
-  const rect=canvas.getBoundingClientRect();
-  const mx=e.clientX-rect.left,my=e.clientY-rect.top;
+  const rc=canvas.getBoundingClientRect(),mx=e.clientX-rc.left,my=e.clientY-rc.top;
   for(const r of rects){
     if(mx>=r.x&&mx<=r.x+r.w&&my>=r.y&&my<=r.y+r.h){
       if(r.type==='cat'){zoomedCat=r.d.cat.id;backBtn.style.display='block';hoveredOcc=null;buildRects();updateStats();}
+      else if(r.type==='occ'){openModal(r.d.occ,r.cat);}
       break;
     }
   }
@@ -480,62 +546,72 @@ canvas.addEventListener('click',e=>{
 backBtn.addEventListener('click',()=>{zoomedCat=null;backBtn.style.display='none';hoveredOcc=null;buildRects();updateStats();});
 
 canvas.addEventListener('mousemove',e=>{
-  const rect=canvas.getBoundingClientRect();
-  const mx=e.clientX-rect.left,my=e.clientY-rect.top;
+  const rc=canvas.getBoundingClientRect(),mx=e.clientX-rc.left,my=e.clientY-rc.top;
   let found=null;
   for(const r of rects){if(mx>=r.x&&mx<=r.x+r.w&&my>=r.y&&my<=r.y+r.h){found=r;break;}}
   const target=found?(found.type==='cat'?found.d.cat:found.d.occ):null;
   if(hoveredOcc!==target){hoveredOcc=target;drawTM();}
-  if(found&&found.type==='occ'){showTT(found.d.occ,found.cat,e.clientX,e.clientY);}
-  else if(found&&found.type==='cat'){showCatTT(found.d.cat,e.clientX,e.clientY);}
-  else{hideTT();}
+  if(found){
+    const occ=found.type==='occ'?found.d.occ:null;
+    const cat=found.type==='cat'?found.d.cat:null;
+    if(occ) showQuickTT(occ,found.cat,e.clientX,e.clientY);
+    else if(cat){
+      document.getElementById('ttTitle').textContent=cat.name;
+      document.getElementById('ttCode').textContent=`${cat.groups.length} occupation groups · click to explore`;
+      document.getElementById('ttJobs').textContent=`${(cat.groups.reduce((s,g)=>s+g.jobs,0)*1000).toLocaleString()}`;
+      document.getElementById('ttGrowth').textContent='–';document.getElementById('ttGrowth').style.color='#e0e3f0';
+      document.getElementById('ttExp').textContent=catAvg(cat,YK[yearIdx]).toFixed(1)+'/10';
+      document.getElementById('ttExp').style.color=expColor(catAvg(cat,YK[yearIdx]));
+      positionTT(e.clientX,e.clientY);document.getElementById('tooltip').style.display='block';
+    }
+  } else hideTT();
 });
 canvas.addEventListener('mouseleave',()=>{hideTT();if(hoveredOcc){hoveredOcc=null;drawTM();}});
 
-function showTT(occ,cat,cx,cy){
-  const tt=document.getElementById('tooltip');
-  document.getElementById('ttTitle').textContent=occ.title;
-  document.getElementById('ttCode').textContent=`ANZSCO ${occ.code} · ${cat.name}`;
-  document.getElementById('ttJobs').textContent=`${(occ.jobs*1000).toLocaleString()}`;
-  document.getElementById('ttPay').textContent=fmtPay(occ.pay)+'/yr';
-  document.getElementById('ttGrowth').textContent=(occ.g5>0?'+':'')+occ.g5+'%';
-  document.getElementById('ttGrowth').style.color=occ.g5>0?'#4ade80':occ.g5<0?'#f87171':'#e0e3f0';
-  document.getElementById('ttEdu').textContent=occ.edu;
-  for(const [id,vid,yk] of [['ttE21','ttV21',21],['ttE23','ttV23',23],['ttE24','ttV24',24],['ttE26','ttV26',26]]){
+// ── MODAL ─────────────────────────────────────────────────────────────────────
+function openModal(occ,cat){
+  document.getElementById('modTitle').textContent=occ.title;
+  document.getElementById('modCode').textContent=`ANZSCO ${occ.code} · ${cat.name}`;
+  document.getElementById('modJobs').textContent=fmtJ(occ.jobs)+' workers';
+  document.getElementById('modPay').textContent=fmtP(occ.pay)+' / year';
+  const g=document.getElementById('modGrowth');
+  g.textContent=(occ.g5>0?'+':'')+occ.g5+'% over 5 years';
+  g.style.color=occ.g5>0?'#4ade80':occ.g5<0?'#f87171':'#e0e3f0';
+  document.getElementById('modEdu').textContent=occ.edu;
+  for(const [id,vid,yk] of [['mE21','mV21',21],['mE23','mV23',23],['mE24','mV24',24],['mE26','mV26',26]]){
     const v=occ.exp[yk];
     document.getElementById(id).style.width=(v*10)+'%';
+    document.getElementById(id).style.background=expColor(v);
     document.getElementById(vid).textContent=v.toFixed(1);
     document.getElementById(vid).style.color=expColor(v);
   }
-  document.getElementById('ttRat').textContent=occ.rat;
-  positionTT(tt,cx,cy,260,300);
-  tt.style.display='block';
+  document.getElementById('modRat').textContent=occ.rat;
+  const slug=occ.title.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+  document.getElementById('modLinkJSA').href=`https://joboutlook.gov.au/occupations/${slug}/`;
+  document.getElementById('modLinkJSA').textContent='View on Job Outlook →';
+  document.getElementById('modalOverlay').classList.add('open');
 }
-function showCatTT(cat,cx,cy){
-  const tt=document.getElementById('tooltip');
-  const tj=cat.groups.reduce((s,g)=>s+g.jobs,0);
-  const avg26=catAvgExp(cat,26);
-  document.getElementById('ttTitle').textContent=cat.name;
-  document.getElementById('ttCode').textContent=`ANZSCO Major Group ${cat.id} · Click to drill down`;
-  document.getElementById('ttJobs').textContent=`${(tj*1000).toLocaleString()}`;
-  document.getElementById('ttPay').textContent='–';
-  document.getElementById('ttGrowth').textContent='–';
-  document.getElementById('ttGrowth').style.color='#e0e3f0';
-  document.getElementById('ttEdu').textContent='Mixed';
-  for(const [id,vid,yk] of [['ttE21','ttV21',21],['ttE23','ttV23',23],['ttE24','ttV24',24],['ttE26','ttV26',26]]){
-    const v=catAvgExp(cat,yk);
-    document.getElementById(id).style.width=(v*10)+'%';
-    document.getElementById(vid).textContent=v.toFixed(1);
-    document.getElementById(vid).style.color=expColor(v);
-  }
-  document.getElementById('ttRat').textContent=`${cat.groups.length} occupation groups. Average 2026 AI exposure: ${avg26.toFixed(1)}/10.`;
-  positionTT(tt,cx,cy,260,260);
-  tt.style.display='block';
+document.getElementById('modalClose').addEventListener('click',()=>document.getElementById('modalOverlay').classList.remove('open'));
+document.getElementById('modalOverlay').addEventListener('click',e=>{if(e.target===document.getElementById('modalOverlay'))document.getElementById('modalOverlay').classList.remove('open');});
+
+// ── TOOLTIP ───────────────────────────────────────────────────────────────────
+function showQuickTT(occ,cat,cx,cy){
+  document.getElementById('ttTitle').textContent=occ.title;
+  document.getElementById('ttCode').textContent=`ANZSCO ${occ.code} · ${cat.name}`;
+  document.getElementById('ttJobs').textContent=fmtJ(occ.jobs);
+  const g=document.getElementById('ttGrowth');g.textContent=(occ.g5>0?'+':'')+occ.g5+'%';g.style.color=occ.g5>0?'#4ade80':occ.g5<0?'#f87171':'#e0e3f0';
+  document.getElementById('ttExp').textContent=occ.exp[YK[yearIdx]].toFixed(1)+'/10';
+  document.getElementById('ttExp').style.color=expColor(occ.exp[YK[yearIdx]]);
+  positionTT(cx,cy);document.getElementById('tooltip').style.display='block';
 }
 function hideTT(){document.getElementById('tooltip').style.display='none';}
-function positionTT(tt,cx,cy,tw,th){let tx=cx+16,ty=cy-20;if(tx+tw>window.innerWidth)tx=cx-tw-16;if(ty+th>window.innerHeight)ty=window.innerHeight-th-10;tt.style.left=tx+'px';tt.style.top=ty+'px';}
+function positionTT(cx,cy){const tt=document.getElementById('tooltip');let tx=cx+14,ty=cy-16;if(tx+250>window.innerWidth)tx=cx-250-14;if(ty+200>window.innerHeight)ty=window.innerHeight-210;tt.style.left=tx+'px';tt.style.top=ty+'px';}
 
 // ── CONTROLS ─────────────────────────────────────────────────────────────────
+document.getElementById('methodToggle').addEventListener('click',()=>{
+  const bar=document.getElementById('methodBar');
+  bar.classList.toggle('collapsed');bar.classList.toggle('expanded');
+});
 document.querySelectorAll('[data-mode]').forEach(b=>{
   b.addEventListener('click',()=>{
     mode=b.dataset.mode;
@@ -551,253 +627,136 @@ slider.addEventListener('input',()=>{
   document.getElementById('studyTag').textContent=STUDIES[yearIdx];
   drawTM();updateStats();
 });
+const qslider=document.getElementById('quadSlider');
+qslider.addEventListener('input',()=>{
+  quadYearIdx=+qslider.value;
+  document.getElementById('quadYearDisplay').textContent=YEARS[quadYearIdx];
+  document.getElementById('quadStudyTag').textContent=STUDIES[quadYearIdx];
+  buildQuadChart();
+});
 
 // ── STATS SIDEBAR ─────────────────────────────────────────────────────────────
 function updateStats(){
-  const groups=zoomedCat
-    ?CATEGORIES.find(c=>c.id===zoomedCat).groups
-    :CATEGORIES.flatMap(c=>c.groups);
-  document.getElementById('sbTitle').textContent=zoomedCat
-    ?CATEGORIES.find(c=>c.id===zoomedCat).name
-    :'All Sectors';
+  const groups=zoomedCat?CATEGORIES.find(c=>c.id===zoomedCat).groups:CATEGORIES.flatMap(c=>c.groups);
+  document.getElementById('sbTitle').textContent=zoomedCat?CATEGORIES.find(c=>c.id===zoomedCat).name:'All Sectors';
   const tj=groups.reduce((s,g)=>s+g.jobs,0);
-  const we=groups.reduce((s,g)=>s+g.jobs*g.exp[YEAR_KEYS[yearIdx]],0)/tj;
+  const we=groups.reduce((s,g)=>s+g.jobs*g.exp[YK[yearIdx]],0)/tj;
   const wg=groups.reduce((s,g)=>s+g.jobs*g.g5,0)/tj;
   const wp=groups.reduce((s,g)=>s+g.jobs*g.pay,0)/tj;
-  document.getElementById('stAvgExp').textContent=we.toFixed(1)+'/10';
-  document.getElementById('stAvgExp').style.color=expColor(we);
-  document.getElementById('stAvgGrowth').textContent=(wg>0?'+':'')+wg.toFixed(1)+'%';
-  document.getElementById('stAvgGrowth').style.color=wg>0?'#4ade80':wg<0?'#f87171':'#e0e3f0';
-  document.getElementById('stAvgPay').textContent=fmtPay(wp)+'/yr';
+  const e=document.getElementById('stAvgExp');e.textContent=we.toFixed(1)+'/10';e.style.color=expColor(we);
+  const gr=document.getElementById('stAvgGrowth');gr.textContent=(wg>0?'+':'')+wg.toFixed(1)+'%';gr.style.color=wg>0?'#4ade80':wg<0?'#f87171':'#e0e3f0';
+  document.getElementById('stAvgPay').textContent=fmtP(wp)+'/yr';
   const tiers=[0,0,0,0,0];
-  for(const g of groups){const v=g.exp[YEAR_KEYS[yearIdx]];tiers[v<2?0:v<4?1:v<6?2:v<8?3:4]+=g.jobs;}
-  ['t0','t1','t2','t3','t4'].forEach((id,i)=>{const p=(tiers[i]/tj*100);const el=document.getElementById(id);el.style.flex=String(tiers[i]);el.textContent=p>8?p.toFixed(0)+'%':'';});
+  for(const g of groups){const v=g.exp[YK[yearIdx]];tiers[v<2?0:v<4?1:v<6?2:v<8?3:4]+=g.jobs;}
+  ['t0','t1','t2','t3','t4'].forEach((id,i)=>{const p=tiers[i]/tj*100;const el=document.getElementById(id);el.style.flex=String(tiers[i]);el.textContent=p>8?p.toFixed(0)+'%':'';el.title=['0–2','2–4','4–6','6–8','8–10'][i]+': '+p.toFixed(0)+'%';});
   const hist=document.getElementById('sectorHist');hist.innerHTML='';
   const cats=zoomedCat?[CATEGORIES.find(c=>c.id===zoomedCat)]:CATEGORIES;
   for(const cat of cats){
-    const ctj=cat.groups.reduce((s,g)=>s+g.jobs,0);
-    const wa=cat.groups.reduce((s,g)=>s+g.jobs*g.exp[YEAR_KEYS[yearIdx]],0)/ctj;
+    const ctj=cat.groups.reduce((s,g)=>s+g.jobs,0),wa=catAvg(cat,YK[yearIdx]);
     const row=document.createElement('div');row.className='hist-row';
-    row.innerHTML=`<div class="hist-label" title="${cat.name}">${cat.name.split(' ')[0]}</div><div class="hist-bar-bg"><div class="hist-bar-fill" style="width:${(wa/9.5*100).toFixed(1)}%;background:${expColor(wa)}"></div></div><div class="hist-pct">${wa.toFixed(1)}</div>`;
+    row.innerHTML=`<div class="hist-lbl" title="${cat.name}">${cat.name.split(' ')[0]}</div><div class="hist-bg"><div class="hist-fill" style="width:${(wa/9.5*100).toFixed(1)}%;background:${expColor(wa)}"></div></div><div class="hist-val">${wa.toFixed(1)}</div>`;
     hist.appendChild(row);
   }
 }
-
 function updateLegend(){
-  document.getElementById('legendTitle').textContent={exposure:'AI Exposure',growth:'5-yr Job Growth',pay:'Median Pay',edu:'Education'}[mode];
+  document.getElementById('legendTitle').textContent={exposure:'AI Exposure',growth:'5-yr Growth',pay:'Median Pay',edu:'Education'}[mode];
   const el=document.getElementById('legendItems');el.innerHTML='';
-  const rows=mode==='exposure'?[[expColor(1),'0–2 Minimal'],[expColor(3),'2–4 Low'],[expColor(5),'4–6 Moderate'],[expColor(7),'6–8 High'],[expColor(9),'8–10 Very high']]
+  const rows=mode==='exposure'?[[expColor(1),'0–2  Minimal'],[expColor(3),'2–4  Low'],[expColor(5),'4–6  Moderate'],[expColor(7),'6–8  High'],[expColor(9),'8–10  Very high']]
     :mode==='growth'?[[growthColor(-8),'Declining'],[growthColor(3),'Slow (0–5%)'],[growthColor(8),'Growing (5–12%)'],[growthColor(18),'Fast (12%+)']]
-    :mode==='pay'?[[payColor(50000),'< $70k'],[payColor(90000),'$70–100k'],[payColor(118000),'$100–135k'],[payColor(160000),'$135–180k'],[payColor(200000),'$180k+']]
-    :Object.entries(EDU_COLORS).map(([k,v])=>[v,k]);
-  for(const [col,txt] of rows){const r=document.createElement('div');r.className='leg-row';r.innerHTML=`<div class="leg-swatch" style="background:${col}"></div><div class="leg-text">${txt}</div>`;el.appendChild(r);}
+    :mode==='pay'?[[payColor(50000),'< $70k'],[payColor(90000),'$70–100k'],[payColor(118000),'$100–135k'],[payColor(160000),'$135k+']]
+    :Object.entries(EDU_C).map(([k,v])=>[v,k]);
+  for(const [col,txt] of rows){const r=document.createElement('div');r.className='leg-row';r.innerHTML=`<div class="leg-sw" style="background:${col}"></div><div class="leg-txt">${txt}</div>`;el.appendChild(r);}
 }
 
 // ── SLOPE CHART ───────────────────────────────────────────────────────────────
 function buildSlopeChart(){
-  const wrap=document.getElementById('slopeWrap');
-  wrap.innerHTML='';
-  const W=wrap.offsetWidth||700,H=wrap.offsetHeight||400;
-  const ml=68,mr=148,mt=24,mb=44;
+  const wrap=document.getElementById('slopeWrap');wrap.innerHTML='';
+  const W=wrap.offsetWidth||700,H=wrap.offsetHeight||380;
+  const ml=62,mr=140,mt=20,mb=42;
   const cw=W-ml-mr,ch=H-mt-mb;
   const xPos=[0,1,2,3].map(i=>ml+i*(cw/3));
   const yScale=v=>mt+ch*(1-v/10);
-  const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
-  svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
-  svg.style.cssText='width:100%;height:100%;overflow:visible';
-
-  // Grid
+  const ns='http://www.w3.org/2000/svg';
+  const svg=document.createElementNS(ns,'svg');svg.setAttribute('viewBox',`0 0 ${W} ${H}`);svg.style.cssText='width:100%;height:100%;display:block';
+  const mk=(tag,attrs,txt)=>{const el=document.createElementNS(ns,tag);for(const[k,v]of Object.entries(attrs))el.setAttribute(k,v);if(txt)el.textContent=txt;return el;};
+  // Gridlines
   for(let v=0;v<=10;v+=2){
     const y=yScale(v);
-    const line=document.createElementNS('http://www.w3.org/2000/svg','line');
-    line.setAttribute('x1',ml);line.setAttribute('x2',ml+cw);line.setAttribute('y1',y);line.setAttribute('y2',y);
-    line.setAttribute('stroke',v===0?'#3a3f5c':'#1e2236');line.setAttribute('stroke-width',v===0?'1':'0.7');
-    svg.appendChild(line);
-    const lbl=document.createElementNS('http://www.w3.org/2000/svg','text');
-    lbl.setAttribute('x',ml-8);lbl.setAttribute('y',y+4);lbl.setAttribute('text-anchor','end');
-    lbl.setAttribute('fill','#4b5280');lbl.setAttribute('font-size','11');lbl.textContent=v;
-    svg.appendChild(lbl);
+    svg.appendChild(mk('line',{x1:ml,x2:ml+cw,y1:y,y2:y,stroke:v===0?'#3a3f5c':'#1e2236','stroke-width':v===0?'1':'0.6'}));
+    svg.appendChild(mk('text',{x:ml-7,y:y+4,'text-anchor':'end',fill:'#4b5280','font-size':'11'},String(v)));
   }
-  // X axis
-  ['2021','2023','2024','2026'].forEach((yr,i)=>{
+  [0,1,2,3].forEach((i,_)=>{
     const x=xPos[i];
-    const tick=document.createElementNS('http://www.w3.org/2000/svg','line');
-    tick.setAttribute('x1',x);tick.setAttribute('x2',x);tick.setAttribute('y1',mt+ch);tick.setAttribute('y2',mt+ch+5);
-    tick.setAttribute('stroke','#2a2e4a');tick.setAttribute('stroke-width','1');
-    svg.appendChild(tick);
-    const lbl=document.createElementNS('http://www.w3.org/2000/svg','text');
-    lbl.setAttribute('x',x);lbl.setAttribute('y',mt+ch+18);lbl.setAttribute('text-anchor','middle');
-    lbl.setAttribute('fill','#6b7094');lbl.setAttribute('font-size','12');lbl.textContent=yr;
-    svg.appendChild(lbl);
-    if(i===1){
-      const ann=document.createElementNS('http://www.w3.org/2000/svg','text');
-      ann.setAttribute('x',x);ann.setAttribute('y',mt+ch+30);ann.setAttribute('text-anchor','middle');
-      ann.setAttribute('fill','#4b5280');ann.setAttribute('font-size','10');ann.textContent='GPT-4 era';
-      svg.appendChild(ann);
-    }
+    svg.appendChild(mk('line',{x1:x,x2:x,y1:mt+ch,y2:mt+ch+5,stroke:'#2a2e4a','stroke-width':'1'}));
+    svg.appendChild(mk('text',{x,y:mt+ch+17,'text-anchor':'middle',fill:'#6b7094','font-size':'12'},YEARS[i]));
+    if(i===1)svg.appendChild(mk('text',{x,y:mt+ch+29,'text-anchor':'middle',fill:'#4b5280','font-size':'10'},'GPT-4 era ↑'));
   });
-  // Y axis label
-  const yLabel=document.createElementNS('http://www.w3.org/2000/svg','text');
-  yLabel.setAttribute('x',12);yLabel.setAttribute('y',mt+ch/2);yLabel.setAttribute('text-anchor','middle');
-  yLabel.setAttribute('fill','#4b5280');yLabel.setAttribute('font-size','11');
-  yLabel.setAttribute('transform',`rotate(-90,12,${mt+ch/2})`);yLabel.textContent='Avg AI Exposure (0–10)';
-  svg.appendChild(yLabel);
-
-  // Lines per category
-  const highlight=['5','1','2']; // ICT-heavy Professionals, Managers, Clerical
+  svg.appendChild(mk('text',{x:12,y:mt+ch/2,'text-anchor':'middle',fill:'#4b5280','font-size':'11',transform:`rotate(-90,12,${mt+ch/2})`},'Avg AI Exposure (0–10)'));
+  // Lines
   for(const cat of CATEGORIES){
-    const vals=YEAR_KEYS.map(yk=>catAvgExp(cat,yk));
+    const vals=YK.map(yk=>catAvg(cat,yk));
     const pts=vals.map((v,i)=>({x:xPos[i],y:yScale(v)}));
-    const d='M'+pts.map(p=>`${p.x},${p.y}`).join('L');
-    const path=document.createElementNS('http://www.w3.org/2000/svg','path');
-    path.setAttribute('d',d);path.setAttribute('fill','none');
-    path.setAttribute('stroke',cat.color);
-    path.setAttribute('stroke-width',highlight.includes(cat.id)?'2.5':'1.5');
-    path.setAttribute('opacity',highlight.includes(cat.id)?'1':'0.6');
-    svg.appendChild(path);
-    // Dots
-    for(const p of pts){
-      const c=document.createElementNS('http://www.w3.org/2000/svg','circle');
-      c.setAttribute('cx',p.x);c.setAttribute('cy',p.y);c.setAttribute('r','3.5');
-      c.setAttribute('fill',cat.color);c.setAttribute('stroke','#0d0f18');c.setAttribute('stroke-width','1.5');
-      svg.appendChild(c);
-    }
-    // Right label
+    svg.appendChild(mk('path',{d:'M'+pts.map(p=>`${p.x.toFixed(1)},${p.y.toFixed(1)}`).join('L'),fill:'none',stroke:cat.color,'stroke-width':'2','stroke-linejoin':'round'}));
+    for(const p of pts){const c=mk('circle',{cx:p.x,cy:p.y,r:'3.5',fill:cat.color,stroke:'#0d0f18','stroke-width':'1.5'});svg.appendChild(c);}
     const last=pts[3];
-    const lbl=document.createElementNS('http://www.w3.org/2000/svg','text');
-    lbl.setAttribute('x',last.x+10);lbl.setAttribute('y',last.y+4);
-    lbl.setAttribute('fill',cat.color);lbl.setAttribute('font-size','11');
-    lbl.setAttribute('font-weight',highlight.includes(cat.id)?'700':'400');
-    lbl.textContent=cat.name.split(' ')[0]+(cat.name.includes('&')?' & '+cat.name.split('& ')[1].split(' ')[0]:'');
-    svg.appendChild(lbl);
+    svg.appendChild(mk('text',{x:last.x+9,y:last.y+4,fill:cat.color,'font-size':'11'},cat.name.split(' ')[0]));
   }
-  // Annotation: "LLMs expand risk to professionals"
-  const ax=xPos[0]+(xPos[1]-xPos[0])*0.5,ay=yScale(6.8);
-  const ann=document.createElementNS('http://www.w3.org/2000/svg','text');
-  ann.setAttribute('x',ax);ann.setAttribute('y',ay-12);ann.setAttribute('text-anchor','middle');
-  ann.setAttribute('fill','#d46a00');ann.setAttribute('font-size','11');ann.setAttribute('font-style','italic');
-  ann.textContent='↑ LLMs shift risk to white-collar work';
-  svg.appendChild(ann);
-
   wrap.appendChild(svg);
 }
 
 // ── QUADRANT CHART ────────────────────────────────────────────────────────────
 function buildQuadChart(){
-  const wrap=document.getElementById('quadWrap');
-  wrap.innerHTML='';
-  const W=wrap.offsetWidth||700,H=wrap.offsetHeight||420;
-  const ml=60,mr=20,mt=20,mb=50;
+  const wrap=document.getElementById('quadWrap');wrap.innerHTML='';
+  const W=wrap.offsetWidth||700,H=wrap.offsetHeight||380;
+  const ml=58,mr=18,mt=16,mb=46;
   const cw=W-ml-mr,ch=H-mt-mb;
   const all=CATEGORIES.flatMap(c=>c.groups.map(g=>({...g,cat:c})));
-  const xScale=v=>ml+v/10*cw; // exposure 0–10
+  const xScale=v=>ml+v/10*cw;
   const minG=-10,maxG=25;
-  const yScale=v=>mt+ch*(1-(v-minG)/(maxG-minG)); // growth -10 to +25
+  const yScale=v=>mt+ch*(1-(v-minG)/(maxG-minG));
   const yZero=yScale(0),xMid=xScale(5);
-  const maxJobs=Math.max(...all.map(g=>g.jobs));
-  const rScale=v=>Math.max(5,Math.sqrt(v/maxJobs)*42);
-
-  const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
-  svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
-  svg.style.cssText='width:100%;height:100%;overflow:visible';
-
+  const maxJ=Math.max(...all.map(g=>g.jobs));
+  const rr=v=>Math.max(5,Math.sqrt(v/maxJ)*44);
+  const ns='http://www.w3.org/2000/svg';
+  const svg=document.createElementNS(ns,'svg');svg.setAttribute('viewBox',`0 0 ${W} ${H}`);svg.style.cssText='width:100%;height:100%;display:block';
+  const mk=(tag,attrs,txt)=>{const el=document.createElementNS(ns,tag);for(const[k,v]of Object.entries(attrs))el.setAttribute(k,v);if(txt!=null)el.textContent=txt;return el;};
   // Quadrant backgrounds
-  const quads=[
-    {x:ml,y:mt,w:xMid-ml,h:yZero-mt,fill:'#0a1a0a',label:'Safe Havens',lx:ml+8,ly:mt+16,col:'#4ade80'},
-    {x:xMid,y:mt,w:W-mr-xMid,h:yZero-mt,fill:'#0a0e1a',label:'Augmented',lx:xMid+8,ly:mt+16,col:'#7cb9ff'},
-    {x:ml,y:yZero,w:xMid-ml,h:mt+ch-yZero,fill:'#120a0a',label:'Fading',lx:ml+8,ly:mt+ch-8,col:'#6b7094'},
-    {x:xMid,y:yZero,w:W-mr-xMid,h:mt+ch-yZero,fill:'#1a0a0a',label:'Vulnerable',lx:xMid+8,ly:mt+ch-8,col:'#d46a00'},
-  ];
-  for(const q of quads){
-    const rect=document.createElementNS('http://www.w3.org/2000/svg','rect');
-    rect.setAttribute('x',q.x);rect.setAttribute('y',q.y);rect.setAttribute('width',q.w);rect.setAttribute('height',q.h);
-    rect.setAttribute('fill',q.fill);svg.appendChild(rect);
-    const lbl=document.createElementNS('http://www.w3.org/2000/svg','text');
-    lbl.setAttribute('x',q.lx);lbl.setAttribute('y',q.ly);lbl.setAttribute('fill',q.col);
-    lbl.setAttribute('font-size','12');lbl.setAttribute('font-weight','700');lbl.setAttribute('opacity','0.7');
-    lbl.textContent=q.label;svg.appendChild(lbl);
-  }
+  const qbg=[[ml,mt,xMid-ml,yZero-mt,'#0a1a0a'],[xMid,mt,W-mr-xMid,yZero-mt,'#0a0e1a'],[ml,yZero,xMid-ml,mt+ch-yZero,'#110a0a'],[xMid,yZero,W-mr-xMid,mt+ch-yZero,'#1a0a0a']];
+  for(const[x,y,w,h,f]of qbg)svg.appendChild(mk('rect',{x,y,width:w,height:h,fill:f}));
+  // Quadrant labels
+  const qlbls=[['Safe Havens',ml+6,mt+14,'#1e8449'],['Augmented',xMid+6,mt+14,'#2980b9'],['Fading',ml+6,mt+ch-8,'#4b5280'],['Vulnerable',xMid+6,mt+ch-8,'#d46a00']];
+  for(const[txt,x,y,col]of qlbls)svg.appendChild(mk('text',{x,y,fill:col,'font-size':'12','font-weight':'700',opacity:'0.65'},txt));
   // Dividers
-  const dh=document.createElementNS('http://www.w3.org/2000/svg','line');
-  dh.setAttribute('x1',ml);dh.setAttribute('x2',ml+cw);dh.setAttribute('y1',yZero);dh.setAttribute('y2',yZero);
-  dh.setAttribute('stroke','#3a3f5c');dh.setAttribute('stroke-width','1.5');dh.setAttribute('stroke-dasharray','4,3');
-  svg.appendChild(dh);
-  const dv=document.createElementNS('http://www.w3.org/2000/svg','line');
-  dv.setAttribute('x1',xMid);dv.setAttribute('x2',xMid);dv.setAttribute('y1',mt);dv.setAttribute('y2',mt+ch);
-  dv.setAttribute('stroke','#3a3f5c');dv.setAttribute('stroke-width','1.5');dv.setAttribute('stroke-dasharray','4,3');
-  svg.appendChild(dv);
-
-  // Grid lines
-  for(let v=-5;v<=25;v+=5){
-    const y=yScale(v);if(y<mt||y>mt+ch)continue;
-    const g=document.createElementNS('http://www.w3.org/2000/svg','line');
-    g.setAttribute('x1',ml);g.setAttribute('x2',ml+cw);g.setAttribute('y1',y);g.setAttribute('y2',y);
-    g.setAttribute('stroke','#1e2236');g.setAttribute('stroke-width','0.5');
-    svg.appendChild(g);
-    const lbl=document.createElementNS('http://www.w3.org/2000/svg','text');
-    lbl.setAttribute('x',ml-8);lbl.setAttribute('y',y+4);lbl.setAttribute('text-anchor','end');
-    lbl.setAttribute('fill','#4b5280');lbl.setAttribute('font-size','10');lbl.textContent=(v>0?'+':'')+v+'%';
-    svg.appendChild(lbl);
-  }
-  for(let v=0;v<=10;v+=2){
-    const x=xScale(v);
-    const g=document.createElementNS('http://www.w3.org/2000/svg','line');
-    g.setAttribute('x1',x);g.setAttribute('x2',x);g.setAttribute('y1',mt);g.setAttribute('y2',mt+ch);
-    g.setAttribute('stroke','#1e2236');g.setAttribute('stroke-width','0.5');
-    svg.appendChild(g);
-    const lbl=document.createElementNS('http://www.w3.org/2000/svg','text');
-    lbl.setAttribute('x',x);lbl.setAttribute('y',mt+ch+16);lbl.setAttribute('text-anchor','middle');
-    lbl.setAttribute('fill','#4b5280');lbl.setAttribute('font-size','10');lbl.textContent=v;
-    svg.appendChild(lbl);
-  }
+  svg.appendChild(mk('line',{x1:ml,x2:ml+cw,y1:yZero,y2:yZero,stroke:'#3a3f5c','stroke-width':'1.2','stroke-dasharray':'5,3'}));
+  svg.appendChild(mk('line',{x1:xMid,x2:xMid,y1:mt,y2:mt+ch,stroke:'#3a3f5c','stroke-width':'1.2','stroke-dasharray':'5,3'}));
+  // Grid
+  for(let v=-5;v<=25;v+=5){const y=yScale(v);if(y<mt-1||y>mt+ch+1)continue;svg.appendChild(mk('line',{x1:ml,x2:ml+cw,y1:y,y2:y,stroke:'#1e2236','stroke-width':'0.5'}));svg.appendChild(mk('text',{x:ml-7,y:y+4,'text-anchor':'end',fill:'#4b5280','font-size':'10'},(v>0?'+':'')+v+'%'));}
+  for(let v=0;v<=10;v+=2){const x=xScale(v);svg.appendChild(mk('line',{x1:x,x2:x,y1:mt,y2:mt+ch,stroke:'#1e2236','stroke-width':'0.5'}));svg.appendChild(mk('text',{x,y:mt+ch+15,'text-anchor':'middle',fill:'#4b5280','font-size':'10'},String(v)));}
   // Axis labels
-  const xl=document.createElementNS('http://www.w3.org/2000/svg','text');
-  xl.setAttribute('x',ml+cw/2);xl.setAttribute('y',mt+ch+32);xl.setAttribute('text-anchor','middle');
-  xl.setAttribute('fill','#6b7094');xl.setAttribute('font-size','12');xl.textContent='AI Exposure 2026 (0–10)';
-  svg.appendChild(xl);
-  const yl=document.createElementNS('http://www.w3.org/2000/svg','text');
-  yl.setAttribute('x',12);yl.setAttribute('y',mt+ch/2);yl.setAttribute('text-anchor','middle');
-  yl.setAttribute('fill','#6b7094');yl.setAttribute('font-size','12');
-  yl.setAttribute('transform',`rotate(-90,12,${mt+ch/2})`);yl.textContent='5-yr Job Growth (%)';
-  svg.appendChild(yl);
-
-  // Dots — back-to-front by size so small ones are on top
+  svg.appendChild(mk('text',{x:ml+cw/2,y:mt+ch+30,'text-anchor':'middle',fill:'#6b7094','font-size':'12'},'AI Exposure '+YEARS[quadYearIdx]));
+  svg.appendChild(mk('text',{x:12,y:mt+ch/2,'text-anchor':'middle',fill:'#6b7094','font-size':'12',transform:`rotate(-90,12,${mt+ch/2})`},'5-yr Job Growth (%)'));
+  // Dots sorted large-to-small so small ones render on top
   const sorted=[...all].sort((a,b)=>b.jobs-a.jobs);
   for(const occ of sorted){
-    const cx=xScale(occ.exp[26]),cy=yScale(occ.g5);
-    const r=rScale(occ.jobs);
-    const circle=document.createElementNS('http://www.w3.org/2000/svg','circle');
-    circle.setAttribute('cx',cx);circle.setAttribute('cy',cy);circle.setAttribute('r',r);
-    circle.setAttribute('fill',occ.cat.color);circle.setAttribute('opacity','0.75');
-    circle.setAttribute('stroke','rgba(255,255,255,0.2)');circle.setAttribute('stroke-width','1');
-    circle.style.cursor='pointer';
-    circle.addEventListener('mouseenter',e=>{
-      circle.setAttribute('opacity','1');circle.setAttribute('stroke','rgba(255,255,255,0.8)');
-      showTT(occ,occ.cat,e.clientX,e.clientY);
-    });
-    circle.addEventListener('mousemove',e=>positionTT(document.getElementById('tooltip'),e.clientX,e.clientY,260,300));
-    circle.addEventListener('mouseleave',()=>{
-      circle.setAttribute('opacity','0.75');circle.setAttribute('stroke','rgba(255,255,255,0.2)');
-      hideTT();
-    });
-    svg.appendChild(circle);
+    const cx=xScale(occ.exp[YK[quadYearIdx]]),cy=yScale(occ.g5),r=rr(occ.jobs);
+    const c=mk('circle',{cx,cy,r,fill:occ.cat.color,opacity:'0.72',stroke:'rgba(255,255,255,0.18)','stroke-width':'1'});
+    c.style.cursor='pointer';
+    c.addEventListener('mouseenter',e=>{c.setAttribute('opacity','1');c.setAttribute('stroke','rgba(255,255,255,0.7)');showQuickTT(occ,occ.cat,e.clientX,e.clientY);});
+    c.addEventListener('mousemove',e=>positionTT(e.clientX,e.clientY));
+    c.addEventListener('mouseleave',()=>{c.setAttribute('opacity','0.72');c.setAttribute('stroke','rgba(255,255,255,0.18)');hideTT();});
+    c.addEventListener('click',()=>openModal(occ,occ.cat));
+    svg.appendChild(c);
   }
   // Labels for notable occupations
-  const notable=['531','532','225','261','341','411','241','621'];
+  const notable=['531','532','225','261','341','411','241','621','254','271'];
   for(const occ of all){
     if(!notable.includes(occ.code))continue;
-    const cx=xScale(occ.exp[26]),cy=yScale(occ.g5);
-    const lbl=document.createElementNS('http://www.w3.org/2000/svg','text');
-    const shortTitle=occ.title.split(' ').slice(0,3).join(' ');
-    lbl.setAttribute('x',cx+rScale(occ.jobs)+4);lbl.setAttribute('y',cy+4);
-    lbl.setAttribute('fill','rgba(255,255,255,0.8)');lbl.setAttribute('font-size','10');
-    lbl.setAttribute('font-weight','600');lbl.textContent=shortTitle;
+    const cx=xScale(occ.exp[YK[quadYearIdx]]),cy=yScale(occ.g5);
+    const lbl=mk('text',{x:cx+rr(occ.jobs)+3,y:cy+4,fill:'rgba(255,255,255,0.75)','font-size':'10','font-weight':'600'},occ.title.split(' ').slice(0,3).join(' '));
     svg.appendChild(lbl);
   }
-
   wrap.appendChild(svg);
-  // Tooltip for quad panel
-  wrap.addEventListener('mouseleave',()=>hideTT());
+  wrap.addEventListener('mouseleave',hideTT);
 }
 
 // ── TABS ──────────────────────────────────────────────────────────────────────
@@ -806,20 +765,19 @@ document.querySelectorAll('.tab').forEach(t=>{
     document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
     document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
     t.classList.add('active');
-    const panel=document.getElementById('panel-'+t.dataset.tab);
-    panel.classList.add('active');
-    if(t.dataset.tab==='slope') setTimeout(buildSlopeChart,10);
-    if(t.dataset.tab==='quad') setTimeout(buildQuadChart,10);
-    if(t.dataset.tab==='treemap') buildRects();
+    document.getElementById('panel-'+t.dataset.tab).classList.add('active');
+    if(t.dataset.tab==='slope')setTimeout(buildSlopeChart,10);
+    if(t.dataset.tab==='quad')setTimeout(buildQuadChart,10);
+    if(t.dataset.tab==='treemap')buildRects();
   });
 });
 
 // ── RESIZE ────────────────────────────────────────────────────────────────────
 new ResizeObserver(()=>{
-  const activeTab=document.querySelector('.tab.active')?.dataset.tab;
-  if(activeTab==='treemap')buildRects();
-  if(activeTab==='slope')buildSlopeChart();
-  if(activeTab==='quad')buildQuadChart();
+  const a=document.querySelector('.tab.active')?.dataset.tab;
+  if(a==='treemap')buildRects();
+  if(a==='slope')buildSlopeChart();
+  if(a==='quad')buildQuadChart();
 }).observe(document.body);
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
