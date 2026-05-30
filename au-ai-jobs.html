@@ -1,139 +1,164 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Australian Occupations & AI Exposure | 2021–2026</title>
 <style>
+:root{
+  --bg:#f4f6fb;--bg2:#ffffff;--bg3:#f0f2f8;--bg4:#e8eaf2;
+  --border:#dde1ee;--border2:#c0c6da;
+  --text:#12182b;--text2:#3d4670;--text3:#6e7898;--text4:#9098b8;
+  --accent:#2563eb;--accent2:#1d4ed8;--accent-bg:#dbeafe;--accent-border:#93c5fd;
+  --method-bg:#eff6ff;--method-border:#bfdbfe;
+  --modal-bg:#ffffff;--modal-border:#dde1ee;--tooltip-bg:#ffffff;
+  --tag-r-bg:#fef3c7;--tag-r-txt:#92400e;
+  --tag-g-bg:#dcfce7;--tag-g-txt:#166534;
+  --tag-b-bg:#dbeafe;--tag-b-txt:#1d4ed8;
+  --tag-n-bg:#f1f5f9;--tag-n-txt:#475569;
+}
+[data-theme="dark"]{
+  --bg:#0d0f18;--bg2:#111422;--bg3:#161929;--bg4:#1a1d2e;
+  --border:#1e2236;--border2:#2a2e50;
+  --text:#e0e3f0;--text2:#8890b0;--text3:#6b7094;--text4:#4b5280;
+  --accent:#4a9eff;--accent2:#7cb9ff;--accent-bg:#1e3a6e;--accent-border:#2a5090;
+  --method-bg:#111e2a;--method-border:#1e3050;
+  --modal-bg:#13162a;--modal-border:#2a2e50;--tooltip-bg:#161929;
+  --tag-r-bg:#3a1a0a;--tag-r-txt:#d46a00;
+  --tag-g-bg:#0a2a1a;--tag-g-txt:#4ade80;
+  --tag-b-bg:#1a1a3a;--tag-b-txt:#7cb9ff;
+  --tag-n-bg:#1a1a2a;--tag-n-txt:#6b7094;
+}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0d0f18;color:#e0e3f0;height:100vh;display:flex;flex-direction:column;overflow:hidden}
-header{padding:12px 24px 10px;background:#111422;border-bottom:1px solid #1e2236;flex-shrink:0}
-header h1{font-size:18px;font-weight:700;color:#fff;letter-spacing:-0.3px}
-header p{font-size:11px;color:#6b7094;margin-top:1px}
-.tabs{display:flex;gap:2px;background:#111422;border-bottom:1px solid #1a1d2e;padding:0 24px;flex-shrink:0}
-.tab{padding:9px 18px;border:none;background:transparent;color:#6b7094;cursor:pointer;font-size:13px;font-family:inherit;border-bottom:2px solid transparent;transition:all .15s;margin-bottom:-1px}
-.tab.active{color:#7cb9ff;border-bottom-color:#4a9eff}
-.tab:hover:not(.active){color:#b0b8d8}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);height:100vh;display:flex;flex-direction:column;overflow:hidden}
+header{padding:10px 24px;background:var(--bg2);border-bottom:1px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.hd-left h1{font-size:17px;font-weight:700;color:var(--text);letter-spacing:-0.3px}
+.hd-left p{font-size:11px;color:var(--text3);margin-top:1px}
+.theme-btn{background:var(--bg4);border:1px solid var(--border);color:var(--text3);border-radius:6px;padding:5px 11px;font-size:12px;cursor:pointer;font-family:inherit;flex-shrink:0;transition:all .15s}
+.theme-btn:hover{background:var(--border);color:var(--text2)}
+.tabs{display:flex;gap:2px;background:var(--bg2);border-bottom:1px solid var(--border);padding:0 24px;flex-shrink:0}
+.tab{padding:9px 18px;border:none;background:transparent;color:var(--text3);cursor:pointer;font-size:13px;font-family:inherit;border-bottom:2px solid transparent;transition:all .15s;margin-bottom:-1px}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+.tab:hover:not(.active){color:var(--text2)}
 .panel{display:none;flex:1;min-height:0;overflow:hidden;flex-direction:column}
 .panel.active{display:flex}
-
 /* ── METHODOLOGY BANNER ── */
-.method-bar{background:#111e2a;border-bottom:1px solid #1e3050;padding:0;flex-shrink:0;overflow:hidden;transition:max-height .3s ease}
+.method-bar{background:var(--method-bg);border-bottom:1px solid var(--method-border);padding:0;flex-shrink:0;overflow:hidden;transition:max-height .3s ease}
 .method-bar.collapsed{max-height:34px}
 .method-bar.expanded{max-height:240px}
 .method-toggle{display:flex;align-items:center;gap:8px;padding:8px 24px;cursor:pointer;user-select:none}
-.method-toggle span.icon{font-size:11px;color:#4a9eff;transition:transform .2s}
-.method-toggle span.label{font-size:12px;color:#7cb9ff;font-weight:600}
-.method-toggle span.summary{font-size:11px;color:#4b5280;margin-left:4px}
-.method-toggle span.chevron{margin-left:auto;font-size:11px;color:#4b5280;transition:transform .2s}
+.method-toggle span.icon{font-size:11px;color:var(--accent)}
+.method-toggle span.label{font-size:12px;color:var(--accent);font-weight:600}
+.method-toggle span.summary{font-size:11px;color:var(--text4);margin-left:4px}
+.method-toggle span.chevron{margin-left:auto;font-size:11px;color:var(--text4);transition:transform .2s}
 .method-bar.expanded .method-toggle span.chevron{transform:rotate(180deg)}
 .method-body{padding:2px 24px 14px;display:grid;grid-template-columns:1fr 1fr;gap:12px 28px}
-.method-section h4{font-size:11px;font-weight:700;color:#7cb9ff;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
-.method-section p{font-size:11px;color:#7a8090;line-height:1.65}
-.method-section a{color:#4a9eff;text-decoration:none;border-bottom:1px solid #1e3050}
-.method-section a:hover{border-bottom-color:#4a9eff}
-
+.method-section h4{font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
+.method-section p{font-size:11px;color:var(--text3);line-height:1.65}
+.method-section a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--method-border)}
+.method-section a:hover{border-bottom-color:var(--accent)}
 /* ── TREEMAP CONTROLS ── */
-.tm-controls{display:flex;align-items:center;gap:12px;padding:7px 24px;background:#111422;border-bottom:1px solid #1a1d2e;flex-shrink:0;flex-wrap:wrap}
-.btn-group{display:flex;gap:2px;background:#161929;border-radius:6px;padding:2px}
-.btn{padding:4px 11px;border:none;background:transparent;color:#6b7094;cursor:pointer;font-size:12px;border-radius:4px;transition:all .15s;white-space:nowrap;font-family:inherit}
-.btn.active{background:#1e3a6e;color:#7cb9ff}
-.btn:hover:not(.active){background:#1a1d2e;color:#ccc}
+.tm-controls{display:flex;align-items:center;gap:12px;padding:7px 24px;background:var(--bg2);border-bottom:1px solid var(--border);flex-shrink:0;flex-wrap:wrap}
+.btn-group{display:flex;gap:2px;background:var(--bg4);border-radius:6px;padding:2px}
+.btn{padding:4px 11px;border:none;background:transparent;color:var(--text3);cursor:pointer;font-size:12px;border-radius:4px;transition:all .15s;white-space:nowrap;font-family:inherit}
+.btn.active{background:var(--accent-bg);color:var(--accent2)}
+.btn:hover:not(.active){background:var(--bg4);color:var(--text2)}
 .yr-wrap{display:flex;align-items:center;gap:8px;margin-left:auto}
-.ctrl-lbl{font-size:11px;color:#555;text-transform:uppercase;letter-spacing:.5px}
-input[type=range]{accent-color:#4a9eff;cursor:pointer}
-.yr-num{font-size:13px;font-weight:700;color:#4a9eff;min-width:32px}
-.yr-study{font-size:11px;color:#4b5280;min-width:150px}
-
+.ctrl-lbl{font-size:11px;color:var(--text4);text-transform:uppercase;letter-spacing:.5px}
+input[type=range]{accent-color:var(--accent);cursor:pointer}
+.yr-num{font-size:13px;font-weight:700;color:var(--accent);min-width:32px}
+.yr-study{font-size:11px;color:var(--text4);min-width:150px}
 /* ── TREEMAP BODY ── */
 .tm-body{display:flex;flex:1;min-height:0}
 .tm-wrap{position:relative;flex:1;min-width:0;display:flex}
-canvas#map{display:block;flex:1;cursor:pointer;min-width:0}
-.back-btn{position:absolute;top:8px;left:8px;background:#1e3a6e;color:#7cb9ff;border:1px solid #2a5090;border-radius:6px;padding:5px 12px;font-size:12px;cursor:pointer;font-family:inherit;display:none;z-index:10}
-.sidebar{width:248px;background:#111422;border-left:1px solid #1a1d2e;overflow-y:auto;padding:13px;flex-shrink:0}
-.sb-block{background:#161929;border-radius:7px;padding:11px;margin-bottom:9px}
-.sb-block h3{font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:#4b5280;margin-bottom:8px}
+canvas#map{display:block;flex:1;cursor:pointer;min-width:0;background:var(--bg)}
+.back-btn{position:absolute;top:8px;left:8px;background:var(--accent-bg);color:var(--accent2);border:1px solid var(--accent-border);border-radius:6px;padding:5px 12px;font-size:12px;cursor:pointer;font-family:inherit;display:none;z-index:10}
+.sidebar{width:248px;background:var(--bg2);border-left:1px solid var(--border);overflow-y:auto;padding:13px;flex-shrink:0}
+.sb-block{background:var(--bg3);border-radius:7px;padding:11px;margin-bottom:9px}
+.sb-block h3{font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--text4);margin-bottom:8px}
 .stat-row{display:flex;justify-content:space-between;margin-bottom:5px}
-.stat-row .lbl{font-size:12px;color:#8890b0}
-.stat-row .val{font-size:12px;font-weight:600;color:#e0e3f0}
+.stat-row .lbl{font-size:12px;color:var(--text3)}
+.stat-row .val{font-size:12px;font-weight:600;color:var(--text)}
 .tier-bar{display:flex;border-radius:4px;overflow:hidden;height:18px;margin:6px 0 3px;gap:2px}
 .tier-seg{display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:rgba(255,255,255,.88);min-width:1px;transition:flex .35s ease}
 .hist-row{display:flex;align-items:center;gap:6px;margin-bottom:4px}
-.hist-lbl{font-size:11px;color:#6b7094;width:60px;text-align:right;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.hist-bg{flex:1;height:10px;background:#1a1d2e;border-radius:2px;overflow:hidden}
+.hist-lbl{font-size:11px;color:var(--text3);width:60px;text-align:right;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hist-bg{flex:1;height:10px;background:var(--bg4);border-radius:2px;overflow:hidden}
 .hist-fill{height:100%;border-radius:2px;transition:width .3s ease}
-.hist-val{font-size:10px;color:#4b5280;width:22px;text-align:right;flex-shrink:0}
+.hist-val{font-size:10px;color:var(--text4);width:22px;text-align:right;flex-shrink:0}
 .leg-row{display:flex;align-items:center;gap:7px;margin-bottom:5px}
 .leg-sw{width:10px;height:10px;border-radius:2px;flex-shrink:0}
-.leg-txt{font-size:11px;color:#6b7094}
-
+.leg-txt{font-size:11px;color:var(--text3)}
 /* ── SLOPE / QUAD PANELS ── */
 #panel-slope,#panel-quad{flex-direction:row;overflow:hidden}
 .chart-outer{flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden}
-.chart-head{padding:20px 24px 4px;flex-shrink:0}
-.chart-head h2{font-size:15px;font-weight:700;color:#fff;margin-bottom:3px}
-.chart-head p{font-size:11px;color:#6b7094;line-height:1.5}
-.quad-ctrls{display:flex;align-items:center;gap:10px;padding:6px 24px;border-bottom:1px solid #1a1d2e;flex-shrink:0;background:#111422}
+.chart-head{padding:18px 24px 4px;flex-shrink:0}
+.chart-head h2{font-size:15px;font-weight:700;color:var(--text);margin-bottom:3px}
+.chart-head p{font-size:11px;color:var(--text3);line-height:1.5}
+.quad-ctrls{display:flex;align-items:center;gap:8px;padding:6px 24px;border-bottom:1px solid var(--border);flex-shrink:0;background:var(--bg2);flex-wrap:wrap}
 .svg-wrap{flex:1;min-height:0;padding:8px 12px 4px 8px}
 .svg-wrap svg{width:100%;height:100%;display:block}
-.ins-panel{width:232px;background:#111422;border-left:1px solid #1a1d2e;padding:14px;overflow-y:auto;flex-shrink:0}
-.ins-panel h3{font-size:13px;font-weight:700;color:#fff;margin-bottom:11px}
-.ins-card{background:#161929;border-radius:7px;padding:10px;margin-bottom:9px;border-left:3px solid #4a9eff}
+.ins-panel{width:232px;background:var(--bg2);border-left:1px solid var(--border);padding:14px;overflow-y:auto;flex-shrink:0}
+.ins-panel h3{font-size:13px;font-weight:700;color:var(--text);margin-bottom:11px}
+.ins-card{background:var(--bg3);border-radius:7px;padding:10px;margin-bottom:9px;border-left:3px solid var(--accent)}
 .ins-card.warn{border-left-color:#d46a00}
 .ins-card.good{border-left-color:#1e8449}
-.ins-card.note{border-left-color:#4b5280}
-.ins-card h4{font-size:12px;font-weight:700;color:#fff;margin-bottom:4px}
-.ins-card p{font-size:11px;color:#8890b0;line-height:1.55}
+.ins-card.note{border-left-color:var(--text4)}
+.ins-card h4{font-size:12px;font-weight:700;color:var(--text);margin-bottom:4px}
+.ins-card p{font-size:11px;color:var(--text2);line-height:1.55}
 .ins-tag{display:inline-block;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:2px 5px;border-radius:3px;margin-bottom:5px}
-.tag-r{background:#3a1a0a;color:#d46a00}
-.tag-g{background:#0a2a1a;color:#4ade80}
-.tag-b{background:#1a1a3a;color:#7cb9ff}
-.tag-n{background:#1a1a2a;color:#6b7094}
-
+.tag-r{background:var(--tag-r-bg);color:var(--tag-r-txt)}
+.tag-g{background:var(--tag-g-bg);color:var(--tag-g-txt)}
+.tag-b{background:var(--tag-b-bg);color:var(--tag-b-txt)}
+.tag-n{background:var(--tag-n-bg);color:var(--tag-n-txt)}
 /* ── DETAIL MODAL ── */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:300;display:none;align-items:center;justify-content:center}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;display:none;align-items:center;justify-content:center}
 .modal-overlay.open{display:flex}
-.modal{background:#13162a;border:1px solid #2a2e50;border-radius:12px;width:520px;max-width:90vw;max-height:80vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.8)}
-.modal-hd{display:flex;align-items:flex-start;justify-content:space-between;padding:20px 22px 14px;border-bottom:1px solid #1e2236}
-.modal-hd-left h2{font-size:17px;font-weight:700;color:#fff;line-height:1.3;margin-bottom:3px}
-.modal-hd-left .code{font-size:11px;color:#4b5280}
-.modal-close{background:none;border:none;color:#4b5280;font-size:20px;cursor:pointer;padding:0 4px;line-height:1;flex-shrink:0;margin-left:12px}
-.modal-close:hover{color:#fff}
+.modal{background:var(--modal-bg);border:1px solid var(--modal-border);border-radius:12px;width:520px;max-width:90vw;max-height:80vh;overflow-y:auto;box-shadow:0 16px 48px rgba(0,0,0,.15)}
+[data-theme="dark"] .modal{box-shadow:0 20px 60px rgba(0,0,0,.8)}
+.modal-hd{display:flex;align-items:flex-start;justify-content:space-between;padding:20px 22px 14px;border-bottom:1px solid var(--border)}
+.modal-hd-left h2{font-size:17px;font-weight:700;color:var(--text);line-height:1.3;margin-bottom:3px}
+.modal-hd-left .code{font-size:11px;color:var(--text4)}
+.modal-close{background:none;border:none;color:var(--text4);font-size:20px;cursor:pointer;padding:0 4px;line-height:1;flex-shrink:0;margin-left:12px}
+.modal-close:hover{color:var(--text)}
 .modal-body{padding:18px 22px 20px}
 .modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
-.mod-cell{background:#1a1d30;border-radius:6px;padding:9px 11px}
-.mod-cell-l{font-size:9px;color:#4b5280;text-transform:uppercase;letter-spacing:.3px;margin-bottom:2px}
-.mod-cell-v{font-size:13px;font-weight:600;color:#e0e3f0}
-.exp-section h4{font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:#4b5280;margin-bottom:10px}
+.mod-cell{background:var(--bg4);border-radius:6px;padding:9px 11px}
+.mod-cell-l{font-size:9px;color:var(--text4);text-transform:uppercase;letter-spacing:.3px;margin-bottom:2px}
+.mod-cell-v{font-size:13px;font-weight:600;color:var(--text)}
+.exp-section h4{font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--text4);margin-bottom:10px}
 .exp-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
-.exp-yr{font-size:11px;color:#6b7094;width:32px;flex-shrink:0}
-.exp-study{font-size:10px;color:#3a3f5c;flex:0 0 140px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.exp-bar-bg{flex:1;height:6px;background:#1a1d30;border-radius:3px;overflow:hidden}
+.exp-yr{font-size:11px;color:var(--text3);width:32px;flex-shrink:0}
+.exp-study{font-size:10px;color:var(--text4);flex:0 0 140px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.exp-bar-bg{flex:1;height:6px;background:var(--bg4);border-radius:3px;overflow:hidden}
 .exp-bar-fill{height:100%;border-radius:3px}
 .exp-val{font-size:11px;font-weight:700;width:26px;text-align:right;flex-shrink:0}
-.mod-divider{height:1px;background:#1e2236;margin:14px 0}
-.mod-rat{font-size:12px;color:#9098b8;line-height:1.65;margin-bottom:16px}
+.mod-divider{height:1px;background:var(--border);margin:14px 0}
+.mod-rat{font-size:12px;color:var(--text2);line-height:1.65;margin-bottom:16px}
 .mod-links{display:flex;gap:10px;flex-wrap:wrap}
 .mod-link{display:inline-flex;align-items:center;gap:5px;padding:7px 13px;border-radius:6px;font-size:12px;font-weight:600;text-decoration:none;transition:all .15s}
-.mod-link.primary{background:#1e3a6e;color:#7cb9ff;border:1px solid #2a5090}
-.mod-link.primary:hover{background:#2a4a80;color:#a0d0ff}
-.mod-link.secondary{background:#161929;color:#6b7094;border:1px solid #2a2e4a}
-.mod-link.secondary:hover{background:#1e2236;color:#b0b8d8}
-
-/* ── SHARED TOOLTIP (quad hover) ── */
-#tooltip{position:fixed;background:#161929;border:1px solid #2a2e4a;border-radius:9px;padding:11px 13px;font-size:12px;max-width:240px;pointer-events:none;z-index:200;display:none;box-shadow:0 10px 28px rgba(0,0,0,.7)}
-#tooltip h3{font-size:12px;font-weight:700;color:#fff;margin-bottom:2px;line-height:1.3}
-#tooltip .tt-code{font-size:10px;color:#4b5280;margin-bottom:7px}
+.mod-link.primary{background:var(--accent-bg);color:var(--accent2);border:1px solid var(--accent-border)}
+.mod-link.primary:hover{filter:brightness(0.93)}
+.mod-link.secondary{background:var(--bg3);color:var(--text3);border:1px solid var(--border2)}
+.mod-link.secondary:hover{background:var(--bg4);color:var(--text2)}
+/* ── TOOLTIP ── */
+#tooltip{position:fixed;background:var(--tooltip-bg);border:1px solid var(--border2);border-radius:9px;padding:11px 13px;font-size:12px;max-width:240px;pointer-events:none;z-index:200;display:none;box-shadow:0 8px 24px rgba(0,0,0,.1)}
+[data-theme="dark"] #tooltip{box-shadow:0 10px 28px rgba(0,0,0,.7)}
+#tooltip h3{font-size:12px;font-weight:700;color:var(--text);margin-bottom:2px;line-height:1.3}
+#tooltip .tt-code{font-size:10px;color:var(--text4);margin-bottom:7px}
 .tt-row{display:flex;justify-content:space-between;margin-bottom:3px}
-.tt-row .tl{font-size:11px;color:#8890b0}
-.tt-row .tv{font-size:11px;font-weight:600;color:#e0e3f0}
+.tt-row .tl{font-size:11px;color:var(--text3)}
+.tt-row .tv{font-size:11px;font-weight:600;color:var(--text)}
 </style>
 </head>
 <body>
 
 <header>
-  <h1>Australian Occupations &amp; AI Exposure</h1>
-  <p>~14 million workers · ANZSCO classification · AI exposure tracked across four independent studies, 2021–2026</p>
+  <div class="hd-left">
+    <h1>Australian Occupations &amp; AI Exposure</h1>
+    <p>~14 million workers · ANZSCO classification · AI exposure tracked across four independent studies, 2021–2026</p>
+  </div>
+  <button id="themeToggle" class="theme-btn">🌙 Dark</button>
 </header>
 
 <nav class="tabs">
@@ -144,7 +169,6 @@ canvas#map{display:block;flex:1;cursor:pointer;min-width:0}
 
 <!-- ── TREEMAP PANEL ── -->
 <div id="panel-treemap" class="panel active">
-
   <div class="method-bar collapsed" id="methodBar">
     <div class="method-toggle" id="methodToggle">
       <span class="icon">ⓘ</span>
@@ -155,15 +179,14 @@ canvas#map{display:block;flex:1;cursor:pointer;min-width:0}
     <div class="method-body">
       <div class="method-section">
         <h4>Employment &amp; Pay</h4>
-        <p>Employment figures are from <a href="https://www.abs.gov.au/statistics/labour/employment-and-unemployment/labour-force-australia-detailed/latest-release" target="_blank">ABS Labour Force Detailed</a> (Feb 2025), aggregated to ANZSCO 3-digit minor groups and rounded to the nearest 5,000. Treat them as order-of-magnitude estimates — the ABS releases these quarterly and the figures shift. Pay data is from <a href="https://www.abs.gov.au/statistics/labour/earnings-and-working-conditions/employee-earnings-and-hours-australia/latest-release" target="_blank">ABS Employee Earnings 2023</a>. Job growth projections are from <a href="https://www.jobsandskills.gov.au/data/employment-projections" target="_blank">Jobs and Skills Australia</a> (May 2025 to May 2035), which covers ~350 ANZSCO occupations.</p>
+        <p>Employment figures are from <a href="https://www.abs.gov.au/statistics/labour/employment-and-unemployment/labour-force-australia-detailed/latest-release" target="_blank">ABS Labour Force Detailed</a> (Feb 2025), aggregated to ANZSCO 3-digit minor groups and rounded to the nearest 5,000. Treat them as order-of-magnitude estimates — the ABS releases these quarterly and the figures shift. Pay data is from <a href="https://www.abs.gov.au/statistics/labour/earnings-and-working-conditions/employee-earnings-and-hours-australia/latest-release" target="_blank">ABS Employee Earnings 2023</a>. Job growth projections are from <a href="https://www.jobsandskills.gov.au/data/employment-projections" target="_blank">Jobs and Skills Australia</a> (May 2025 to May 2035), covering ~350 ANZSCO occupations.</p>
       </div>
       <div class="method-section">
         <h4>AI Exposure Scores</h4>
-        <p>This is the part that needs the most caveats. The 2021 scores adapt <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3812132" target="_blank">Felten, Raj &amp; Seamans' AIOE index</a>, built before large language models became mainstream — it reflects pre-ChatGPT AI capabilities. The 2023 scores use <a href="https://science.org/doi/10.1126/science.adj0998" target="_blank">Eloundou et al. "GPTs are GPTs"</a> (Science, 2023), crosswalked from US SOC codes via ISCO-08 to ANZSCO. That crosswalk introduces noise — some occupations have meaningfully different task profiles in Australia vs the US. The 2024 scores draw on <a href="https://www.ilo.org/publications/generative-ai-and-jobs" target="_blank">Gmyrek's ILO analysis</a>, which was coded natively in ISCO-08. The 2026 scores apply the scoring methodology from <a href="https://jobs.karpathy.ai" target="_blank">Andrej Karpathy's jobs.karpathy.ai</a> to ANZSCO descriptions. None of these were designed for Australian occupations. The relative positions and directional trends are the useful signal — individual decimal points are not.</p>
+        <p>This is the part that needs the most caveats. The 2021 scores adapt <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3812132" target="_blank">Felten, Raj &amp; Seamans' AIOE index</a>, built before large language models became mainstream. The 2023 scores use <a href="https://science.org/doi/10.1126/science.adj0998" target="_blank">Eloundou et al. "GPTs are GPTs"</a> (Science, 2023), crosswalked from US SOC codes via ISCO-08 to ANZSCO — that crosswalk introduces noise. The 2024 scores draw on <a href="https://www.ilo.org/publications/generative-ai-and-jobs" target="_blank">Gmyrek's ILO analysis</a>, coded natively in ISCO-08. The 2026 scores apply the scoring methodology from <a href="https://jobs.karpathy.ai" target="_blank">Andrej Karpathy's jobs.karpathy.ai</a> to ANZSCO descriptions. None of these were designed for Australian occupations. The relative positions and directional trends are the useful signal — individual decimal points are not.</p>
       </div>
     </div>
   </div>
-
   <div class="tm-controls">
     <span class="ctrl-lbl">Colour by</span>
     <div class="btn-group" id="modeGroup">
@@ -179,7 +202,6 @@ canvas#map{display:block;flex:1;cursor:pointer;min-width:0}
       <span class="yr-study" id="studyTag">Felten et al. (AIOE index)</span>
     </div>
   </div>
-
   <div class="tm-body">
     <div class="tm-wrap">
       <canvas id="map"></canvas>
@@ -202,7 +224,7 @@ canvas#map{display:block;flex:1;cursor:pointer;min-width:0}
           <div class="tier-seg" style="background:#d46a00" id="t3"></div>
           <div class="tier-seg" style="background:#bf3020" id="t4"></div>
         </div>
-        <div style="display:flex;justify-content:space-between;font-size:9px;color:#4b5280;margin-top:1px">
+        <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--text4);margin-top:1px">
           <span>0–2</span><span>2–4</span><span>4–6</span><span>6–8</span><span>8+</span>
         </div>
       </div>
@@ -244,7 +266,7 @@ canvas#map{display:block;flex:1;cursor:pointer;min-width:0}
       <h4>Trades &amp; Labourers</h4>
       <p>Electricians, plumbers, carpenters — flat across all four studies. Physical work in variable environments has a natural ceiling on AI impact. Growing infrastructure demand adds further insulation.</p>
     </div>
-    <div class="ins-card" style="border-left-color:#7cb9ff">
+    <div class="ins-card">
       <div class="ins-tag tag-b">Nuanced</div>
       <h4>ICT Professionals</h4>
       <p>Very high exposure but also the fastest-growing sector. AI is restructuring the work, not eliminating it — productivity per developer is rising, and demand keeps pace.</p>
@@ -262,13 +284,15 @@ canvas#map{display:block;flex:1;cursor:pointer;min-width:0}
   <div class="chart-outer">
     <div class="chart-head">
       <h2>Risk vs Growth: Where Do Australian Occupations Sit?</h2>
-      <p>Each circle is an ANZSCO occupation group — sized by employment, coloured by sector. Use the slider to watch occupations drift right as AI exposure rises across study years.</p>
+      <p>Each circle is an ANZSCO occupation group — sized by employment, coloured by sector. Horizontal drift shows rising AI exposure across studies; vertical position (job growth) is fixed. Hit Play to animate. Click a bubble to isolate it.</p>
     </div>
     <div class="quad-ctrls">
       <span class="ctrl-lbl">Study year</span>
-      <input type="range" id="quadSlider" min="0" max="3" step="1" value="0" style="width:140px">
+      <input type="range" id="quadSlider" min="0" max="3" step="1" value="0" style="width:110px">
       <span class="yr-num" id="quadYearDisplay">2021</span>
       <span class="yr-study" id="quadStudyTag">Felten et al. (AIOE index)</span>
+      <button id="quadPlayBtn" class="btn" style="margin-left:6px">▶ Play</button>
+      <button id="quadClearBtn" class="btn" style="display:none;color:#d46a00">✕ Clear selection</button>
     </div>
     <div class="svg-wrap" id="quadWrap"></div>
   </div>
@@ -279,7 +303,7 @@ canvas#map{display:block;flex:1;cursor:pointer;min-width:0}
       <h4>Safe Havens</h4>
       <p>Low AI exposure, positive job growth. Physical trades, healthcare support, construction. Strong demand, limited displacement risk. Best near-term employment outlook.</p>
     </div>
-    <div class="ins-card" style="border-left-color:#7cb9ff">
+    <div class="ins-card">
       <div class="ins-tag tag-b">Top-right</div>
       <h4>Augmented</h4>
       <p>High exposure but growing. ICT, engineering, health diagnostics. AI restructures these roles — output per worker grows, but so does headcount (just more slowly than output).</p>
@@ -297,7 +321,7 @@ canvas#map{display:block;flex:1;cursor:pointer;min-width:0}
     <div class="ins-card warn">
       <div class="ins-tag tag-r">Watch</div>
       <h4>~500k clerks</h4>
-      <p>General clerks, data entry workers, and contact centre staff represent the largest single block in the Vulnerable quadrant. Slide from 2021 to 2026 to see how far right they move.</p>
+      <p>General clerks, data entry workers, and contact centre staff represent the largest single block in the Vulnerable quadrant. Hit Play to see how far right they drift 2021→2026.</p>
     </div>
   </div>
 </div>
@@ -321,7 +345,7 @@ canvas#map{display:block;flex:1;cursor:pointer;min-width:0}
       </div>
       <div class="exp-section">
         <h4>AI Exposure by study</h4>
-        <div class="exp-row"><span class="exp-yr">2021</span><span class="exp-study">Felten, Raj & Seamans</span><div class="exp-bar-bg"><div class="exp-bar-fill" id="mE21" style="background:#2980b9"></div></div><span class="exp-val" id="mV21"></span></div>
+        <div class="exp-row"><span class="exp-yr">2021</span><span class="exp-study">Felten, Raj &amp; Seamans</span><div class="exp-bar-bg"><div class="exp-bar-fill" id="mE21" style="background:#2980b9"></div></div><span class="exp-val" id="mV21"></span></div>
         <div class="exp-row"><span class="exp-yr">2023</span><span class="exp-study">Eloundou et al.</span><div class="exp-bar-bg"><div class="exp-bar-fill" id="mE23" style="background:#c8a800"></div></div><span class="exp-val" id="mV23"></span></div>
         <div class="exp-row"><span class="exp-yr">2024</span><span class="exp-study">Gmyrek / ILO</span><div class="exp-bar-bg"><div class="exp-bar-fill" id="mE24" style="background:#d46a00"></div></div><span class="exp-val" id="mV24"></span></div>
         <div class="exp-row"><span class="exp-yr">2026</span><span class="exp-study">Karpathy prompt</span><div class="exp-bar-bg"><div class="exp-bar-fill" id="mE26" style="background:#bf3020"></div></div><span class="exp-val" id="mV26"></span></div>
@@ -342,7 +366,7 @@ canvas#map{display:block;flex:1;cursor:pointer;min-width:0}
   <div class="tt-row"><span class="tl">Employed</span><span class="tv" id="ttJobs"></span></div>
   <div class="tt-row"><span class="tl">5-yr growth</span><span class="tv" id="ttGrowth"></span></div>
   <div class="tt-row"><span class="tl">AI exposure</span><span class="tv" id="ttExp"></span></div>
-  <div style="font-size:10px;color:#4b5280;margin-top:5px">Click for full details →</div>
+  <div style="font-size:10px;color:var(--text4);margin-top:5px">Click for full details →</div>
 </div>
 
 <script>
@@ -444,11 +468,43 @@ const CATEGORIES = [
 
 const YEARS=[2021,2023,2024,2026], YK=[21,23,24,26];
 const STUDIES=["Felten et al. (AIOE index)","Eloundou et al. (GPTs are GPTs)","Gmyrek / ILO ISCO-08","Karpathy-style LLM prompt"];
-const JOB_OUTLOOK_URL = t => `https://joboutlook.gov.au/occupations/${t.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')}/`;
-const JSA_URL = t => `https://www.jobsandskills.gov.au/labour-market-insights/occupations?q=${encodeURIComponent(t)}`;
 
 // ── STATE ─────────────────────────────────────────────────────────────────────
 let mode="exposure", yearIdx=0, quadYearIdx=0, zoomedCat=null, hoveredOcc=null, rects=[];
+let quadIsPlaying=false, quadPlayTimer=null, quadSelected=new Set();
+
+// ── THEME ─────────────────────────────────────────────────────────────────────
+function TC(){
+  const d=document.documentElement.dataset.theme==='dark';
+  return{
+    grid:d?'#1e2236':'#e4e7ef',
+    axis:d?'#3a3f5c':'#c8cdd8',
+    lbl:d?'#4b5280':'#8a94b0',
+    axLbl:d?'#6b7094':'#5a6280',
+    noteText:d?'rgba(255,255,255,0.78)':'rgba(255,255,255,0.95)',
+    qTL:d?'#0a1a0a':'#f0faf3',qTR:d?'#0a0e1a':'#f0f5fa',
+    qBL:d?'#110a0a':'#faf3f0',qBR:d?'#1a0a0a':'#faf0ee',
+    divider:d?'#3a3f5c':'#c0c6da',
+    qlGood:d?'#1e8449':'#15803d',qlBlue:d?'#2980b9':'#1d6fa5',
+    qlGray:d?'#4b5280':'#7a84a8',qlWarn:d?'#d46a00':'#b45309',
+  };
+}
+
+document.getElementById('themeToggle').addEventListener('click',()=>{
+  const dark=document.documentElement.dataset.theme!=='dark';
+  document.documentElement.dataset.theme=dark?'dark':'';
+  document.getElementById('themeToggle').textContent=dark?'☀ Light':'🌙 Dark';
+  localStorage.setItem('auai_theme',dark?'dark':'light');
+  drawTM();
+  const a=document.querySelector('.tab.active')?.dataset.tab;
+  if(a==='slope')buildSlopeChart();
+  if(a==='quad')buildQuadChart();
+});
+// Init from stored preference (default light)
+if(localStorage.getItem('auai_theme')==='dark'){
+  document.documentElement.dataset.theme='dark';
+  document.getElementById('themeToggle').textContent='☀ Light';
+}
 
 // ── UTILS ─────────────────────────────────────────────────────────────────────
 function expColor(v){if(v<2)return'#1a5f8a';if(v<4)return'#2980b9';if(v<6)return'#c8a800';if(v<8)return'#d46a00';return'#bf3020';}
@@ -498,6 +554,7 @@ function buildRects(){
 function drawTM(){
   const W=canvas.offsetWidth,H=canvas.offsetHeight;
   ctx.clearRect(0,0,W,H);
+  const strokeCol=document.documentElement.dataset.theme==='dark'?'rgba(0,0,0,0.4)':'rgba(0,0,0,0.12)';
   for(const r of rects){
     const hov=hoveredOcc&&(r.type==='cat'?r.d.cat===hoveredOcc:r.d.occ===hoveredOcc);
     if(r.type==='cat'){
@@ -529,7 +586,7 @@ function drawTM(){
         if(r.h>44&&r.w>52){ctx.fillStyle='rgba(255,255,255,0.4)';ctx.font=`${Math.min(9,fs*0.85)}px -apple-system,sans-serif`;ctx.fillText(fmtJ(occ.jobs),r.x+r.w/2,r.y+r.h-5);}
       }
     }
-    ctx.strokeStyle='rgba(0,0,0,0.35)';ctx.lineWidth=0.5;ctx.strokeRect(r.x+.5,r.y+.5,r.w-1,r.h-1);
+    ctx.strokeStyle=strokeCol;ctx.lineWidth=0.5;ctx.strokeRect(r.x+.5,r.y+.5,r.w-1,r.h-1);
   }
 }
 
@@ -554,12 +611,12 @@ canvas.addEventListener('mousemove',e=>{
   if(found){
     const occ=found.type==='occ'?found.d.occ:null;
     const cat=found.type==='cat'?found.d.cat:null;
-    if(occ) showQuickTT(occ,found.cat,e.clientX,e.clientY);
+    if(occ)showQuickTT(occ,found.cat,e.clientX,e.clientY);
     else if(cat){
       document.getElementById('ttTitle').textContent=cat.name;
       document.getElementById('ttCode').textContent=`${cat.groups.length} occupation groups · click to explore`;
       document.getElementById('ttJobs').textContent=`${(cat.groups.reduce((s,g)=>s+g.jobs,0)*1000).toLocaleString()}`;
-      document.getElementById('ttGrowth').textContent='–';document.getElementById('ttGrowth').style.color='#e0e3f0';
+      document.getElementById('ttGrowth').textContent='–';document.getElementById('ttGrowth').style.color=getComputedStyle(document.body).getPropertyValue('--text');
       document.getElementById('ttExp').textContent=catAvg(cat,YK[yearIdx]).toFixed(1)+'/10';
       document.getElementById('ttExp').style.color=expColor(catAvg(cat,YK[yearIdx]));
       positionTT(e.clientX,e.clientY);document.getElementById('tooltip').style.display='block';
@@ -576,7 +633,7 @@ function openModal(occ,cat){
   document.getElementById('modPay').textContent=fmtP(occ.pay)+' / year';
   const g=document.getElementById('modGrowth');
   g.textContent=(occ.g5>0?'+':'')+occ.g5+'% over 5 years';
-  g.style.color=occ.g5>0?'#4ade80':occ.g5<0?'#f87171':'#e0e3f0';
+  g.style.color=occ.g5>0?'#15803d':occ.g5<0?'#dc2626':'inherit';
   document.getElementById('modEdu').textContent=occ.edu;
   for(const [id,vid,yk] of [['mE21','mV21',21],['mE23','mV23',23],['mE24','mV24',24],['mE26','mV26',26]]){
     const v=occ.exp[yk];
@@ -586,9 +643,9 @@ function openModal(occ,cat){
     document.getElementById(vid).style.color=expColor(v);
   }
   document.getElementById('modRat').textContent=occ.rat;
-  const slug=occ.title.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
-  document.getElementById('modLinkJSA').href=`https://joboutlook.gov.au/occupations/${slug}/`;
-  document.getElementById('modLinkJSA').textContent='View on Job Outlook →';
+  // Link to Job Outlook search — direct slugs don't reliably match 3-digit ANZSCO groups
+  document.getElementById('modLinkJSA').href=`https://joboutlook.gov.au/occupations/?Keywords=${encodeURIComponent(occ.title)}`;
+  document.getElementById('modLinkJSA').textContent='Job Outlook →';
   document.getElementById('modalOverlay').classList.add('open');
 }
 document.getElementById('modalClose').addEventListener('click',()=>document.getElementById('modalOverlay').classList.remove('open'));
@@ -599,7 +656,7 @@ function showQuickTT(occ,cat,cx,cy){
   document.getElementById('ttTitle').textContent=occ.title;
   document.getElementById('ttCode').textContent=`ANZSCO ${occ.code} · ${cat.name}`;
   document.getElementById('ttJobs').textContent=fmtJ(occ.jobs);
-  const g=document.getElementById('ttGrowth');g.textContent=(occ.g5>0?'+':'')+occ.g5+'%';g.style.color=occ.g5>0?'#4ade80':occ.g5<0?'#f87171':'#e0e3f0';
+  const g=document.getElementById('ttGrowth');g.textContent=(occ.g5>0?'+':'')+occ.g5+'%';g.style.color=occ.g5>0?'#15803d':occ.g5<0?'#dc2626':'inherit';
   document.getElementById('ttExp').textContent=occ.exp[YK[yearIdx]].toFixed(1)+'/10';
   document.getElementById('ttExp').style.color=expColor(occ.exp[YK[yearIdx]]);
   positionTT(cx,cy);document.getElementById('tooltip').style.display='block';
@@ -635,6 +692,34 @@ qslider.addEventListener('input',()=>{
   buildQuadChart();
 });
 
+// ── QUAD PLAY / ISOLATE ───────────────────────────────────────────────────────
+document.getElementById('quadPlayBtn').addEventListener('click',()=>{
+  if(quadIsPlaying){
+    clearInterval(quadPlayTimer);quadIsPlaying=false;
+    document.getElementById('quadPlayBtn').textContent='▶ Play';return;
+  }
+  if(quadYearIdx>=3)quadYearIdx=0;
+  quadIsPlaying=true;
+  document.getElementById('quadPlayBtn').textContent='⏸ Pause';
+  qslider.value=quadYearIdx;
+  document.getElementById('quadYearDisplay').textContent=YEARS[quadYearIdx];
+  document.getElementById('quadStudyTag').textContent=STUDIES[quadYearIdx];
+  buildQuadChart();
+  quadPlayTimer=setInterval(()=>{
+    if(quadYearIdx>=3){clearInterval(quadPlayTimer);quadIsPlaying=false;document.getElementById('quadPlayBtn').textContent='▶ Play';return;}
+    quadYearIdx++;
+    qslider.value=quadYearIdx;
+    document.getElementById('quadYearDisplay').textContent=YEARS[quadYearIdx];
+    document.getElementById('quadStudyTag').textContent=STUDIES[quadYearIdx];
+    buildQuadChart();
+  },900);
+});
+document.getElementById('quadClearBtn').addEventListener('click',()=>{
+  quadSelected.clear();
+  document.getElementById('quadClearBtn').style.display='none';
+  buildQuadChart();
+});
+
 // ── STATS SIDEBAR ─────────────────────────────────────────────────────────────
 function updateStats(){
   const groups=zoomedCat?CATEGORIES.find(c=>c.id===zoomedCat).groups:CATEGORIES.flatMap(c=>c.groups);
@@ -644,7 +729,7 @@ function updateStats(){
   const wg=groups.reduce((s,g)=>s+g.jobs*g.g5,0)/tj;
   const wp=groups.reduce((s,g)=>s+g.jobs*g.pay,0)/tj;
   const e=document.getElementById('stAvgExp');e.textContent=we.toFixed(1)+'/10';e.style.color=expColor(we);
-  const gr=document.getElementById('stAvgGrowth');gr.textContent=(wg>0?'+':'')+wg.toFixed(1)+'%';gr.style.color=wg>0?'#4ade80':wg<0?'#f87171':'#e0e3f0';
+  const gr=document.getElementById('stAvgGrowth');gr.textContent=(wg>0?'+':'')+wg.toFixed(1)+'%';gr.style.color=wg>0?'#15803d':wg<0?'#dc2626':'inherit';
   document.getElementById('stAvgPay').textContent=fmtP(wp)+'/yr';
   const tiers=[0,0,0,0,0];
   for(const g of groups){const v=g.exp[YK[yearIdx]];tiers[v<2?0:v<4?1:v<6?2:v<8?3:4]+=g.jobs;}
@@ -652,7 +737,7 @@ function updateStats(){
   const hist=document.getElementById('sectorHist');hist.innerHTML='';
   const cats=zoomedCat?[CATEGORIES.find(c=>c.id===zoomedCat)]:CATEGORIES;
   for(const cat of cats){
-    const ctj=cat.groups.reduce((s,g)=>s+g.jobs,0),wa=catAvg(cat,YK[yearIdx]);
+    const wa=catAvg(cat,YK[yearIdx]);
     const row=document.createElement('div');row.className='hist-row';
     row.innerHTML=`<div class="hist-lbl" title="${cat.name}">${cat.name.split(' ')[0]}</div><div class="hist-bg"><div class="hist-fill" style="width:${(wa/9.5*100).toFixed(1)}%;background:${expColor(wa)}"></div></div><div class="hist-val">${wa.toFixed(1)}</div>`;
     hist.appendChild(row);
@@ -672,32 +757,30 @@ function updateLegend(){
 function buildSlopeChart(){
   const wrap=document.getElementById('slopeWrap');wrap.innerHTML='';
   const W=wrap.offsetWidth||700,H=wrap.offsetHeight||380;
-  const ml=62,mr=140,mt=20,mb=42;
-  const cw=W-ml-mr,ch=H-mt-mb;
+  const ml=62,mr=140,mt=20,mb=42,cw=W-ml-mr,ch=H-mt-mb;
   const xPos=[0,1,2,3].map(i=>ml+i*(cw/3));
   const yScale=v=>mt+ch*(1-v/10);
+  const tc=TC();
   const ns='http://www.w3.org/2000/svg';
   const svg=document.createElementNS(ns,'svg');svg.setAttribute('viewBox',`0 0 ${W} ${H}`);svg.style.cssText='width:100%;height:100%;display:block';
-  const mk=(tag,attrs,txt)=>{const el=document.createElementNS(ns,tag);for(const[k,v]of Object.entries(attrs))el.setAttribute(k,v);if(txt)el.textContent=txt;return el;};
-  // Gridlines
+  const mk=(tag,attrs,txt)=>{const el=document.createElementNS(ns,tag);for(const[k,v]of Object.entries(attrs))el.setAttribute(k,v);if(txt!=null)el.textContent=txt;return el;};
   for(let v=0;v<=10;v+=2){
     const y=yScale(v);
-    svg.appendChild(mk('line',{x1:ml,x2:ml+cw,y1:y,y2:y,stroke:v===0?'#3a3f5c':'#1e2236','stroke-width':v===0?'1':'0.6'}));
-    svg.appendChild(mk('text',{x:ml-7,y:y+4,'text-anchor':'end',fill:'#4b5280','font-size':'11'},String(v)));
+    svg.appendChild(mk('line',{x1:ml,x2:ml+cw,y1:y,y2:y,stroke:v===0?tc.axis:tc.grid,'stroke-width':v===0?'1':'0.6'}));
+    svg.appendChild(mk('text',{x:ml-7,y:y+4,'text-anchor':'end',fill:tc.lbl,'font-size':'11'},String(v)));
   }
-  [0,1,2,3].forEach((i,_)=>{
+  [0,1,2,3].forEach(i=>{
     const x=xPos[i];
-    svg.appendChild(mk('line',{x1:x,x2:x,y1:mt+ch,y2:mt+ch+5,stroke:'#2a2e4a','stroke-width':'1'}));
-    svg.appendChild(mk('text',{x,y:mt+ch+17,'text-anchor':'middle',fill:'#6b7094','font-size':'12'},YEARS[i]));
-    if(i===1)svg.appendChild(mk('text',{x,y:mt+ch+29,'text-anchor':'middle',fill:'#4b5280','font-size':'10'},'GPT-4 era ↑'));
+    svg.appendChild(mk('line',{x1:x,x2:x,y1:mt+ch,y2:mt+ch+5,stroke:tc.axis,'stroke-width':'1'}));
+    svg.appendChild(mk('text',{x,y:mt+ch+17,'text-anchor':'middle',fill:tc.axLbl,'font-size':'12'},YEARS[i]));
+    if(i===1)svg.appendChild(mk('text',{x,y:mt+ch+29,'text-anchor':'middle',fill:tc.lbl,'font-size':'10'},'GPT-4 era ↑'));
   });
-  svg.appendChild(mk('text',{x:12,y:mt+ch/2,'text-anchor':'middle',fill:'#4b5280','font-size':'11',transform:`rotate(-90,12,${mt+ch/2})`},'Avg AI Exposure (0–10)'));
-  // Lines
+  svg.appendChild(mk('text',{x:12,y:mt+ch/2,'text-anchor':'middle',fill:tc.lbl,'font-size':'11',transform:`rotate(-90,12,${mt+ch/2})`},'Avg AI Exposure (0–10)'));
   for(const cat of CATEGORIES){
     const vals=YK.map(yk=>catAvg(cat,yk));
     const pts=vals.map((v,i)=>({x:xPos[i],y:yScale(v)}));
     svg.appendChild(mk('path',{d:'M'+pts.map(p=>`${p.x.toFixed(1)},${p.y.toFixed(1)}`).join('L'),fill:'none',stroke:cat.color,'stroke-width':'2','stroke-linejoin':'round'}));
-    for(const p of pts){const c=mk('circle',{cx:p.x,cy:p.y,r:'3.5',fill:cat.color,stroke:'#0d0f18','stroke-width':'1.5'});svg.appendChild(c);}
+    for(const p of pts)svg.appendChild(mk('circle',{cx:p.x,cy:p.y,r:'3.5',fill:cat.color,stroke:document.documentElement.dataset.theme==='dark'?'#0d0f18':'#f4f6fb','stroke-width':'1.5'}));
     const last=pts[3];
     svg.appendChild(mk('text',{x:last.x+9,y:last.y+4,fill:cat.color,'font-size':'11'},cat.name.split(' ')[0]));
   }
@@ -708,8 +791,7 @@ function buildSlopeChart(){
 function buildQuadChart(){
   const wrap=document.getElementById('quadWrap');wrap.innerHTML='';
   const W=wrap.offsetWidth||700,H=wrap.offsetHeight||380;
-  const ml=58,mr=18,mt=16,mb=46;
-  const cw=W-ml-mr,ch=H-mt-mb;
+  const ml=58,mr=18,mt=16,mb=46,cw=W-ml-mr,ch=H-mt-mb;
   const all=CATEGORIES.flatMap(c=>c.groups.map(g=>({...g,cat:c})));
   const xScale=v=>ml+v/10*cw;
   const minG=-10,maxG=25;
@@ -717,44 +799,98 @@ function buildQuadChart(){
   const yZero=yScale(0),xMid=xScale(5);
   const maxJ=Math.max(...all.map(g=>g.jobs));
   const rr=v=>Math.max(5,Math.sqrt(v/maxJ)*44);
+  const tc=TC();
   const ns='http://www.w3.org/2000/svg';
-  const svg=document.createElementNS(ns,'svg');svg.setAttribute('viewBox',`0 0 ${W} ${H}`);svg.style.cssText='width:100%;height:100%;display:block';
+  const svg=document.createElementNS(ns,'svg');svg.setAttribute('viewBox',`0 0 ${W} ${H}`);svg.style.cssText='width:100%;height:100%;display:block;cursor:default';
   const mk=(tag,attrs,txt)=>{const el=document.createElementNS(ns,tag);for(const[k,v]of Object.entries(attrs))el.setAttribute(k,v);if(txt!=null)el.textContent=txt;return el;};
+
   // Quadrant backgrounds
-  const qbg=[[ml,mt,xMid-ml,yZero-mt,'#0a1a0a'],[xMid,mt,W-mr-xMid,yZero-mt,'#0a0e1a'],[ml,yZero,xMid-ml,mt+ch-yZero,'#110a0a'],[xMid,yZero,W-mr-xMid,mt+ch-yZero,'#1a0a0a']];
-  for(const[x,y,w,h,f]of qbg)svg.appendChild(mk('rect',{x,y,width:w,height:h,fill:f}));
+  for(const[x,y,w,h,f]of[[ml,mt,xMid-ml,yZero-mt,tc.qTL],[xMid,mt,W-mr-xMid,yZero-mt,tc.qTR],[ml,yZero,xMid-ml,mt+ch-yZero,tc.qBL],[xMid,yZero,W-mr-xMid,mt+ch-yZero,tc.qBR]])
+    svg.appendChild(mk('rect',{x,y,width:w,height:h,fill:f}));
+
   // Quadrant labels
-  const qlbls=[['Safe Havens',ml+6,mt+14,'#1e8449'],['Augmented',xMid+6,mt+14,'#2980b9'],['Fading',ml+6,mt+ch-8,'#4b5280'],['Vulnerable',xMid+6,mt+ch-8,'#d46a00']];
-  for(const[txt,x,y,col]of qlbls)svg.appendChild(mk('text',{x,y,fill:col,'font-size':'12','font-weight':'700',opacity:'0.65'},txt));
+  for(const[txt,x,y,col]of[['Safe Havens',ml+6,mt+14,tc.qlGood],['Augmented',xMid+6,mt+14,tc.qlBlue],['Fading',ml+6,mt+ch-8,tc.qlGray],['Vulnerable',xMid+6,mt+ch-8,tc.qlWarn]])
+    svg.appendChild(mk('text',{x,y,fill:col,'font-size':'12','font-weight':'700',opacity:'0.65'},txt));
+
   // Dividers
-  svg.appendChild(mk('line',{x1:ml,x2:ml+cw,y1:yZero,y2:yZero,stroke:'#3a3f5c','stroke-width':'1.2','stroke-dasharray':'5,3'}));
-  svg.appendChild(mk('line',{x1:xMid,x2:xMid,y1:mt,y2:mt+ch,stroke:'#3a3f5c','stroke-width':'1.2','stroke-dasharray':'5,3'}));
+  svg.appendChild(mk('line',{x1:ml,x2:ml+cw,y1:yZero,y2:yZero,stroke:tc.divider,'stroke-width':'1.2','stroke-dasharray':'5,3'}));
+  svg.appendChild(mk('line',{x1:xMid,x2:xMid,y1:mt,y2:mt+ch,stroke:tc.divider,'stroke-width':'1.2','stroke-dasharray':'5,3'}));
+
   // Grid
-  for(let v=-5;v<=25;v+=5){const y=yScale(v);if(y<mt-1||y>mt+ch+1)continue;svg.appendChild(mk('line',{x1:ml,x2:ml+cw,y1:y,y2:y,stroke:'#1e2236','stroke-width':'0.5'}));svg.appendChild(mk('text',{x:ml-7,y:y+4,'text-anchor':'end',fill:'#4b5280','font-size':'10'},(v>0?'+':'')+v+'%'));}
-  for(let v=0;v<=10;v+=2){const x=xScale(v);svg.appendChild(mk('line',{x1:x,x2:x,y1:mt,y2:mt+ch,stroke:'#1e2236','stroke-width':'0.5'}));svg.appendChild(mk('text',{x,y:mt+ch+15,'text-anchor':'middle',fill:'#4b5280','font-size':'10'},String(v)));}
+  for(let v=-5;v<=25;v+=5){const y=yScale(v);if(y<mt-1||y>mt+ch+1)continue;svg.appendChild(mk('line',{x1:ml,x2:ml+cw,y1:y,y2:y,stroke:tc.grid,'stroke-width':'0.5'}));svg.appendChild(mk('text',{x:ml-7,y:y+4,'text-anchor':'end',fill:tc.lbl,'font-size':'10'},(v>0?'+':'')+v+'%'));}
+  for(let v=0;v<=10;v+=2){const x=xScale(v);svg.appendChild(mk('line',{x1:x,x2:x,y1:mt,y2:mt+ch,stroke:tc.grid,'stroke-width':'0.5'}));svg.appendChild(mk('text',{x,y:mt+ch+15,'text-anchor':'middle',fill:tc.lbl,'font-size':'10'},String(v)));}
+
   // Axis labels
-  svg.appendChild(mk('text',{x:ml+cw/2,y:mt+ch+30,'text-anchor':'middle',fill:'#6b7094','font-size':'12'},'AI Exposure '+YEARS[quadYearIdx]));
-  svg.appendChild(mk('text',{x:12,y:mt+ch/2,'text-anchor':'middle',fill:'#6b7094','font-size':'12',transform:`rotate(-90,12,${mt+ch/2})`},'5-yr Job Growth (%)'));
-  // Dots sorted large-to-small so small ones render on top
+  svg.appendChild(mk('text',{x:ml+cw/2,y:mt+ch+30,'text-anchor':'middle',fill:tc.axLbl,'font-size':'12'},'AI Exposure '+YEARS[quadYearIdx]));
+  svg.appendChild(mk('text',{x:12,y:mt+ch/2,'text-anchor':'middle',fill:tc.axLbl,'font-size':'12',transform:`rotate(-90,12,${mt+ch/2})`},'5-yr Job Growth (%)'));
+
+  // Traces + bubbles (large → small so small ones render on top)
   const sorted=[...all].sort((a,b)=>b.jobs-a.jobs);
+  const isolated=quadSelected.size>0;
+
   for(const occ of sorted){
+    const isSelected=!isolated||quadSelected.has(occ.code);
+    // Trace line from year-0 origin to current position
+    if(quadYearIdx>0){
+      const x0=xScale(occ.exp[YK[0]]);
+      const xCur=xScale(occ.exp[YK[quadYearIdx]]);
+      const cy=yScale(occ.g5);
+      if(Math.abs(xCur-x0)>1){
+        const tOp=isolated?(isSelected?'0.6':'0.05'):'0.38';
+        svg.appendChild(mk('line',{x1:x0.toFixed(1),y1:cy.toFixed(1),x2:xCur.toFixed(1),y2:cy.toFixed(1),stroke:occ.cat.color,'stroke-width':'1.8','stroke-dasharray':'4,3',opacity:tOp}));
+        // Open circle at year-0 origin
+        svg.appendChild(mk('circle',{cx:x0.toFixed(1),cy:cy.toFixed(1),r:'3',fill:'none',stroke:occ.cat.color,'stroke-width':'1.5',opacity:tOp}));
+      }
+      // Intermediate year dots
+      for(let yi=1;yi<quadYearIdx;yi++){
+        const xi=xScale(occ.exp[YK[yi]]);
+        const dotOp=isolated?(isSelected?'0.65':'0.05'):'0.45';
+        svg.appendChild(mk('circle',{cx:xi.toFixed(1),cy:cy.toFixed(1),r:'2.5',fill:occ.cat.color,opacity:dotOp}));
+      }
+    }
+  }
+
+  for(const occ of sorted){
+    const isSelected=!isolated||quadSelected.has(occ.code);
+    const bOp=isolated?(isSelected?'0.95':'0.08'):'0.72';
+    const bStroke=isSelected&&isolated?'rgba(255,255,255,0.85)':'rgba(255,255,255,0.18)';
+    const bSW=isSelected&&isolated?'2':'1';
     const cx=xScale(occ.exp[YK[quadYearIdx]]),cy=yScale(occ.g5),r=rr(occ.jobs);
-    const c=mk('circle',{cx,cy,r,fill:occ.cat.color,opacity:'0.72',stroke:'rgba(255,255,255,0.18)','stroke-width':'1'});
+    const c=mk('circle',{cx:cx.toFixed(1),cy:cy.toFixed(1),r,fill:occ.cat.color,opacity:bOp,stroke:bStroke,'stroke-width':bSW});
     c.style.cursor='pointer';
-    c.addEventListener('mouseenter',e=>{c.setAttribute('opacity','1');c.setAttribute('stroke','rgba(255,255,255,0.7)');showQuickTT(occ,occ.cat,e.clientX,e.clientY);});
+    c.addEventListener('mouseenter',e=>{
+      if(!isolated||isSelected){c.setAttribute('opacity','1');c.setAttribute('stroke','rgba(255,255,255,0.7)');}
+      showQuickTT(occ,occ.cat,e.clientX,e.clientY);
+    });
     c.addEventListener('mousemove',e=>positionTT(e.clientX,e.clientY));
-    c.addEventListener('mouseleave',()=>{c.setAttribute('opacity','0.72');c.setAttribute('stroke','rgba(255,255,255,0.18)');hideTT();});
-    c.addEventListener('click',()=>openModal(occ,occ.cat));
+    c.addEventListener('mouseleave',()=>{
+      c.setAttribute('opacity',bOp);c.setAttribute('stroke',bStroke);hideTT();
+    });
+    c.addEventListener('click',e=>{
+      e.stopPropagation();
+      if(quadSelected.has(occ.code))quadSelected.delete(occ.code);
+      else quadSelected.add(occ.code);
+      document.getElementById('quadClearBtn').style.display=quadSelected.size>0?'inline-block':'none';
+      buildQuadChart();hideTT();
+    });
     svg.appendChild(c);
   }
+
   // Labels for notable occupations
   const notable=['531','532','225','261','341','411','241','621','254','271'];
   for(const occ of all){
     if(!notable.includes(occ.code))continue;
+    const isSelected=!isolated||quadSelected.has(occ.code);
+    if(isolated&&!isSelected)continue;
     const cx=xScale(occ.exp[YK[quadYearIdx]]),cy=yScale(occ.g5);
-    const lbl=mk('text',{x:cx+rr(occ.jobs)+3,y:cy+4,fill:'rgba(255,255,255,0.75)','font-size':'10','font-weight':'600'},occ.title.split(' ').slice(0,3).join(' '));
-    svg.appendChild(lbl);
+    svg.appendChild(mk('text',{x:cx+rr(occ.jobs)+3,y:cy+4,fill:tc.noteText,'font-size':'10','font-weight':'600'},occ.title.split(' ').slice(0,3).join(' ')));
   }
+
+  // Click on background to clear selection
+  svg.addEventListener('click',()=>{
+    if(quadSelected.size>0){quadSelected.clear();document.getElementById('quadClearBtn').style.display='none';buildQuadChart();}
+  });
+
   wrap.appendChild(svg);
   wrap.addEventListener('mouseleave',hideTT);
 }
