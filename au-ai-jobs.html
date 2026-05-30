@@ -468,6 +468,12 @@ const CATEGORIES = [
 
 const YEARS=[2021,2023,2024,2026], YK=[21,23,24,26];
 const STUDIES=["Felten et al. (AIOE index)","Eloundou et al. (GPTs are GPTs)","Gmyrek / ILO ISCO-08","Karpathy-style LLM prompt"];
+// Chart colours: muted earth tones for light, vivid gem tones for dark
+const CHART_COLORS={
+  light:{"1":"#1d5fa8","2":"#18794a","3":"#9a4a10","4":"#6d28a8","5":"#166534","6":"#9a3a00","7":"#2d2d9a","8":"#78560a"},
+  dark: {"1":"#3b82f6","2":"#22c55e","3":"#f97316","4":"#a855f7","5":"#10b981","6":"#eab308","7":"#818cf8","8":"#d97706"},
+};
+function catChartColor(cat){return CHART_COLORS[document.documentElement.dataset.theme==='dark'?'dark':'light'][cat.id]||cat.color;}
 
 // ── STATE ─────────────────────────────────────────────────────────────────────
 let mode="exposure", yearIdx=0, quadYearIdx=0, zoomedCat=null, hoveredOcc=null, rects=[];
@@ -779,10 +785,11 @@ function buildSlopeChart(){
   for(const cat of CATEGORIES){
     const vals=YK.map(yk=>catAvg(cat,yk));
     const pts=vals.map((v,i)=>({x:xPos[i],y:yScale(v)}));
-    svg.appendChild(mk('path',{d:'M'+pts.map(p=>`${p.x.toFixed(1)},${p.y.toFixed(1)}`).join('L'),fill:'none',stroke:cat.color,'stroke-width':'2','stroke-linejoin':'round'}));
-    for(const p of pts)svg.appendChild(mk('circle',{cx:p.x,cy:p.y,r:'3.5',fill:cat.color,stroke:document.documentElement.dataset.theme==='dark'?'#0d0f18':'#f4f6fb','stroke-width':'1.5'}));
+    const cc=catChartColor(cat);
+    svg.appendChild(mk('path',{d:'M'+pts.map(p=>`${p.x.toFixed(1)},${p.y.toFixed(1)}`).join('L'),fill:'none',stroke:cc,'stroke-width':'2','stroke-linejoin':'round'}));
+    for(const p of pts)svg.appendChild(mk('circle',{cx:p.x,cy:p.y,r:'3.5',fill:cc,stroke:document.documentElement.dataset.theme==='dark'?'#0d0f18':'#f4f6fb','stroke-width':'1.5'}));
     const last=pts[3];
-    svg.appendChild(mk('text',{x:last.x+9,y:last.y+4,fill:cat.color,'font-size':'11'},cat.name.split(' ')[0]));
+    svg.appendChild(mk('text',{x:last.x+9,y:last.y+4,fill:cc,'font-size':'11'},cat.name.split(' ')[0]));
   }
   wrap.appendChild(svg);
 }
@@ -837,15 +844,15 @@ function buildQuadChart(){
       const cy=yScale(occ.g5);
       if(Math.abs(xCur-x0)>1){
         const tOp=isolated?(isSelected?'0.6':'0.05'):'0.38';
-        svg.appendChild(mk('line',{x1:x0.toFixed(1),y1:cy.toFixed(1),x2:xCur.toFixed(1),y2:cy.toFixed(1),stroke:occ.cat.color,'stroke-width':'1.8','stroke-dasharray':'4,3',opacity:tOp}));
+        svg.appendChild(mk('line',{x1:x0.toFixed(1),y1:cy.toFixed(1),x2:xCur.toFixed(1),y2:cy.toFixed(1),stroke:catChartColor(occ.cat),'stroke-width':'1.8','stroke-dasharray':'4,3',opacity:tOp}));
         // Open circle at year-0 origin
-        svg.appendChild(mk('circle',{cx:x0.toFixed(1),cy:cy.toFixed(1),r:'3',fill:'none',stroke:occ.cat.color,'stroke-width':'1.5',opacity:tOp}));
+        svg.appendChild(mk('circle',{cx:x0.toFixed(1),cy:cy.toFixed(1),r:'3',fill:'none',stroke:catChartColor(occ.cat),'stroke-width':'1.5',opacity:tOp}));
       }
       // Intermediate year dots
       for(let yi=1;yi<quadYearIdx;yi++){
         const xi=xScale(occ.exp[YK[yi]]);
         const dotOp=isolated?(isSelected?'0.65':'0.05'):'0.45';
-        svg.appendChild(mk('circle',{cx:xi.toFixed(1),cy:cy.toFixed(1),r:'2.5',fill:occ.cat.color,opacity:dotOp}));
+        svg.appendChild(mk('circle',{cx:xi.toFixed(1),cy:cy.toFixed(1),r:'2.5',fill:catChartColor(occ.cat),opacity:dotOp}));
       }
     }
   }
@@ -856,7 +863,7 @@ function buildQuadChart(){
     const bStroke=isSelected&&isolated?'rgba(255,255,255,0.85)':'rgba(255,255,255,0.18)';
     const bSW=isSelected&&isolated?'2':'1';
     const cx=xScale(occ.exp[YK[quadYearIdx]]),cy=yScale(occ.g5),r=rr(occ.jobs);
-    const c=mk('circle',{cx:cx.toFixed(1),cy:cy.toFixed(1),r,fill:occ.cat.color,opacity:bOp,stroke:bStroke,'stroke-width':bSW});
+    const c=mk('circle',{cx:cx.toFixed(1),cy:cy.toFixed(1),r,fill:catChartColor(occ.cat),opacity:bOp,stroke:bStroke,'stroke-width':bSW});
     c.style.cursor='pointer';
     c.addEventListener('mouseenter',e=>{
       if(!isolated||isSelected){c.setAttribute('opacity','1');c.setAttribute('stroke','rgba(255,255,255,0.7)');}
