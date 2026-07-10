@@ -4,6 +4,11 @@
 
 @import "{{ site.theme }}";
 
+.coffee-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-top: 12px; }
+.coffee-btn { display: inline-flex; align-items: center; gap: 7px; padding: 9px 18px; background: #ffdd00; color: #1a1a1a; font-weight: 700; font-size: 0.9rem; border-radius: 999px; text-decoration: none; box-shadow: 0 1px 3px rgba(0,0,0,.15); transition: transform .15s, box-shadow .15s; }
+.coffee-btn:hover { transform: translateY(-1px); box-shadow: 0 5px 14px rgba(0,0,0,.2); text-decoration: none; }
+.coffee-qr { width: 64px; height: 64px; border-radius: 8px; border: 1px solid #e5e1d5; background: #fff; padding: 4px; }
+
 .post img {
         display: block;
         border:1px solid #021a40;

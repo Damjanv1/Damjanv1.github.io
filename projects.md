@@ -35,3 +35,12 @@ A canvas treemap of ~14 million Australian workers across the ANZSCO occupation 
 ---
 
 More projects over on [GitHub &rarr;](https://github.com/Damjanv1)
+
+---
+
+<div class="coffee-row">
+  <a href="https://buymeacoffee.com/damjanv1" target="_blank" rel="noopener" class="coffee-btn">☕ Buy me a coffee</a>
+  <img src="https://api.qrserver.com/v1/create-qr-code/?size=128x128&data=https%3A%2F%2Fbuymeacoffee.com%2Fdamjanv1" alt="Scan to buy me a coffee" class="coffee-qr" loading="lazy" width="64" height="64">
+</div>
+
+If any of these dashboards or write-ups were useful to you, a coffee goes a long way.
